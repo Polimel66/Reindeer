@@ -18,9 +18,12 @@ public class Thorns : MonoBehaviour
         /*if (DeerUnity.CurrentActive != 2 && GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
         {
             deerUnity.GetComponent<DeerUnity>().TakeDamage(100f);
+        (GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.Find("Ground").gameObject.GetComponent<BoxCollider2D>()) &&
+            !GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.Find("RightWallChecker").gameObject.GetComponent<BoxCollider2D>()))
         }*/
 
         if (GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
+
         {
             deerUnity.GetComponent<DeerUnity>().TakeDamage(100f);
         }
