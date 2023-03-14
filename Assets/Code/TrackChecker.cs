@@ -15,6 +15,7 @@ public class TrackChecker : MonoBehaviour
     private Collider2D collision;
     private GameObject parent;
     private GameObject back;
+    public GameObject InputManager;
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Track")
@@ -65,7 +66,7 @@ public class TrackChecker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && ReindeerSmall.isSmell && isInArea)
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && ReindeerSmall.isSmell && isInArea)
         {
             if (!textDict[collision.gameObject.name].Item2)
             {
@@ -82,6 +83,7 @@ public class TrackChecker : MonoBehaviour
             timer.ClearTimer();
             timer.SetPeriodForTick(5f);
             timer.StartTimer();
+            InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
         }
 
         var tick = timer.IsTicked();

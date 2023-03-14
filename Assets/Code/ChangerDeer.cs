@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChangerDeer : MonoBehaviour
 {
+    public GameObject circleSmall;
+    public GameObject circleGhost;
+    public GameObject circleBig;
     // Start is called before the first frame update
     private GameObject deerUnity;
     void Start()
@@ -16,30 +20,30 @@ public class ChangerDeer : MonoBehaviour
     {
         if (DeerUnity.CurrentActive == 1)
         {
-            gameObject.transform.Find("CircleSmall").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-            gameObject.transform.Find("CircleSmall").gameObject.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
-            gameObject.transform.Find("CircleGhost").gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
-            gameObject.transform.Find("CircleGhost").gameObject.GetComponent<RectTransform>().localScale = new Vector3(0.7f, 0.7f, 1f);
-            gameObject.transform.Find("CircleBig").gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
-            gameObject.transform.Find("CircleBig").gameObject.GetComponent<RectTransform>().localScale = new Vector3(0.7f, 0.7f, 1f);
+            circleSmall.GetComponent<Image>().color = Color.white;
+            circleSmall.GetComponent<RectTransform>().localScale = new Vector3(130f, 130f, 1f);
+            circleGhost.GetComponent<Image>().color = Color.grey;
+            circleGhost.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
+            circleBig.GetComponent<Image>().color = Color.grey;
+            circleBig.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
         }
         else if (DeerUnity.CurrentActive == 2)
         {
-            gameObject.transform.Find("CircleSmall").gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
-            gameObject.transform.Find("CircleSmall").gameObject.GetComponent<RectTransform>().localScale = new Vector3(0.7f, 0.7f, 1f);
-            gameObject.transform.Find("CircleGhost").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-            gameObject.transform.Find("CircleGhost").gameObject.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
-            gameObject.transform.Find("CircleBig").gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
-            gameObject.transform.Find("CircleBig").gameObject.GetComponent<RectTransform>().localScale = new Vector3(0.7f, 0.7f, 1f);
+            circleSmall.GetComponent<Image>().color = Color.grey;
+            circleSmall.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
+            circleGhost.GetComponent<Image>().color = Color.white;
+            circleGhost.GetComponent<RectTransform>().localScale = new Vector3(130f, 130f, 1f);
+            circleBig.GetComponent<Image>().color = Color.grey;
+            circleBig.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
         }
         else if (DeerUnity.CurrentActive == 3)
         {
-            gameObject.transform.Find("CircleSmall").gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
-            gameObject.transform.Find("CircleSmall").gameObject.GetComponent<RectTransform>().localScale = new Vector3(0.7f, 0.7f, 1f);
-            gameObject.transform.Find("CircleGhost").gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
-            gameObject.transform.Find("CircleGhost").gameObject.GetComponent<RectTransform>().localScale = new Vector3(0.7f, 0.7f, 1f);
-            gameObject.transform.Find("CircleBig").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-            gameObject.transform.Find("CircleBig").gameObject.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+            circleSmall.GetComponent<Image>().color = Color.grey;
+            circleSmall.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
+            circleGhost.GetComponent<Image>().color = Color.grey;
+            circleGhost.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
+            circleBig.GetComponent<Image>().color = Color.white;
+            circleBig.GetComponent<RectTransform>().localScale = new Vector3(130f, 130f, 1f);
         }
     }
 }

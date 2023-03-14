@@ -50,11 +50,8 @@ public class ReindeerSmall : MonoBehaviour
     private bool isStayAni = true;
     private bool isWalkAni = false;
 
-    private bool isGoLeftButtonPressed = false;
-    private bool isGoLeftButtonStopPress = false;
-    private bool isGoRightButtonPressed = false;
-    private bool isGoRightButtonStopPress = false;
-    private bool isJumpButtonPressed = false;
+    public GameObject InputManager;
+
 
     void Start()
     {
@@ -115,31 +112,6 @@ public class ReindeerSmall : MonoBehaviour
             isWalkAni = false;
             GetComponent<Animator>().runtimeAnimatorController = stayAnimation;
         }
-    }
-
-    public void OnGoRightButtonPressed()
-    {
-        isGoRightButtonPressed = true;
-    }
-
-    public void OnGoRightButtonStopPress()
-    {
-        isGoRightButtonStopPress = true;
-    }
-
-    public void OnGoLeftButtonPressed()
-    {
-        isGoLeftButtonPressed = true;
-    }
-
-    public void OnGoLeftButtonStopPress()
-    {
-        isGoLeftButtonStopPress = true;
-    }
-
-    public void OnJumpButtonPressed()
-    {
-        isJumpButtonPressed = true;
     }
 
     public void FlipPlayer()
@@ -244,17 +216,17 @@ public class ReindeerSmall : MonoBehaviour
 
     public void MakeAction()
     {
-        if (isJumpButtonPressed && DeerUnity.IsGrounded)
+        if (InputManager.GetComponent<InputManager>().isJumpButtonPressed && DeerUnity.IsGrounded)
         {
             if (isCanMoving)
             {
                 rigidbody.AddForce(new Vector2(0, 100));
-                isJumpButtonPressed = false;
+                InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
             }
         }
-        if (isTrapped && countJumpsToEscape > 0 && isJumpButtonPressed)
+        if (isTrapped && countJumpsToEscape > 0 && InputManager.GetComponent<InputManager>().isJumpButtonPressed)
         {
-            isJumpButtonPressed = false;
+            InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
             countJumpsToEscape--;
             deerUnity.GetComponent<DeerUnity>().TakeDamage(2);
             if (countJumpsToEscape <= 0)
@@ -262,57 +234,60 @@ public class ReindeerSmall : MonoBehaviour
                 EscapedTrap();
             }
         }
-        isJumpButtonPressed = false;
+        InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
 
         
 
-        if (isGoRightButtonPressed)
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)
         {
             CurrentHorizontalVelocity += 4;
-            isGoRightButtonPressed = false;
+            InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (isGoRightButtonStopPress)
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)
         {
             CurrentHorizontalVelocity += -4;
-            isGoRightButtonStopPress = false;
+            InputManager.GetComponent<InputManager>().isGoRightButtonStopPress = false;
             //horizontalForceRatio = 0;
         }
-        if (isGoLeftButtonPressed)
+        if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
         {
             CurrentHorizontalVelocity += -4;
-            isGoLeftButtonPressed = false;
+            InputManager.GetComponent<InputManager>().isGoLeftButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (isGoLeftButtonStopPress)
+        if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)
         {
             CurrentHorizontalVelocity += 4;
-            isGoLeftButtonStopPress = false;
+            InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress = false;
             //horizontalForceRatio = 0;
         }
-        if (Input.GetKeyDown(KeyCode.X))
+        if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed)
         {
             isSmell = true;
+            InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed = false;
             TurnOnScent(); // функция для нюха, пока тут только затемнение экрана на некоторое время
+            
             //Invoke("TurnOffScent", 3f); // функция вызывающая другую функцию, через заданный промежуток времени
         }
-        if (Input.GetKeyUp(KeyCode.X))
+        if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress)
         {
+            InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress = false;
             TurnOffScent();
         }
-        if ((Input.GetKeyDown(KeyCode.LeftShift) || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0 && DeerUnity.IsGrounded)
+        if ((InputManager.GetComponent<InputManager>().isRunMode || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0 && DeerUnity.IsGrounded)
         {
             shiftRatio = 2;
             isRunning = true;
             deerUnity.GetComponent<DeerUnity>().isRunning = true;
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || !isRunning || (isRunning && deerUnity.GetComponent<DeerUnity>().currentStamina <= 0))
+        if (!InputManager.GetComponent<InputManager>().isRunMode || !isRunning || (isRunning && deerUnity.GetComponent<DeerUnity>().currentStamina <= 0))
         {
             shiftRatio = 1;
             isRunning = false;
             deerUnity.GetComponent<DeerUnity>().isRunning = false;
         }
-        if (Input.GetKeyDown(KeyCode.E) && currentLemmingArea != null)//если нажали влево, прибавить горизонтальную скорость влево
+        if (Input.GetKeyDown(KeyCode.E) && currentLemmingArea != null)
         {
             currentLemmingArea.GetComponent<CollectionLemming>().assembleLemming();
         }
@@ -330,10 +305,10 @@ public class ReindeerSmall : MonoBehaviour
             horizontalForceRatio = 0;
         }
 
-        /*if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && CurrentHorizontalVelocity != 0)
+        if (!InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing && CurrentHorizontalVelocity != 0)
         {
             CurrentHorizontalVelocity = 0;
-        }*/
+        }
 
         if (GetComponent<Timer>().IsTicked())
         {

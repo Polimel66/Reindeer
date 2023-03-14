@@ -8,6 +8,7 @@ public class Bush : MonoBehaviour
     private bool isTriggered = false;
     public AudioClip bushInSound;
     private AudioSource audio;
+    public GameObject InputManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,8 +20,10 @@ public class Bush : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && isTriggered)
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && isTriggered)
         {
+            InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
+
             if (DeerUnity.VolumeRatio == 0)
             {
                 audio.volume = 0;
@@ -34,9 +37,10 @@ public class Bush : MonoBehaviour
             deerUnity.GetComponent<DeerUnity>().UnBushed(gameObject);
             GetComponent<SpriteRenderer>().color = new Color(0, 1, 0, 1);
         }
-        else if (Input.GetKeyDown(KeyCode.E) && !isTriggered && DeerUnity.CurrentActive == 1
+        else if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && !isTriggered && DeerUnity.CurrentActive == 1
             && GetComponent<PolygonCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
         {
+            InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
             if (DeerUnity.VolumeRatio == 0)
             {
                 audio.volume = 0;

@@ -36,6 +36,7 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
     //private bool isWalkAni = false;
 
     //public bool isGrounded = true;
+    public GameObject InputManager;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -113,13 +114,15 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
 
     public void MakeAction()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && DeerUnity.IsGrounded)
+        if (InputManager.GetComponent<InputManager>().isJumpButtonPressed && DeerUnity.IsGrounded)
         {
             rigidbody.AddForce(new Vector2(0, 45));
+            InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
         }
-        if (Input.GetKeyDown(KeyCode.X))
+        if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed)
         {
             isFlying = true;
+            InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed = false;
         }
         if (isFlying && rigidbody.velocity.y <= 0)
         {
@@ -133,44 +136,50 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         {
             rigidbody.gravityScale = 1f;
         }
-        if (Input.GetKeyUp(KeyCode.X))
+        if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress)
         {
             rigidbody.gravityScale = 1f;
             isFlying = false;
+            InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))//если нажали вправо, прибавить горизонтальную скорость вправо
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)//если нажали вправо, прибавить горизонтальную скорость вправо
         {
             CurrentHorizontalVelocity += 4;
+            InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (Input.GetKeyUp(KeyCode.D))//если отпустили вправо, прибавить горизонтальную скорость влео
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)//если отпустили вправо, прибавить горизонтальную скорость влео
         {
             CurrentHorizontalVelocity += -4;
+            InputManager.GetComponent<InputManager>().isGoRightButtonStopPress = false;
             //horizontalForceRatio = 0;
         }
-        if (Input.GetKeyDown(KeyCode.A))//если нажали влево, прибавить горизонтальную скорость влево
+        if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)//если нажали влево, прибавить горизонтальную скорость влево
         {
             CurrentHorizontalVelocity += -4;
+            InputManager.GetComponent<InputManager>().isGoLeftButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (Input.GetKeyDown(KeyCode.E) && currendGhostPlatform != null && isCanMater)//если нажали влево, прибавить горизонтальную скорость влево
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && currendGhostPlatform != null && isCanMater)//если нажали влево, прибавить горизонтальную скорость влево
         {
             currendGhostPlatform.GetComponent<Materialization>().makeMaterialisation();
             isCanMater = false;
+            InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
         }
-        if (Input.GetKeyUp(KeyCode.A))//если отпустили влево, прибавить горизонтальную скорость вправо
+        if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)//если отпустили влево, прибавить горизонтальную скорость вправо
         {
             CurrentHorizontalVelocity += 4;
+            InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress = false;
             //horizontalForceRatio = 0;
         }
-        if ((Input.GetKeyDown(KeyCode.LeftShift) || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0 && DeerUnity.IsGrounded)
+        if ((InputManager.GetComponent<InputManager>().isRunMode || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0 && DeerUnity.IsGrounded)
         {
             shiftRatio = 1.5f;
             isRunning = true;
             deerUnity.GetComponent<DeerUnity>().isRunning = true;
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || !isRunning || (isRunning && deerUnity.GetComponent<DeerUnity>().currentStamina <= 0))
+        if (!InputManager.GetComponent<InputManager>().isRunMode || !isRunning || (isRunning && deerUnity.GetComponent<DeerUnity>().currentStamina <= 0))
         {
             shiftRatio = 1;
             isRunning = false;
@@ -194,10 +203,10 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
             horizontalForceRatio = 0;
         }
 
-        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && CurrentHorizontalVelocity != 0)
-        {
-            CurrentHorizontalVelocity = 0;
-        }
+        //if (!InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress && !InputManager.GetComponent<InputManager>().isGoRightButtonStopPress && CurrentHorizontalVelocity != 0)
+        //{
+        //    CurrentHorizontalVelocity = 0;
+        //}
 
         if (GetComponent<Timer>().IsTicked())
         {

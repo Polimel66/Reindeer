@@ -156,6 +156,10 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     public float ghostInactiveTime;
     private bool isCanSwitchOnGhost;
 
+    private bool isNeedSwitchOnFirst = false;
+    private bool isNeedSwitchOnSecond = false;
+    private bool isNeedSwitchOnThird = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -446,6 +450,22 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
             }
         }
     }
+
+    public void OnSwitchOnFirstButtonDown()
+    {
+        isNeedSwitchOnFirst = true;
+    }
+
+    public void OnSwitchOnSecondButtonDown()
+    {
+        isNeedSwitchOnSecond = true;
+    }
+
+    public void OnSwitchOnThirdButtonDown()
+    {
+        isNeedSwitchOnThird = true;
+    }
+
     public void SetTask(int numberOfTask)
     {
         if (indexOfCurrentTasks.Count == 0)
@@ -524,15 +544,15 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     {
         if (CurrentActive == 1)
         {
-            secondAbility.GetComponent<SpriteRenderer>().sprite = smallSecondAbil;
+            secondAbility.GetComponent<Image>().sprite = smallSecondAbil;
         }
         else if (CurrentActive == 2)
         {
-            secondAbility.GetComponent<SpriteRenderer>().sprite = ghostSecondAbil;
+            secondAbility.GetComponent<Image>().sprite = ghostSecondAbil;
         }
         else
         {
-            secondAbility.GetComponent<SpriteRenderer>().sprite = bigSecondAbil;
+            secondAbility.GetComponent<Image>().sprite = bigSecondAbil;
         }
     }
 
@@ -540,15 +560,15 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     {
         if (CurrentActive == 1)
         {
-            firstAbility.GetComponent<SpriteRenderer>().sprite = smallFirstAbil;
+            firstAbility.GetComponent<Image>().sprite = smallFirstAbil;
         }
         else if (CurrentActive == 2)
         {
-            firstAbility.GetComponent<SpriteRenderer>().sprite = ghostFirstAbil;
+            firstAbility.GetComponent<Image>().sprite = ghostFirstAbil;
         }
         else
         {
-            firstAbility.GetComponent<SpriteRenderer>().sprite = bigFirstAbil;
+            firstAbility.GetComponent<Image>().sprite = bigFirstAbil;
         }
     }
 
@@ -556,15 +576,15 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     {
         if (CurrentActive == 1)
         {
-            secondAbility.GetComponent<SpriteRenderer>().sprite = smallSecondAbilActive;
+            secondAbility.GetComponent<Image>().sprite = smallSecondAbilActive;
         }
         else if (CurrentActive == 2)
         {
-            secondAbility.GetComponent<SpriteRenderer>().sprite = ghostSecondAbilActive;
+            secondAbility.GetComponent<Image>().sprite = ghostSecondAbilActive;
         }
         else
         {
-            secondAbility.GetComponent<SpriteRenderer>().sprite = bigSecondAbilActive;
+            secondAbility.GetComponent<Image>().sprite = bigSecondAbilActive;
         }
     }
 
@@ -572,15 +592,15 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     {
         if (CurrentActive == 1)
         {
-            firstAbility.GetComponent<SpriteRenderer>().sprite = smallFirstAbilActive;
+            firstAbility.GetComponent<Image>().sprite = smallFirstAbilActive;
         }
         else if (CurrentActive == 2)
         {
-            firstAbility.GetComponent<SpriteRenderer>().sprite = ghostFirstAbilActive;
+            firstAbility.GetComponent<Image>().sprite = ghostFirstAbilActive;
         }
         else
         {
-            firstAbility.GetComponent<SpriteRenderer>().sprite = bigFirstAbilActive;
+            firstAbility.GetComponent<Image>().sprite = bigFirstAbilActive;
         }
     }
 
@@ -588,18 +608,18 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     {
         if (CurrentActive == 1)
         {
-            firstAbility.GetComponent<SpriteRenderer>().sprite = smallFirstAbil;
-            secondAbility.GetComponent<SpriteRenderer>().sprite = smallSecondAbil;
+            firstAbility.GetComponent<Image>().sprite = smallFirstAbil;
+            secondAbility.GetComponent<Image>().sprite = smallSecondAbil;
         }
         else if (CurrentActive == 2)
         {
-            firstAbility.GetComponent<SpriteRenderer>().sprite = ghostFirstAbil;
-            secondAbility.GetComponent<SpriteRenderer>().sprite = ghostSecondAbil;
+            firstAbility.GetComponent<Image>().sprite = ghostFirstAbil;
+            secondAbility.GetComponent<Image>().sprite = ghostSecondAbil;
         }
         else
         {
-            firstAbility.GetComponent<SpriteRenderer>().sprite = bigFirstAbil;
-            secondAbility.GetComponent<SpriteRenderer>().sprite = bigSecondAbil;
+            firstAbility.GetComponent<Image>().sprite = bigFirstAbil;
+            secondAbility.GetComponent<Image>().sprite = bigSecondAbil;
         }
     }
 
@@ -757,7 +777,7 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     }
     public void ActivateDeer()
     {
-        if (isFirstDeerAvailable && Input.GetKeyDown(KeyCode.Alpha1) && CurrentActive != 1 && isCanSwitch)//в зависимости от того, на какую цифру нажали, активируютс€ и дизактивируютс€ нужные олени
+        if (isFirstDeerAvailable && isNeedSwitchOnFirst && CurrentActive != 1 && isCanSwitch)//в зависимости от того, на какую цифру нажали, активируютс€ и дизактивируютс€ нужные олени
         {
             if (CurrentActive == 2)
             {
@@ -767,13 +787,13 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
             }
             SwitchOnFirst();
         }
-        if (isSecondDeerAvailable && Input.GetKeyDown(KeyCode.Alpha2) && CurrentActive != 2 && isCanSwitch && isCanSwitchOnGhost)
+        if (isSecondDeerAvailable && isNeedSwitchOnSecond && CurrentActive != 2 && isCanSwitch && isCanSwitchOnGhost)
         {
             SwitchOnSecond();
             reindeerGhost.GetComponent<ReindeerGhost>().isCanMater = true;
             isGhostOn = true;
         }
-        if (isThirdDeerAvailable && Input.GetKeyDown(KeyCode.Alpha3) && CurrentActive != 3 && isCanSwitch)
+        if (isThirdDeerAvailable && isNeedSwitchOnThird && CurrentActive != 3 && isCanSwitch)
         {
             if (CurrentActive == 2)
             {
@@ -783,6 +803,9 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
             }
             SwitchOnThird();
         }
+        isNeedSwitchOnFirst = false;
+        isNeedSwitchOnSecond = false;
+        isNeedSwitchOnThird = false;
     }
 
     public void SwitchOnFirst()

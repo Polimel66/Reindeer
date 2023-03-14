@@ -39,6 +39,7 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
 
     //private bool isStayAni = true;
     //private bool isWalkAni = false;
+    public GameObject InputManager;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -122,14 +123,14 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
 
     public void MakeAction()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && DeerUnity.IsGrounded)
+        if (InputManager.GetComponent<InputManager>().isJumpButtonPressed && DeerUnity.IsGrounded)
         {
             if (!isTrapped)
             {
                 rigidbody.AddForce(new Vector2(0, 240));
             }
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (InputManager.GetComponent<InputManager>().isJumpButtonPressed)
         {
             if (isTrapped && countJumpsToEscape > 0)
             {
@@ -141,33 +142,38 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)
         {
             CurrentHorizontalVelocity += 4;
+            InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (Input.GetKeyUp(KeyCode.D))
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)
         {
             CurrentHorizontalVelocity += -4;
+            InputManager.GetComponent<InputManager>().isGoRightButtonStopPress = false;
             //horizontalForceRatio = 0;
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
         {
             CurrentHorizontalVelocity += -4;
+            InputManager.GetComponent<InputManager>().isGoLeftButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (Input.GetKeyUp(KeyCode.A))
+        if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)
         {
             CurrentHorizontalVelocity += 4;
+            InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress = false;
             //horizontalForceRatio = 0;
         }
-        if ((Input.GetKeyDown(KeyCode.LeftShift) || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0 && DeerUnity.IsGrounded)
+        if ((InputManager.GetComponent<InputManager>().isRunMode || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0 && DeerUnity.IsGrounded)
         {
             shiftRatio = 2;
             isRunning = true;
             deerUnity.GetComponent<DeerUnity>().isRunning = true;
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || !isRunning || (isRunning && deerUnity.GetComponent<DeerUnity>().currentStamina <= 0))
+        if (!InputManager.GetComponent<InputManager>().isRunMode || !isRunning || (isRunning && deerUnity.GetComponent<DeerUnity>().currentStamina <= 0))
         {
             shiftRatio = 1;
             isRunning = false;
@@ -187,10 +193,10 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
             horizontalForceRatio = 0;
         }
 
-        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && CurrentHorizontalVelocity != 0 )
-        {
-            CurrentHorizontalVelocity = 0;
-        }
+        //if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && CurrentHorizontalVelocity != 0 )
+        //{
+        //    CurrentHorizontalVelocity = 0;
+        //}
 
         if (GetComponent<Timer>().IsTicked())
         {
@@ -260,8 +266,9 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
 
     public void LungeToDestroid()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed)
         {
+            InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
             rigidbody.velocity = new Vector2(0, 0);
             isLunge = true;
             Invoke("ChangeLunge", 3f);

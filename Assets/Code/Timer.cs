@@ -13,7 +13,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        totalTime = Time.deltaTime;
+        //totalTime = Time.deltaTime;
         totalTime = 0;
     }
 
