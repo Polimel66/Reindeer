@@ -45,6 +45,7 @@ public class Hunter : MonoBehaviour
     public bool isEnabled;
     public AudioClip shootSound;
     private HunterMode previousHunterMode = HunterMode.Searching;
+    public bool isCanShooting = false;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -169,6 +170,7 @@ public class Hunter : MonoBehaviour
                 if (deltaX > -5 && deltaX < 5 && !deerUnity.GetComponent<DeerUnity>().isBushed)
                 {
                     mode = HunterMode.Chasing;
+                    isCanShooting = true;
                     
                 }
             }
@@ -213,6 +215,11 @@ public class Hunter : MonoBehaviour
                     Shoot();
                     shootTime = GetComponent<Timer>().GetTime();
                 }
+            }
+
+            if (delta < 1 && delta > -1 && !deerUnity.GetComponent<DeerUnity>().isCatched)
+            {
+                deerUnity.GetComponent<DeerUnity>().CatchDeer();
             }
         }
         
@@ -314,6 +321,7 @@ public class Hunter : MonoBehaviour
     public void StayAtPoint(Transform tr)
     {
         mode = HunterMode.Chasing;
+        isCanShooting = true;
         isStayAtPoint = true;
         StopMoving();
         transform.position = tr.position;
@@ -322,6 +330,7 @@ public class Hunter : MonoBehaviour
     public void HuntDeerAtPoint(Transform tr)
     {
         mode = HunterMode.Chasing;
+        isCanShooting = true;
         isStayAtPoint = false;
         transform.position = tr.position;
     }
@@ -338,14 +347,14 @@ public class Hunter : MonoBehaviour
         previousHorizontalVelocity = CurrentHorizontalVelocity;
     }
 
-    private void StopMoving()
+    public void StopMoving()
     {
         previousHorizontalVelocity = CurrentHorizontalVelocity;
         CurrentHorizontalVelocity = 0;
         //isCanMoving = false;
     }
 
-    private void StartMoving()
+    public void StartMoving()
     {
         CurrentHorizontalVelocity = previousHorizontalVelocity;
         //isCanMoving = true;
@@ -370,18 +379,21 @@ public class Hunter : MonoBehaviour
 
     private void Shoot()
     {
-        var audio = GetComponent<AudioSource>();
-        if (DeerUnity.VolumeRatio == 0)
+        if (isCanShooting)
         {
-            audio.volume = 0;
+            var audio = GetComponent<AudioSource>();
+            if (DeerUnity.VolumeRatio == 0)
+            {
+                audio.volume = 0;
+            }
+            else
+            {
+                audio.volume = 0.1f;
+            }
+            audio.PlayOneShot(shootSound);
+            var newBullet = GameObject.Instantiate(GameObject.Find("HunterKit1").transform.Find("Bullet").gameObject, transform.position, transform.rotation);
+            newBullet.GetComponent<Bullet>().GoToDeer();
         }
-        else
-        {
-            audio.volume = 0.1f;
-        }
-        audio.PlayOneShot(shootSound);
-        var newBullet = GameObject.Instantiate(GameObject.Find("HunterKit1").transform.Find("Bullet").gameObject, transform.position, transform.rotation);
-        newBullet.GetComponent<Bullet>().GoToDeer();
     }
 
     public void FlipPlayer()

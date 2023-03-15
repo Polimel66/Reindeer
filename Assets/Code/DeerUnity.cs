@@ -160,6 +160,10 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     private bool isNeedSwitchOnSecond = false;
     private bool isNeedSwitchOnThird = false;
 
+    private GameObject hunter;
+    public bool isCatched = false;
+    public GameObject message;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -176,6 +180,7 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         reindeerBig = GameObject.Find("ReindeerBig");
         ghostCheckpoint = GameObject.Find("Ghost");
         stamina = GameObject.Find("Stamina");
+        hunter = GameObject.Find("Hunter");
         isCameraTiedGhost = false;
         unityGhostDeltaY = transform.position.y - reindeerGhost.transform.position.y;
         unitySmallDeltaY = transform.position.y - reindeerSmall.transform.position.y;//тут находим разницу по "у" между оленем и объектом unity (важно,
@@ -239,6 +244,8 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         TaskMenuParent.transform.Find("TextBackground").GetComponent<Image>().color = new Color(0, 0, 0, 0);
         Head.GetComponent<Image>().color = new Color(0, 0, 0, 0);
         TaskMenu.GetComponent<Text>().text = "";
+
+        message.SetActive(false);
     }
 
     // Update is called once per frame
@@ -464,6 +471,29 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     public void OnSwitchOnThirdButtonDown()
     {
         isNeedSwitchOnThird = true;
+    }
+
+    public void CatchDeer()
+    {
+        isCatched = true;
+        SwitchOnFirst();
+        isCanSwitch = false;
+        reindeerSmall.GetComponent<ReindeerSmall>().StopMoving();
+        hunter.GetComponent<Hunter>().StopMoving();
+        hunter.GetComponent<Hunter>().isCanShooting = false;
+        message.SetActive(true);
+        Invoke("FreeDeer", 1f);
+    }
+
+    public void FreeDeer()
+    {
+        message.SetActive(false);
+        isCanSwitch = true;
+        reindeerSmall.GetComponent<ReindeerSmall>().StartMoving();
+        hunter.GetComponent<Hunter>().StartMoving();
+        hunter.GetComponent<Hunter>().isCanShooting = true;
+        TakeDamage(100000);
+        isCatched = false;
     }
 
     public void SetTask(int numberOfTask)
@@ -707,13 +737,14 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
 
     public void Respawn()
     {
-
+        
         var allHunterControlPoints = GameObject.FindGameObjectsWithTag("HunterPoint");
         foreach (var point in allHunterControlPoints)
         {
             point.GetComponent<HunterControlPoint>().isAlreadyWorked = false;
         }
         MoveAllDeersToSpawn();
+        
         if (CurrentActive == 1)
         {
             reindeerSmall.GetComponent<ReindeerSmall>().EscapedTrap();
@@ -736,7 +767,16 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         SwitchOnFirst();
         GetCurrentActiveDeer().GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         maxFallVelocity = 0;
+        Invoke("ResetTraps", 0.1f);
+    }
 
+    private void ResetTraps()
+    {
+        var traps = GameObject.FindGameObjectsWithTag("Trap");
+        foreach (var trap in traps)
+        {
+            trap.GetComponent<Trap>().ResetMe();
+        }
     }
 
     private void StaminaKeys()
@@ -991,7 +1031,7 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         {
             if (maxFallVelocity > 15)
             {
-                TakeDamage((int)((maxFallVelocity - 15) * 100 / 15));
+                //TakeDamage((int)((maxFallVelocity - 15) * 100 / 15));
             }
 
             maxFallVelocity = 0;

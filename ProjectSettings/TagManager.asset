@@ -19,6 +19,7 @@ TagManager:
   - Hints
   - MaterialisedPlatform
   - CollectionArea
+  - Trap
   layers:
   - Default
   - TransparentFX

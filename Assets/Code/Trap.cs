@@ -55,9 +55,17 @@ public class Trap : MonoBehaviour
                 if (currentSpriteIndex == 2)
                 {
                     isAniFinished = true;
+                    currentSpriteIndex = 0;
                 }
             }
         }
+    }
+
+    public void ResetMe()
+    {
+        GetComponent<SpriteRenderer>().sprite = trapAnimation[currentSpriteIndex];
+        isTriggered = false;
+        isAniFinished = false;
     }
 
     private void Trigger()
