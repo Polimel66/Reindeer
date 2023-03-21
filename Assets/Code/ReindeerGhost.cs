@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,9 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
     private float windVertical = 0;
     private float windForceRatio = 0;
     private int directionOfStack = 0;
+    public bool isWindProtected = false;
+    private int protectionChecker;
+    private float protectionDelay;
 
     private GameObject tilemap1;
     private bool isStacked = false;
@@ -45,7 +49,8 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         GetComponent<Timer>().SetPeriodForTick(0.1f);
         GetComponent<Timer>().StartTimer();
         deerUnity = GameObject.Find("DeerUnity");
-
+        protectionChecker = 0;
+        protectionDelay = 0;
         tilemap1 = GameObject.Find("Tilemap1");
 
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
@@ -66,6 +71,7 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         CheckIsStucked();
         MakeAction();
         FlipPlayer();
+        checkProtect();
 
         /*if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
         {
@@ -79,6 +85,40 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
             isWalkAni = false;
             GetComponent<Animator>().runtimeAnimatorController = stayAnimation;
         }*/
+    }
+
+    public void setIsWindProtected(bool condition)
+    {
+        if (condition)
+        {
+            protectionChecker += 1;
+        }
+        else
+        {
+            protectionChecker -= 1;
+        }
+    }
+
+    public void checkProtect()
+    {
+        if (protectionChecker == 2)
+        {
+            protectionDelay = GetComponent<Timer>().GetTime();
+            isWindProtected = true;
+            if (GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce == 25)
+            {
+                GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce = 0;
+            }
+        }
+        else if (GetComponent<Timer>().GetTime() - protectionDelay > 0.5)
+        {
+            isWindProtected = false;
+            if (GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce == 0)
+            {
+                GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce = 25;
+            }
+        }
+        
     }
 
     private void CheckIsStucked()

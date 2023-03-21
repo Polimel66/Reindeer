@@ -20,6 +20,7 @@ public class Wind : MonoBehaviour
     private AudioSource audio;
     private bool isPlayingSound = false;
     public bool isWithSound = false;
+    //public bool isPaused = false;
     // Start is called before the first frame update
     void Start()
     {

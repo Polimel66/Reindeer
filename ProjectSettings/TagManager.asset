@@ -20,6 +20,7 @@ TagManager:
   - MaterialisedPlatform
   - CollectionArea
   - Trap
+  - ProtectionArea
   layers:
   - Default
   - TransparentFX

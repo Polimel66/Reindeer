@@ -257,6 +257,7 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         PositionDeerUnity();
         ActivateDeer();
         UpdateIsOnGround();
+        updateWindOnRise();
         if (isActivateCooling)
         {
             Shadow();
@@ -458,6 +459,16 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         }
     }
 
+    public void updateWindOnRise()
+    {
+        if (CurrentActive != 2)
+        {
+            if (GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce == 0)
+            {
+                GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce = 25;
+            }
+        }
+    }
     public void OnSwitchOnFirstButtonDown()
     {
         isNeedSwitchOnFirst = true;
