@@ -21,6 +21,7 @@ TagManager:
   - CollectionArea
   - Trap
   - ProtectionArea
+  - Insert
   layers:
   - Default
   - TransparentFX
