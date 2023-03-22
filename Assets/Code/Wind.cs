@@ -103,6 +103,8 @@ public class Wind : MonoBehaviour
             isTriggeredByDeer = false;
             deerUnity.GetComponent<DeerUnity>().StopBlowing();
         }
+        if (DeerUnity.isProtected && gameObject.name == "LiftingWind")
+            deerUnity.GetComponent<DeerUnity>().StopBlowing();
         if (previousTotalForce != totalForce)
         {
             previousTotalForce = totalForce;

@@ -20,7 +20,7 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
     private float windVertical = 0;
     private float windForceRatio = 0;
     private int directionOfStack = 0;
-    public bool isWindProtected = false;
+    public static bool isWindProtected = false;
     private int protectionChecker;
     private float protectionDelay;
 
@@ -105,6 +105,7 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         {
             protectionDelay = GetComponent<Timer>().GetTime();
             isWindProtected = true;
+            DeerUnity.isProtected = true;
             if (GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce == 25)
             {
                 GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce = 0;
@@ -112,6 +113,7 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         }
         else if (GetComponent<Timer>().GetTime() - protectionDelay > 0.5)
         {
+            DeerUnity.isProtected = false;
             isWindProtected = false;
             if (GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce == 0)
             {

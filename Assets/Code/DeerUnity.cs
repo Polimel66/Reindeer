@@ -27,6 +27,7 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     public bool isRunning;
     private float previousX;
     private bool isDead = false;
+    public static bool isProtected = false;
 
     public bool isFirstDeerAvailable;
     public bool isSecondDeerAvailable;
@@ -428,6 +429,7 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         UpdateTimer();
     }
 
+    
     private void UpdateTimer()
     {
         if (isGhostOn)
@@ -458,11 +460,11 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
             }
         }
     }
-
     public void updateWindOnRise()
     {
         if (CurrentActive != 2)
         {
+            isProtected = false;
             if (GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce == 0)
             {
                 GameObject.Find("LiftingWind").GetComponent<Wind>().totalForce = 25;
