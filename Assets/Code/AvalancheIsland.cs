@@ -17,6 +17,8 @@ public class AvalancheIsland : MonoBehaviour
         nextPos = startPos.position;
         positionQueue = new GameObject[] { pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8};
         indexOfPosition = 0;
+        transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
     }
 
     // Update is called once per frame
@@ -32,6 +34,7 @@ public class AvalancheIsland : MonoBehaviour
             else if(indexOfPosition == positionQueue.Length)
             {
                 isLavinaStart = false;
+                //Destroy(this);
             }
             else
             {

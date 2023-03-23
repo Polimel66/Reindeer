@@ -62,6 +62,11 @@ public class PlatformChecker : MonoBehaviour
         {
             deerUnity.GetComponent<DeerUnity>().TakeDamage(100f);
         }
+        else if (collision.tag == "LavinaMovingPlat")
+        {
+            deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.parent = collision.transform;
+            deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = true;
+        }
         if (collision.tag == "CollectionArea")
         {
             deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().currentLemmingArea = collision.gameObject;

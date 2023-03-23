@@ -22,6 +22,7 @@ TagManager:
   - Trap
   - ProtectionArea
   - Insert
+  - LavinaMovingPlat
   layers:
   - Default
   - TransparentFX
