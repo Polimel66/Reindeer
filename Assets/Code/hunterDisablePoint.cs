@@ -5,6 +5,7 @@ using UnityEngine;
 public class hunterDisablePoint : MonoBehaviour
 {
     private bool isTriggered = false;
+    public GameObject hunter;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +23,7 @@ public class hunterDisablePoint : MonoBehaviour
         if (!isTriggered)
         {
             isTriggered = true;
-            transform.parent.Find("Hunter").gameObject.GetComponent<Hunter>().DisableHunter();
+            hunter.GetComponent<Hunter>().DisableHunter();
         }
     }
 }

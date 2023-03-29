@@ -27,6 +27,7 @@ public class Hunter : MonoBehaviour
     private float windForceRatio = 0;
     private int directionOfStack = 0;
     private GameObject tilemap1;
+    private GameObject tilemap2;
     private bool isStacked = false;
     private List<GameObject> allAnotherPlatforms = new List<GameObject>();
     private float previousTime;
@@ -35,7 +36,7 @@ public class Hunter : MonoBehaviour
     private float previousHorizontalVelocity;
     private float shootTime = 0;
     private float standingTime = 0;
-    private HunterMode mode;
+    public HunterMode mode;
     private GameObject searchingCentre;
     private bool isAlreadyStanded = false;
 
@@ -56,6 +57,7 @@ public class Hunter : MonoBehaviour
         deerUnity = GameObject.Find("DeerUnity");
 
         tilemap1 = GameObject.Find("Tilemap1");
+        tilemap2 = GameObject.Find("Tilemap2");
 
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("Platform"));
@@ -64,7 +66,7 @@ public class Hunter : MonoBehaviour
         leftWallChecker = transform.Find("LeftWallChecker").gameObject;
         searchingCentre = GameObject.Find("HunterKit1").transform.Find("SearchingCentre").gameObject;
 
-        mode = HunterMode.Searching;
+        //mode = HunterMode.Searching;
     }
 
     void Update()
@@ -78,20 +80,23 @@ public class Hunter : MonoBehaviour
             deerUnity.GetComponent<DeerUnity>().PlayHunterTheme();
         }
         previousHunterMode = mode;
-        isGrounded = transform.Find("Ground").GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>());
+        isGrounded = transform.Find("Ground").GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>())
+            || transform.Find("Ground").GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>());
     }
 
     private void CheckIsStucked()
     {
         if (!isStacked && !isGrounded
-            && (GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) || isTouchingAnythingElse()))
+            && (GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) 
+            || GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>()) || isTouchingAnythingElse()))
         {
             directionOfStack = direction;
             isStacked = true;
         }
         else if (isStacked
             && (isGrounded
-            || (!GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) && !isTouchingAnythingElse())))
+            || (!GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) 
+            && !GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>()) && !isTouchingAnythingElse())))
         {
             isStacked = false;
             directionOfStack = 0;
@@ -217,7 +222,7 @@ public class Hunter : MonoBehaviour
                 }
             }
 
-            if (delta < 1 && delta > -1 && !deerUnity.GetComponent<DeerUnity>().isCatched)
+            if (delta < 0.5 && delta > -0.5 && !deerUnity.GetComponent<DeerUnity>().isCatched)
             {
                 deerUnity.GetComponent<DeerUnity>().CatchDeer();
             }
@@ -225,7 +230,9 @@ public class Hunter : MonoBehaviour
         
 
         if ((direction > 0 && rightWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()))
-            || (direction < 0 && leftWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>())))
+            || (direction < 0 && leftWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()))
+            || (direction > 0 && rightWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>()))
+            || (direction < 0 && leftWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>())))
         {
             if (previousTime == 0)
             {

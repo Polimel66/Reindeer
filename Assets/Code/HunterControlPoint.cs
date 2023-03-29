@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class HunterControlPoint : MonoBehaviour
 {
-    private GameObject hunter;
+    public GameObject hunter;
     private GameObject hunterPoint;
     public bool isStayAtPoint;
     public bool isAlreadyWorked = false;
     // Start is called before the first frame update
     void Start()
     {
-        hunter = transform.parent.parent.Find("Hunter").gameObject;
         hunterPoint = transform.parent.Find("HunterPoint").gameObject;
     }
 

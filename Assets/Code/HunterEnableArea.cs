@@ -7,6 +7,7 @@ public class HunterEnableArea : MonoBehaviour
 {
     private List<GameObject> hunterPoints = new List<GameObject>();
     private bool isAlreadyMoved = false;
+    public GameObject hunter;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +31,7 @@ public class HunterEnableArea : MonoBehaviour
 
     public void MoveHunterAtNearestPoint()
     {
-        GameObject.Find("Hunter").GetComponent<Hunter>().isEnabled = true;
+        hunter.GetComponent<Hunter>().isEnabled = true;
 
         GameObject min = null;
         var mind = float.MaxValue;
@@ -57,7 +58,7 @@ public class HunterEnableArea : MonoBehaviour
     {
         if (collision.tag.Equals("Player"))
         {
-            GameObject.Find("Hunter").GetComponent<Hunter>().isEnabled = false;
+            hunter.GetComponent<Hunter>().isEnabled = false;
         }
     }
 }
