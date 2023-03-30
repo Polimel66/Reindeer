@@ -185,29 +185,30 @@ public class Hunter : MonoBehaviour
         }
         else if (mode == HunterMode.Chasing)
         {
-            var delta = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x - transform.position.x;
-            if (delta > 0)
+            var deltaX = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x - transform.position.x;
+            var deltaY = Math.Abs(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.y - transform.position.y);
+            if (deltaX > 0)
             {
                 direction = 1;
             }
-            else if (delta < 0)
+            else if (deltaX < 0)
             {
                 direction = -1;
             }
-            if (delta > 5 && isCanMoving && !isStayAtPoint)
+            if (deltaX > 5 && isCanMoving && !isStayAtPoint)
             {
                 GoRight();
             }
-            else if (delta < -5 && isCanMoving && !isStayAtPoint)
+            else if (deltaX < -5 && isCanMoving && !isStayAtPoint)
             {
                 GoLeft();
             }
-            else if (delta > -4 && delta < 4)
+            else if (deltaX > -4 && deltaX < 4)
             {
                 StopMoving();
             }
 
-            if ((delta > 10 || delta < -10) && !isStayAtPoint)
+            if ((deltaX > 10 || deltaX < -10) && !isStayAtPoint)
             {
                 Run();
             }
@@ -216,7 +217,7 @@ public class Hunter : MonoBehaviour
                 StopRunning();
             }
 
-            if (delta > -7 && delta < 7)
+            if (deltaX > -7 && deltaX < 7)
             {
                 if (GetComponent<Timer>().GetTime() - shootTime > 3f)
                 {
@@ -225,7 +226,7 @@ public class Hunter : MonoBehaviour
                 }
             }
 
-            if (delta < 0.5 && delta > -0.5 && !deerUnity.GetComponent<DeerUnity>().isCatched)
+            if (deltaX < 0.5 && deltaX > -0.5 && !deerUnity.GetComponent<DeerUnity>().isCatched && deltaY < 5)
             {
                 deerUnity.GetComponent<DeerUnity>().CatchDeer();
             }
