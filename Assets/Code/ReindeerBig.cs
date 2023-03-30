@@ -32,6 +32,14 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
     private GameObject trapTriggerLeft;
     private GameObject trapTriggerRight;
     public GameObject CurrentActiveTrapTrigger;
+    private bool isFlipLocked = false;
+    private int directionOfLudge = 0;
+    private float anotherHorForceRatio = 4;
+    private List<GameObject> collapsingPlatforms = new List<GameObject>();
+    private List<GameObject> moveObjects = new List<GameObject>();
+    private bool isMovingObject = false;
+    private HingeJoint2D joint;
+    private bool isCanJump = true;
 
     //public RuntimeAnimatorController stayAnimation;
     //public RuntimeAnimatorController walkAnimation;
@@ -59,6 +67,10 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
         trapTriggerLeft = transform.Find("TrapTriggerLeft").gameObject;
         trapTriggerRight = transform.Find("TrapTriggerRight").gameObject;
         CurrentActiveTrapTrigger = trapTriggerLeft;
+        collapsingPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
+        moveObjects.AddRange(GameObject.FindGameObjectsWithTag("MoveObject"));
+        joint = GetComponent<HingeJoint2D>();
+        joint.enabled = false;
     }
 
     void FixedUpdate()
@@ -75,19 +87,27 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
         CheckIsStucked();
         MakeAction();
         FlipPlayer();
+        MoveObject();
 
-        /*if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
+        if (isLunge)
         {
-            isStayAni = false;
-            isWalkAni = true;
-            GetComponent<Animator>().runtimeAnimatorController = walkAnimation;
+            BoxCollider2D coll;
+            if (directionOfLudge > 0)
+            {
+                coll = transform.Find("RightWallChecker").gameObject.GetComponent<BoxCollider2D>();
+            }
+            else
+            {
+                coll = transform.Find("LeftWallChecker").gameObject.GetComponent<BoxCollider2D>();
+            }
+            foreach (var e in collapsingPlatforms)
+            {
+                if (coll.IsTouching(e.GetComponent<BoxCollider2D>()))
+                {
+                    e.SetActive(false);
+                }
+            }
         }
-        else if (isWalkAni && (horizontalForceRatio == 0 || CurrentHorizontalVelocity == 0 || !DeerUnity.IsGrounded))
-        {
-            isStayAni = true;
-            isWalkAni = false;
-            GetComponent<Animator>().runtimeAnimatorController = stayAnimation;
-        }*/
     }
 
     private void CheckIsStucked()
@@ -123,14 +143,14 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
 
     public void MakeAction()
     {
-        if (InputManager.GetComponent<InputManager>().isJumpButtonPressed && DeerUnity.IsGrounded)
+        if (InputManager.GetComponent<InputManager>().isJumpButtonPressed && DeerUnity.IsGrounded && isCanJump)
         {
             if (!isTrapped)
             {
                 rigidbody.AddForce(new Vector2(0, 240));
             }
         }
-        if (InputManager.GetComponent<InputManager>().isJumpButtonPressed)
+        if (InputManager.GetComponent<InputManager>().isJumpButtonPressed && isCanJump)
         {
             if (isTrapped && countJumpsToEscape > 0)
             {
@@ -244,7 +264,7 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
                 {
                     horizontalForceRatio = 0;
                 }
-                var velocity = new Vector2(4 * direction * horizontalForceRatio * shiftRatio, rigidbody.velocity.y);
+                var velocity = new Vector2(anotherHorForceRatio * direction * horizontalForceRatio * shiftRatio, rigidbody.velocity.y);
                 if (isInWind)
                 {
                     velocity += new Vector2((windForceRatio * windHorizontal) / 5, 0);
@@ -264,40 +284,116 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
         }
     }
 
+    private void MoveObject()
+    {
+        if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed)
+        {
+            InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed = false;
+            if (!isMovingObject)
+            {
+                BoxCollider2D coll;
+                if (direction > 0)
+                {
+                    coll = transform.Find("RightWallChecker").gameObject.GetComponent<BoxCollider2D>();
+                }
+                else
+                {
+                    coll = transform.Find("LeftWallChecker").gameObject.GetComponent<BoxCollider2D>();
+                }
+                foreach (var e in moveObjects)
+                {
+                    if (coll.IsTouching(e.GetComponent<BoxCollider2D>()))
+                    {
+                        isCanJump = false;
+                        joint.enabled = true;
+                        isMovingObject = true;
+                        isFlipLocked = true;
+                        var rigid = e.GetComponent<Rigidbody2D>();
+                        rigid.mass = 1;
+                        joint.connectedBody = rigid;
+                        rigidbody.velocity = new Vector2(0, 0);
+                    }
+                }
+            }
+        }
+        if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress)
+        {
+            InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress = false;
+            if (isMovingObject)
+            {
+                isMovingObject = false;
+                isFlipLocked = false;
+                joint.connectedBody.mass = 1000;
+                joint.connectedBody = null;
+                joint.enabled = false;
+                isCanJump = true;
+            }
+        }
+    }
+
     public void LungeToDestroid()
     {
         if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed)
         {
             InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
-            rigidbody.velocity = new Vector2(0, 0);
-            isLunge = true;
-            Invoke("ChangeLunge", 3f);
-            if (direction < 0)
+            if (!isLunge && DeerUnity.IsGrounded)
             {
-                rigidbody.AddForce(Vector2.left * lungeImpulse, 0);
-            }
-            else
-            {
-                rigidbody.AddForce(Vector2.right * lungeImpulse, 0);
+                directionOfLudge = direction;
+                rigidbody.velocity = new Vector2(0, 0);
+                isLunge = true;
+                //Invoke("ChangeLunge", 3f);
+                isFlipLocked = true;
+                DoFirstStepLunge();
             }
         }
     }
 
-    void ChangeLunge()
+    private void DoFirstStepLunge()
+    {
+        CurrentHorizontalVelocity = 4 * directionOfLudge * -1;
+        Invoke("DoSecondStepLunge", 0.5f);
+    }
+
+    private void DoSecondStepLunge()
+    {
+        CurrentHorizontalVelocity = 0;
+        Invoke("DoThirdStepLunge", 0.1f);
+    }
+
+    private void DoThirdStepLunge()
+    {
+        CurrentHorizontalVelocity = 4 * directionOfLudge;
+        anotherHorForceRatio = 50;
+        Invoke("DoFourthStepLunge", 0.33f);
+    }
+
+    private void DoFourthStepLunge()
+    {
+        CurrentHorizontalVelocity = 0;
+        anotherHorForceRatio = 4;
+        isFlipLocked = false;
+        Invoke("RefreshLunge", 3f);
+    }
+
+    private void RefreshLunge()
     {
         isLunge = false;
     }
+
     public void FlipPlayer()
     {
-        if (direction < 0 && !spriteRenderer.flipX)
+        if (!isFlipLocked)
         {
-            spriteRenderer.flipX = true;
-            CurrentActiveTrapTrigger = trapTriggerRight;
-        }
-        if (direction > 0 && spriteRenderer.flipX)
-        {
-            spriteRenderer.flipX = false;
-            CurrentActiveTrapTrigger = trapTriggerLeft;
+            if (direction < 0 && !spriteRenderer.flipX)
+            {
+                spriteRenderer.flipX = true;
+                CurrentActiveTrapTrigger = trapTriggerRight;
+            }
+            if (direction > 0 && spriteRenderer.flipX)
+            {
+                spriteRenderer.flipX = false;
+                CurrentActiveTrapTrigger = trapTriggerLeft;
+            }
         }
     }
 
