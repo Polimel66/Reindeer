@@ -34,6 +34,7 @@ public class AvalancheIsland : MonoBehaviour
             else if(indexOfPosition == positionQueue.Length)
             {
                 isLavinaStart = false;
+                this.gameObject.SetActive(false);
                 //Destroy(this);
             }
             else

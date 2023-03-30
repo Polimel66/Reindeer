@@ -47,6 +47,7 @@ public class Hunter : MonoBehaviour
     public AudioClip shootSound;
     private HunterMode previousHunterMode = HunterMode.Searching;
     public bool isCanShooting = false;
+    public GameObject dog;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -175,6 +176,8 @@ public class Hunter : MonoBehaviour
                 if (deltaX > -5 && deltaX < 5 && !deerUnity.GetComponent<DeerUnity>().isBushed)
                 {
                     mode = HunterMode.Chasing;
+                    dog.GetComponent<Dog>().mode = HunterMode.Chasing;
+                    dog.transform.position = transform.position;
                     isCanShooting = true;
                     
                 }
@@ -328,6 +331,8 @@ public class Hunter : MonoBehaviour
     public void StayAtPoint(Transform tr)
     {
         mode = HunterMode.Chasing;
+        dog.GetComponent<Dog>().mode = HunterMode.Searching;
+        dog.transform.position = transform.position;
         isCanShooting = true;
         isStayAtPoint = true;
         StopMoving();
@@ -337,6 +342,8 @@ public class Hunter : MonoBehaviour
     public void HuntDeerAtPoint(Transform tr)
     {
         mode = HunterMode.Chasing;
+        dog.GetComponent<Dog>().mode = HunterMode.Chasing;
+        dog.transform.position = transform.position;
         isCanShooting = true;
         isStayAtPoint = false;
         transform.position = tr.position;

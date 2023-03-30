@@ -64,8 +64,12 @@ public class PlatformChecker : MonoBehaviour
         }
         else if (collision.tag == "LavinaMovingPlat")
         {
-            deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.parent = collision.transform;
+            var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
+            reindeer.transform.parent = collision.transform;
             deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = true;
+            reindeer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+            reindeer.GetComponent<BoxCollider2D>().isTrigger = true;
+            reindeer.GetComponent<ReindeerSmall>().StopMoving();
         }
         if (collision.tag == "CollectionArea")
         {
@@ -103,6 +107,15 @@ public class PlatformChecker : MonoBehaviour
         else if(collision.tag == "CollapsingPlat")
         {
             deerUnity.GetComponent<DeerUnity>().isOnPlatform = false;
+        }
+        else if (collision.tag == "LavinaMovingPlat")
+        {
+            var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
+            reindeer.transform.parent = null;
+            deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = false;
+            reindeer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            reindeer.GetComponent<BoxCollider2D>().isTrigger = false;
+            reindeer.GetComponent<ReindeerSmall>().StartMoving();
         }
     }
 
