@@ -309,7 +309,7 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
                         isMovingObject = true;
                         isFlipLocked = true;
                         var rigid = e.GetComponent<Rigidbody2D>();
-                        rigid.mass = 1;
+                        rigid.mass = 10;
                         joint.connectedBody = rigid;
                         rigidbody.velocity = new Vector2(0, 0);
                     }

@@ -177,7 +177,7 @@ public class Hunter : MonoBehaviour
                 {
                     mode = HunterMode.Chasing;
                     dog.GetComponent<Dog>().mode = HunterMode.Chasing;
-                    dog.transform.position = transform.position;
+                    //dog.transform.position = transform.position;
                     isCanShooting = true;
                     
                 }
@@ -332,21 +332,23 @@ public class Hunter : MonoBehaviour
     {
         mode = HunterMode.Chasing;
         dog.GetComponent<Dog>().mode = HunterMode.Searching;
-        dog.transform.position = transform.position;
+        
         isCanShooting = true;
         isStayAtPoint = true;
         StopMoving();
         transform.position = tr.position;
+        dog.transform.position = transform.position;
     }
 
     public void HuntDeerAtPoint(Transform tr)
     {
         mode = HunterMode.Chasing;
         dog.GetComponent<Dog>().mode = HunterMode.Chasing;
-        dog.transform.position = transform.position;
+        
         isCanShooting = true;
         isStayAtPoint = false;
         transform.position = tr.position;
+        dog.transform.position = transform.position;
     }
 
     private void GoRight()
