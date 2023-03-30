@@ -778,6 +778,10 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         {
             GameObject.Find("EnabledHunterMap1").GetComponent<HunterEnableArea>().MoveHunterAtNearestPoint();
         }
+        if (GameObject.Find("HunterKit2").transform.Find("Hunter2").gameObject.GetComponent<Hunter>().isEnabled)
+        {
+            GameObject.Find("EnabledHunterMap2").GetComponent<HunterEnableArea>().MoveHunterAtNearestPoint();
+        }
         SwitchOnFirst();
         GetCurrentActiveDeer().GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         maxFallVelocity = 0;

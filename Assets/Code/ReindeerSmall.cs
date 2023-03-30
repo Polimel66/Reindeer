@@ -41,6 +41,7 @@ public class ReindeerSmall : MonoBehaviour
     public GameObject CurrentActiveTrapTrigger;
     public GameObject currentLemmingArea;
     private float anotherHorForceRatio = 4;
+    private float jumpForceRatio = 1f;
     //public bool isNeedToUpdatePlatformsList = false;
     public bool isInShadow { get; private set; }
 
@@ -185,14 +186,6 @@ public class ReindeerSmall : MonoBehaviour
 
     private bool isTouchingAnythingElse(GameObject e)
     {
-
-        //if (isNeedToUpdatePlatformsList)
-        //{
-        //    isNeedToUpdatePlatformsList = false;
-        //    allAnotherPlatforms.Clear();
-        //    allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
-        //    allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("Platform"));
-        //}
         foreach(var obj in allAnotherPlatforms)
         {
             var vector = transform.position - obj.transform.position;
@@ -221,7 +214,7 @@ public class ReindeerSmall : MonoBehaviour
         {
             if (isCanMoving)
             {
-                rigidbody.AddForce(new Vector2(0, 100));
+                rigidbody.AddForce(new Vector2(0, 100 * jumpForceRatio));
                 InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
             }
         }
@@ -444,13 +437,15 @@ public class ReindeerSmall : MonoBehaviour
 
     public void SlowDownMoving()
     {
-        anotherHorForceRatio = 2f;
-        Invoke("UnSlowDownMoving", 3f);
+        anotherHorForceRatio = 1f;
+        jumpForceRatio = 0.33f;
+        Invoke("UnSlowDownMoving", 1f);
     }
 
     private void UnSlowDownMoving()
     {
-
+        anotherHorForceRatio = 4f;
+        jumpForceRatio = 1f;
     }
 }
 
