@@ -40,6 +40,7 @@ public class ReindeerSmall : MonoBehaviour
     private GameObject trapTriggerRight;
     public GameObject CurrentActiveTrapTrigger;
     public GameObject currentLemmingArea;
+    private float anotherHorForceRatio = 4;
     //public bool isNeedToUpdatePlatformsList = false;
     public bool isInShadow { get; private set; }
 
@@ -355,7 +356,7 @@ public class ReindeerSmall : MonoBehaviour
                 {
                     horizontalForceRatio = 0;
                 }
-                var velocity = new Vector2(4 * direction * horizontalForceRatio * shiftRatio, rigidbody.velocity.y);
+                var velocity = new Vector2(anotherHorForceRatio * direction * horizontalForceRatio * shiftRatio, rigidbody.velocity.y);
                 if (isInWind)
                 {
                     velocity += new Vector2((windForceRatio * windHorizontal) / 1, 0);
@@ -439,6 +440,17 @@ public class ReindeerSmall : MonoBehaviour
     public void WindOut()
     {
         isInWind = false;
+    }
+
+    public void SlowDownMoving()
+    {
+        anotherHorForceRatio = 2f;
+        Invoke("UnSlowDownMoving", 3f);
+    }
+
+    private void UnSlowDownMoving()
+    {
+
     }
 }
 
