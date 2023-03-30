@@ -23,6 +23,7 @@ TagManager:
   - ProtectionArea
   - Insert
   - LavinaMovingPlat
+  - EmergIsland
   layers:
   - Default
   - TransparentFX

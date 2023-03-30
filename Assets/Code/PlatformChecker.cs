@@ -24,6 +24,11 @@ public class PlatformChecker : MonoBehaviour
                 deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = true;
             }
         }
+        else if (collision.tag == "EmergIsland")
+        {
+            deerUnity.GetComponent<DeerUnity>().isOnPlatform = true;
+            collision.gameObject.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 255);
+        }
         else if(collision.tag == "MaterialisedPlatform")
         {
             deerUnity.GetComponent<DeerUnity>().isOnPlatform = true;
@@ -104,7 +109,7 @@ public class PlatformChecker : MonoBehaviour
             deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.parent = null;
             //deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerGhost>().currendGhostPlatform = null;
         }
-        else if(collision.tag == "CollapsingPlat")
+        else if(collision.tag == "CollapsingPlat" || collision.tag == "EmergIsland")
         {
             deerUnity.GetComponent<DeerUnity>().isOnPlatform = false;
         }
