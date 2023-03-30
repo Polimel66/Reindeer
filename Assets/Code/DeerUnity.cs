@@ -164,6 +164,7 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     private GameObject hunter;
     public bool isCatched = false;
     public GameObject message;
+    public bool isBited;
 
     // Start is called before the first frame update
     void Start()
@@ -1131,22 +1132,20 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         audio.Play();
     }
 
-    /*public void OnTriggerExit2D(Collider2D collision)
+    public void Bite()
     {
-
-        if (collision.gameObject.tag.Equals("Platform"))
+        isBited = true;
+        if (CurrentActive == 1)
         {
-            SetIsGrounded(false);
+            reindeerSmall.GetComponent<ReindeerSmall>().SlowDownMoving();
         }
+        Invoke("UnBite", 5f);
     }
 
-    public void OnTriggerStay2D(Collider2D collision)
+    private void UnBite()
     {
-        if (collision.gameObject.tag.Equals("Platform"))
-        {
-            SetIsGrounded(true);
-        }
-    }*/
+        isBited = false;
+    }
 
     public void SetIsGrounded(bool value) { IsGrounded = value; }
 }

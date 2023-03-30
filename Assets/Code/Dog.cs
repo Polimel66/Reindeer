@@ -122,15 +122,15 @@ public class Dog : MonoBehaviour
             {
                 direction = -1;
             }
-            if (delta > 2 && isCanMoving && !isStayAtPoint)
+            if (delta > 0.5 && isCanMoving && !isStayAtPoint)
             {
                 GoRight();
             }
-            else if (delta < -2 && isCanMoving && !isStayAtPoint)
+            else if (delta < -0.5 && isCanMoving && !isStayAtPoint)
             {
                 GoLeft();
             }
-            else if (delta > -2 && delta < 2)
+            else if (delta > -0.5 && delta < 0.5)
             {
                 StopMoving();
             }
@@ -146,9 +146,10 @@ public class Dog : MonoBehaviour
 
             
 
-            if (delta < 1 && delta > -1 && !deerUnity.GetComponent<DeerUnity>().isCatched)
+            if (delta < 0.5 && delta > -0.5 && !deerUnity.GetComponent<DeerUnity>().isCatched && !deerUnity.GetComponent<DeerUnity>().isBited)
             {
                 //deerUnity.GetComponent<DeerUnity>().CatchDeer();
+                deerUnity.GetComponent<DeerUnity>().Bite();
             }
         }
 
