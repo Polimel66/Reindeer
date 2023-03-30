@@ -32,7 +32,7 @@ public class VideoPlayerCode : MonoBehaviour
         this.gameObject.AddComponent<Timer>();
         GetComponent<Timer>().SetPeriodForTick(0.1f);
         GetComponent<Timer>().StartTimer();
-        videoDict = new Dictionary<string, int> { { "FirstDialogWithOwl", 14 }, { "LastDialogWithOwl", 14 } };
+        videoDict = new Dictionary<string, int> { { "FirstDialogWithOwl", 10 }, { "LastDialogWithOwl", 14 } };
         duration = 0;
         nameOfSceneOn = "";
     }
