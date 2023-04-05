@@ -1108,11 +1108,11 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         maxFallVelocity = 0;
     }
 
-    public void StartBlowing(float windHorizontalVelocity, float windVerticalForce)
+    public void StartBlowing(float windHorizontalVelocity, float windVerticalForce, bool isIgnoreShift)
     {
-        reindeerSmall.GetComponent<ReindeerSmall>().InWind(windHorizontalVelocity, windVerticalForce);
-        reindeerGhost.GetComponent<ReindeerGhost>().InWind(windHorizontalVelocity, windVerticalForce);
-        reindeerBig.GetComponent<ReindeerBig>().InWind(windHorizontalVelocity, windVerticalForce);
+        reindeerSmall.GetComponent<ReindeerSmall>().InWind(windHorizontalVelocity, windVerticalForce, isIgnoreShift);
+        reindeerGhost.GetComponent<ReindeerGhost>().InWind(windHorizontalVelocity, windVerticalForce, isIgnoreShift);
+        reindeerBig.GetComponent<ReindeerBig>().InWind(windHorizontalVelocity, windVerticalForce, isIgnoreShift);
     }
 
     public void StopBlowing()

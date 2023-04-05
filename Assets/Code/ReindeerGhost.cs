@@ -31,6 +31,7 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
     public GameObject currendGhostPlatform;
     private bool isFlying;
     public bool isCanMater = true;
+    private bool isIgnoreShift = false;
 
     //public RuntimeAnimatorController stayAnimation;
     //public RuntimeAnimatorController walkAnimation;
@@ -295,7 +296,31 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
             var velocity = new Vector2(4 * direction * horizontalForceRatio * shiftRatio, rigidbody.velocity.y);
             if (isInWind)
             {
-                velocity += new Vector2((windForceRatio * windHorizontal) / 1, 0);
+                if (isIgnoreShift)
+                {
+                    velocity += new Vector2((windForceRatio * windHorizontal * shiftRatio) / 1, 0);
+                }
+                else
+                {
+                    velocity += new Vector2((windForceRatio * windHorizontal) / 1, 0);
+                }
+            }
+            rigidbody.velocity = velocity;
+        }
+        else
+        {
+            var velocity = new Vector2(0, rigidbody.velocity.y);
+            if (isInWind)
+            {
+                if (isIgnoreShift)
+                {
+                    velocity += new Vector2((windForceRatio * windHorizontal * shiftRatio) / 1, 0);
+                }
+                else
+                {
+                    velocity += new Vector2((windForceRatio * windHorizontal) / 1, 0);
+                }
+
             }
             rigidbody.velocity = velocity;
         }
@@ -329,9 +354,10 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         CurrentHorizontalVelocity = velocity;
     }
 
-    public void InWind(float windHorizontalVelocity, float windVerticalForce)
+    public void InWind(float windHorizontalVelocity, float windVerticalForce, bool isIgnoreShift)
     {
         isInWind = true;
+        this.isIgnoreShift = isIgnoreShift;
         windHorizontal = windHorizontalVelocity;
         windVertical = windVerticalForce;
     }

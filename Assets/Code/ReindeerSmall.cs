@@ -42,6 +42,7 @@ public class ReindeerSmall : MonoBehaviour
     public GameObject currentLemmingArea;
     private float anotherHorForceRatio = 4;
     private float jumpForceRatio = 1f;
+    private bool isIgnoreShift = false;
     //public bool isNeedToUpdatePlatformsList = false;
     public bool isInShadow { get; private set; }
 
@@ -352,7 +353,15 @@ public class ReindeerSmall : MonoBehaviour
                 var velocity = new Vector2(anotherHorForceRatio * direction * horizontalForceRatio * shiftRatio, rigidbody.velocity.y);
                 if (isInWind)
                 {
-                    velocity += new Vector2((windForceRatio * windHorizontal) / 1, 0);
+                    if (isIgnoreShift)
+                    {
+                        velocity += new Vector2((windForceRatio * windHorizontal * shiftRatio) / 1, 0);
+                    }
+                    else
+                    {
+                        velocity += new Vector2((windForceRatio * windHorizontal) / 1, 0);
+                    }
+
                 }
                 rigidbody.velocity = velocity;
 
@@ -361,7 +370,20 @@ public class ReindeerSmall : MonoBehaviour
             }
             else
             {
-                rigidbody.velocity = new Vector2(0, rigidbody.velocity.y);
+                var velocity = new Vector2(0, rigidbody.velocity.y);
+                if (isInWind)
+                {
+                    if (isIgnoreShift)
+                    {
+                        velocity += new Vector2((windForceRatio * windHorizontal * shiftRatio) / 1, 0);
+                    }
+                    else
+                    {
+                        velocity += new Vector2((windForceRatio * windHorizontal) / 1, 0);
+                    }
+
+                }
+                rigidbody.velocity = velocity;
             }
             /*if (isInWind)
             {
@@ -423,9 +445,10 @@ public class ReindeerSmall : MonoBehaviour
         isCanMoving = true;
     }
 
-    public void InWind(float windHorizontalVelocity, float windVerticalForce)
+    public void InWind(float windHorizontalVelocity, float windVerticalForce, bool isIgnoreShift)
     {
         isInWind = true;
+        this.isIgnoreShift = isIgnoreShift;
         windHorizontal = windHorizontalVelocity;
         windVertical = windVerticalForce;
     }

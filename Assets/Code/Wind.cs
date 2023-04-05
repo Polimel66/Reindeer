@@ -20,10 +20,16 @@ public class Wind : MonoBehaviour
     private AudioSource audio;
     private bool isPlayingSound = false;
     public bool isWithSound = false;
+    public bool isGradient = true;
+    private bool isFullVisible;
+    private bool isWithCollider = true;
+    public bool isIgnoreShift = false;
     //public bool isPaused = false;
     // Start is called before the first frame update
     void Start()
     {
+        BoxCollider2D a;
+        isWithCollider = TryGetComponent<BoxCollider2D>(out a);
         deerUnity = GameObject.Find("DeerUnity");
         hunter = GameObject.Find("Hunter");
         previousTotalForce = totalForce;
@@ -38,7 +44,11 @@ public class Wind : MonoBehaviour
             audio.spatialBlend = 1;
             audio.rolloffMode = AudioRolloffMode.Linear;
         }
-        CalculateForces();
+        if (isWithCollider)
+        {
+            CalculateForces();
+        }
+        
     }
 
     // Update is called once per frame
@@ -52,11 +62,15 @@ public class Wind : MonoBehaviour
         if (isWorking && alphaRatio != 1)
         {
             alphaRatio += Time.deltaTime;
-            if (alphaRatio > 1)
+            if (alphaRatio > 1 && !isFullVisible)
             {
                 alphaRatio = 1;
+                isFullVisible = true;
             }
-            GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, alphaRatio);
+            if (isGradient)
+            {
+                GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, alphaRatio);
+            }
 
             if (isWithSound && isWorking && alphaRatio > 0.5f && !isPlayingSound)
             {
@@ -80,51 +94,59 @@ public class Wind : MonoBehaviour
 
         if (!isWorking && alphaRatio != 0)
         {
+            isFullVisible = false;
             alphaRatio -= Time.deltaTime;
             if (alphaRatio < 0)
             {
                 alphaRatio = 0;
             }
-            GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, alphaRatio);
+            if (isGradient)
+            {
+                GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, alphaRatio);
+            }
         }
 
-        if (isWorking && !isTriggeredByDeer && GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
+        if (isWithCollider)
         {
-            isTriggeredByDeer = true;
-            deerUnity.GetComponent<DeerUnity>().StartBlowing(windHorizontalVelocity, windVerticalForce);
-        }
-        else if (isTriggeredByDeer && !GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
-        {
-            isTriggeredByDeer = false;
-            deerUnity.GetComponent<DeerUnity>().StopBlowing();
-        }
-        else if (!isWorking && isTriggeredByDeer)
-        {
-            isTriggeredByDeer = false;
-            deerUnity.GetComponent<DeerUnity>().StopBlowing();
-        }
-        if (DeerUnity.isProtected && gameObject.name == "LiftingWind")
-            deerUnity.GetComponent<DeerUnity>().StopBlowing();
-        if (previousTotalForce != totalForce)
-        {
-            previousTotalForce = totalForce;
-            CalculateForces();
-        }
 
-        if (isWorking && !isTriggeredByHunter && GetComponent<BoxCollider2D>().IsTouching(hunter.GetComponent<BoxCollider2D>()))
-        {
-            isTriggeredByHunter = true;
-            hunter.GetComponent<Hunter>().InWind(windHorizontalVelocity, windVerticalForce);
-        }
-        else if (isTriggeredByHunter && !GetComponent<BoxCollider2D>().IsTouching(hunter.GetComponent<BoxCollider2D>()))
-        {
-            isTriggeredByHunter = false;
-            hunter.GetComponent<Hunter>().WindOut();
-        }
-        else if (!isWorking && isTriggeredByHunter)
-        {
-            isTriggeredByHunter = false;
-            hunter.GetComponent<Hunter>().WindOut();
+            if (isFullVisible && !isTriggeredByDeer && GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
+            {
+                isTriggeredByDeer = true;
+                deerUnity.GetComponent<DeerUnity>().StartBlowing(windHorizontalVelocity, windVerticalForce, isIgnoreShift);
+            }
+            else if (isTriggeredByDeer && !GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
+            {
+                isTriggeredByDeer = false;
+                deerUnity.GetComponent<DeerUnity>().StopBlowing();
+            }
+            else if (!isFullVisible && isTriggeredByDeer)
+            {
+                isTriggeredByDeer = false;
+                deerUnity.GetComponent<DeerUnity>().StopBlowing();
+            }
+            if (DeerUnity.isProtected && gameObject.name == "LiftingWind")
+                deerUnity.GetComponent<DeerUnity>().StopBlowing();
+            if (previousTotalForce != totalForce)
+            {
+                previousTotalForce = totalForce;
+                CalculateForces();
+            }
+
+            if (isFullVisible && !isTriggeredByHunter && GetComponent<BoxCollider2D>().IsTouching(hunter.GetComponent<BoxCollider2D>()))
+            {
+                isTriggeredByHunter = true;
+                hunter.GetComponent<Hunter>().InWind(windHorizontalVelocity, windVerticalForce);
+            }
+            else if (isTriggeredByHunter && !GetComponent<BoxCollider2D>().IsTouching(hunter.GetComponent<BoxCollider2D>()))
+            {
+                isTriggeredByHunter = false;
+                hunter.GetComponent<Hunter>().WindOut();
+            }
+            else if (!isFullVisible && isTriggeredByHunter)
+            {
+                isTriggeredByHunter = false;
+                hunter.GetComponent<Hunter>().WindOut();
+            }
         }
     }
 
