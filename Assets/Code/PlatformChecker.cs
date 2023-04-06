@@ -28,6 +28,7 @@ public class PlatformChecker : MonoBehaviour
         {
             deerUnity.GetComponent<DeerUnity>().isOnPlatform = true;
             collision.gameObject.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 255);
+            collision.gameObject.transform.parent.GetComponent<EmergIsland>().counterPlat += 1;
         }
         else if(collision.tag == "MaterialisedPlatform")
         {
