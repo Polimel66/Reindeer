@@ -43,6 +43,7 @@ public class ReindeerSmall : MonoBehaviour
     private float anotherHorForceRatio = 4;
     private float jumpForceRatio = 1f;
     private bool isIgnoreShift = false;
+    private GameObject[] snowDrifts;
     //public bool isNeedToUpdatePlatformsList = false;
     public bool isInShadow { get; private set; }
 
@@ -83,6 +84,7 @@ public class ReindeerSmall : MonoBehaviour
         trapTriggerLeft = transform.Find("TrapTriggerLeft").gameObject;
         trapTriggerRight = transform.Find("TrapTriggerRight").gameObject;
         CurrentActiveTrapTrigger = trapTriggerLeft;
+        snowDrifts = GameObject.FindGameObjectsWithTag("SnowDrift");
 }
 
     void FixedUpdate()
@@ -91,17 +93,19 @@ public class ReindeerSmall : MonoBehaviour
         {
             rigidbody.AddForce(new Vector2(0, (windForceRatio * windVertical) / 66));
         }
+        CheckIsInSnowDrift();
+        if (deerUnity.GetComponent<DeerUnity>().isActivateCooling)
+            CheckShadow();
+        CheckIsStucked();
+        FlipPlayer();
     }
 
     // Update is called once per frame
     void Update()
     {
         //TakeDamage(30f);
-        if (deerUnity.GetComponent<DeerUnity>().isActivateCooling)
-            CheckShadow();
-        CheckIsStucked();
+        
         MakeAction();
-        FlipPlayer();
 
         if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
         {
@@ -182,6 +186,27 @@ public class ReindeerSmall : MonoBehaviour
         {
             isStacked = false;
             directionOfStack = 0;
+        }
+    }
+
+    private void CheckIsInSnowDrift()
+    {
+        var isInSnow = false;
+        foreach(var snowDrift in snowDrifts)
+        {
+            if (snowDrift.GetComponent<BoxCollider2D>().IsTouching(GetComponent<BoxCollider2D>()))
+            {
+                isInSnow = true;
+                break;
+            }
+        }
+        if (isInSnow && DeerUnity.IsGrounded)
+        {
+            SnowIn();
+        }
+        else if(!isInSnow && DeerUnity.IsGrounded)
+        {
+            SnowOut();
         }
     }
 
@@ -466,6 +491,18 @@ public class ReindeerSmall : MonoBehaviour
     }
 
     private void UnSlowDownMoving()
+    {
+        anotherHorForceRatio = 4f;
+        jumpForceRatio = 1f;
+    }
+
+    public void SnowIn()
+    {
+        anotherHorForceRatio = 2f;
+        jumpForceRatio = 0.75f;
+    }
+
+    public void SnowOut()
     {
         anotherHorForceRatio = 4f;
         jumpForceRatio = 1f;
