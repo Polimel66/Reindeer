@@ -10,6 +10,8 @@ public class EmergIsland : MonoBehaviour
     private bool isSecondPlatformShown;
     private bool isPlatformShowOn;
     public bool isEmergIslandActivated;
+    public GameObject nextGroup;
+    public int counterPlat;
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
     //    if (collision.tag == "Player")
@@ -27,7 +29,7 @@ public class EmergIsland : MonoBehaviour
         isPlatformShowOn = false;
         isFirstPlatformShown = false;
         isSecondPlatformShown = false;
-
+        counterPlat = 0;
     }
 
     // Update is called once per frame
@@ -54,6 +56,17 @@ public class EmergIsland : MonoBehaviour
             firstPlatformShown.GetComponent<SpriteRenderer>().color -= new Color(0, 0, 0, 255);
             secondPlatformShown.GetComponent<SpriteRenderer>().color -= new Color(0, 0, 0, 255);
             isFirstPlatformShown = false;
+        }
+        if (counterPlat == 2)
+        {
+            if (nextGroup != null)
+            {
+                nextGroup.GetComponent<EmergIsland>().isEmergIslandActivated = true;
+                isPlatformShowOn = false;
+                isFirstPlatformShown = false;
+                isSecondPlatformShown = false;
+                counterPlat = 0;
+            }
         }
     }
 }
