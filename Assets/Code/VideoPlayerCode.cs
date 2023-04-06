@@ -67,6 +67,7 @@ public class VideoPlayerCode : MonoBehaviour
     {
         dialogPanel.SetActive(true);
         dialogPanel.GetComponent<Image>().sprite = dialogWithOwlImages[currentIndex];
+        transform.Find("Owl").gameObject.SetActive(false);
     }
 
     public void SetNextDialogImage()

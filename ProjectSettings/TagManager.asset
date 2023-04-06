@@ -24,6 +24,7 @@ TagManager:
   - Insert
   - LavinaMovingPlat
   - EmergIsland
+  - SnowDrift
   layers:
   - Default
   - TransparentFX
