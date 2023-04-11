@@ -33,6 +33,8 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     public bool isSecondDeerAvailable;
     public bool isThirdDeerAvailable;
 
+    public static bool isBlackoutNow;
+
     public static float VolumeRatio = 0.5f;
 
     public bool isBushed { get; private set; } = false;
@@ -169,6 +171,7 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     // Start is called before the first frame update
     void Start()
     {
+        isBlackoutNow = false;
         lastTime = ghostActiveTime;
         isCanSwitchOnGhost = true;
         textTimer.GetComponent<Text>().text = "";

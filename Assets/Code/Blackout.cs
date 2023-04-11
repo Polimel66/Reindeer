@@ -33,10 +33,12 @@ public class Blackout : MonoBehaviour
         var endDarkingX = transform.position.x - thisWidth / 2;
         if (deerX > startDarkingX)
         {
+            DeerUnity.isBlackoutNow = false;
             return 1;
         }
         if (deerX < endDarkingX)
         {
+            DeerUnity.isBlackoutNow = true;
             return 0.1f;
         }
         var alpha = 1 - (startDarkingX - deerX) / (thisWidth);

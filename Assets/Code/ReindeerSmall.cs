@@ -430,7 +430,10 @@ public class ReindeerSmall : MonoBehaviour
     }
     public void TurnOffScent()
     {
-        ambientLighting.intensity = 1; //интенсивность фона на 1, возвращение яркости
+        if (DeerUnity.isBlackoutNow == true)
+            ambientLighting.intensity = 0.1f;
+        else
+            ambientLighting.intensity = 1; //интенсивность фона на 1, возвращение яркости
         deerLighting.intensity = 0; //интенсивность свечения оленя на 0, больше не светится
         isSmell = false;
     }
