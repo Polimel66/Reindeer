@@ -40,6 +40,7 @@ public class ReindeerSmall : MonoBehaviour
     private GameObject trapTriggerRight;
     public GameObject CurrentActiveTrapTrigger;
     public GameObject currentLemmingArea;
+    //public GameObject mossArea;
     private float anotherHorForceRatio = 4;
     private float jumpForceRatio = 1f;
     private bool isIgnoreShift = false;
@@ -85,6 +86,7 @@ public class ReindeerSmall : MonoBehaviour
         trapTriggerRight = transform.Find("TrapTriggerRight").gameObject;
         CurrentActiveTrapTrigger = trapTriggerLeft;
         snowDrifts = GameObject.FindGameObjectsWithTag("SnowDrift");
+
 }
 
     void FixedUpdate()
@@ -307,9 +309,14 @@ public class ReindeerSmall : MonoBehaviour
             isRunning = false;
             deerUnity.GetComponent<DeerUnity>().isRunning = false;
         }
-        if (Input.GetKeyDown(KeyCode.E) && currentLemmingArea != null)
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && currentLemmingArea != null)
         {
             currentLemmingArea.GetComponent<CollectionLemming>().assembleLemming();
+        }
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed)
+        {
+            DeerUnity.isPossibleTakeMoss = true;
+            DeerUnity.isPossibleTakeLemming = true;
         }
         var previousDirection = direction;
         if (CurrentHorizontalVelocity > 0)

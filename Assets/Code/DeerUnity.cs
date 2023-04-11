@@ -67,6 +67,9 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
 
     public int countOfFoundTracks;
     public static int countOfFoundLemmings;
+    public static bool isMossFound;
+    public static bool isPossibleTakeMoss;
+    public static bool isPossibleTakeLemming;
 
     public GameObject inGameMenu;
     private float maxFallVelocity = 0;
@@ -168,9 +171,13 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     public GameObject message;
     public bool isBited;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        isPossibleTakeMoss = false;
+        isPossibleTakeLemming = false;
+        isMossFound = false;
         isBlackoutNow = false;
         lastTime = ghostActiveTime;
         isCanSwitchOnGhost = true;
@@ -1052,7 +1059,7 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         {
             if (maxFallVelocity > 15)
             {
-                //TakeDamage((int)((maxFallVelocity - 15) * 100 / 15));
+                TakeDamage((int)((maxFallVelocity - 15) * 100 / 15));
             }
 
             maxFallVelocity = 0;
