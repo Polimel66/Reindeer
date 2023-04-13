@@ -58,6 +58,12 @@ public class Bullet : MonoBehaviour
         isShooted = true;
     }
 
+    public void GoToDeer(float speed)
+    {
+        sumVelocity = speed;
+        isShooted = true;
+    }
+
     private void UpdateVelocity()
     {
         var deer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();

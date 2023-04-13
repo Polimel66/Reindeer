@@ -35,7 +35,7 @@ public class Bush : MonoBehaviour
             audio.PlayOneShot(bushInSound);
             isTriggered = false;
             deerUnity.GetComponent<DeerUnity>().UnBushed(gameObject);
-            GetComponent<SpriteRenderer>().color = new Color(0, 1, 0, 1);
+            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         }
         else if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && !isTriggered && DeerUnity.CurrentActive == 1
             && GetComponent<PolygonCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
@@ -52,7 +52,7 @@ public class Bush : MonoBehaviour
             audio.PlayOneShot(bushInSound);
             isTriggered = true;
             deerUnity.GetComponent<DeerUnity>().Bushed(gameObject);
-            GetComponent<SpriteRenderer>().color = new Color(0, 1, 0, 0.5f);
+            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
         }
     }
 }

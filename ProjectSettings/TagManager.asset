@@ -25,6 +25,7 @@ TagManager:
   - LavinaMovingPlat
   - EmergIsland
   - SnowDrift
+  - GroundChecker
   layers:
   - Default
   - TransparentFX
