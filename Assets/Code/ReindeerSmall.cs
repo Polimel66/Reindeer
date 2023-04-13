@@ -397,7 +397,7 @@ public class ReindeerSmall : MonoBehaviour
                 }
                 rigidbody.velocity = velocity;
 
-                GameObject.Find("Info").GetComponent<Text>().text = velocity.ToString();
+                //GameObject.Find("Info").GetComponent<Text>().text = velocity.ToString();
                 //GameObject.Find("Info").GetComponent<Text>().text = (horizontalForceRatio).ToString();
             }
             else

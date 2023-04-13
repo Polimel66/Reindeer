@@ -26,6 +26,8 @@ TagManager:
   - EmergIsland
   - SnowDrift
   - GroundChecker
+  - LaserBound
+  - LaserTrigger
   layers:
   - Default
   - TransparentFX

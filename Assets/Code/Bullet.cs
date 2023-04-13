@@ -10,7 +10,10 @@ public class Bullet : MonoBehaviour
     private bool isShooted = false;
     private float sumVelocity = 10;
     private GameObject tilemap1;
+    private GameObject tilemap2;
     private List<GameObject> collapsingPlatforms = new List<GameObject>();
+    public bool isDestroyOnTileCollision = true;
+    private int damage = 25;
     void Start()
     {
         deerUnity = GameObject.Find("DeerUnity");
@@ -18,6 +21,7 @@ public class Bullet : MonoBehaviour
         GetComponent<Timer>().SetPeriodForTick(5f);
 
         tilemap1 = GameObject.Find("Tilemap1");
+        tilemap2 = GameObject.Find("Tilemap2");
 
         collapsingPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
     }
@@ -35,10 +39,12 @@ public class Bullet : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = velocity;
             if (GetComponent<CircleCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
             {
-                deerUnity.GetComponent<DeerUnity>().TakeDamage(25);
+                deerUnity.GetComponent<DeerUnity>().TakeDamage(damage);
                 Destroy(this.gameObject);
             }
-            if (GetComponent<CircleCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) || GetComponent<Timer>().IsTicked())
+            if ((isDestroyOnTileCollision && (GetComponent<CircleCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) 
+                || GetComponent<CircleCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>())))
+                || GetComponent<Timer>().IsTicked())
             {
                 Destroy(this.gameObject);
             }
@@ -62,6 +68,13 @@ public class Bullet : MonoBehaviour
     {
         sumVelocity = speed;
         isShooted = true;
+    }
+
+    public void GoToDeer(float speed, int damage)
+    {
+        sumVelocity = speed;
+        isShooted = true;
+        this.damage = damage;
     }
 
     private void UpdateVelocity()

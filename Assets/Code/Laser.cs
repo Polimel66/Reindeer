@@ -19,7 +19,7 @@ public class Laser : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag.Equals("Player") && !isTouching)
+        if (collision.tag.Equals("LaserTrigger") && !isTouching)
         {
             isTouching = true;
         }
@@ -27,7 +27,7 @@ public class Laser : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag.Equals("Player") && isTouching)
+        if (collision.tag.Equals("LaserTrigger") && isTouching)
         {
             isTouching = false;
         }

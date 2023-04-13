@@ -1,87 +1,88 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StaticHunter : MonoBehaviour
 {
-    public GameObject laser;
-    public GameObject circle;
-    private bool isCanShooting;
-    public AudioClip shootSound;
-    private float t = 0;
-    private float zRotation = 0;
-    private Direction dir = Direction.Right;
-    private float angleLimit = 35;
-    private float rotationSpeed = 15;
+    private SpriteRenderer spriteRenderer;
     private GameObject deerUnity;
-    private bool isShooted = false;
-    // Start is called before the first frame update
+    public int direction = 1;
+    private GameObject tilemap1;
+    private GameObject tilemap2;
+    private float previousTime;
+    private bool isCanMoving = true;
+    private float shootTime = 0;
+    private float standingTime = 0;
+    private bool isStayAtPoint = false;
+    public bool isEnabled;
+    public AudioClip shootSound;
     void Start()
     {
-        isCanShooting = true;
-        //laser.transform.localPosition = new Vector2(0, -laser.transform.localScale.y/2);
-        //laser.transform.localEulerAngles = new Vector3(0, 0, 0);
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        this.gameObject.AddComponent<Timer>();
+        GetComponent<Timer>().SetPeriodForTick(0.1f);
+        GetComponent<Timer>().StartTimer();
         deerUnity = GameObject.Find("DeerUnity");
+
+        tilemap1 = GameObject.Find("Tilemap1");
+        tilemap2 = GameObject.Find("Tilemap2");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        t = Time.deltaTime;
-        if (dir == Direction.Right)
+        MakeAction();
+        FlipPlayer();
+    }
+
+    public void MakeAction()
+    {
+        var deltaX = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x - transform.position.x;
+        var deltaY = Math.Abs(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.y - transform.position.y);
+        if (deltaX > 0)
         {
-            if(zRotation < angleLimit)
-            {
-                zRotation += t * rotationSpeed;
-            }
-            else
-            {
-                dir = Direction.Left;
-            }
+            direction = 1;
         }
-        else
+        else if (deltaX < 0)
         {
-            if (zRotation > -angleLimit)
-            {
-                zRotation -= t * rotationSpeed;
-            }
-            else
-            {
-                dir = Direction.Right;
-            }
+            direction = -1;
         }
-        circle.transform.localEulerAngles = new Vector3(0, 0, zRotation);
-        if (!isShooted 
-            && laser.GetComponent<Laser>().isTouching
-            && !deerUnity.GetComponent<DeerUnity>().isBushed)
+        if (deltaX > -7 && deltaX < 7)
         {
-            Shoot();
-            isShooted = true;
-            deerUnity.GetComponent<DeerUnity>().CatchDeer();
+            if (GetComponent<Timer>().GetTime() - shootTime > 3f)
+            {
+                Shoot();
+                shootTime = GetComponent<Timer>().GetTime();
+            }
         }
     }
 
     private void Shoot()
     {
-        if (isCanShooting)
+        var audio = GetComponent<AudioSource>();
+        if (DeerUnity.VolumeRatio == 0)
         {
-            var audio = GetComponent<AudioSource>();
-            if (DeerUnity.VolumeRatio == 0)
-            {
-                audio.volume = 0;
-            }
-            else
-            {
-                audio.volume = 0.1f;
-            }
-            audio.PlayOneShot(shootSound);
-            var newBullet = GameObject.Instantiate(GameObject.Find("HunterKit1").transform.Find("Bullet").gameObject, transform.position, transform.rotation);
-            newBullet.GetComponent<Bullet>().GoToDeer(20);
+            audio.volume = 0;
         }
+        else
+        {
+            audio.volume = 0.1f;
+        }
+        audio.PlayOneShot(shootSound);
+        var newBullet = GameObject.Instantiate(GameObject.Find("HunterKit1").transform.Find("Bullet").gameObject, transform.position, transform.rotation);
+        newBullet.GetComponent<Bullet>().isDestroyOnTileCollision = false;
+        newBullet.GetComponent<Bullet>().GoToDeer();
     }
 
-    enum Direction{
-        Right,
-        Left
+    public void FlipPlayer()
+    {
+        if (direction < 0 && !spriteRenderer.flipX)
+        {
+            spriteRenderer.flipX = true;
+        }
+        if (direction > 0 && spriteRenderer.flipX)
+        {
+            spriteRenderer.flipX = false;
+        }
     }
 }
