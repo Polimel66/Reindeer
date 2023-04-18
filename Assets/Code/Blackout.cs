@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
 
 public class Blackout : MonoBehaviour
 {
     private Light ambientLighting;
     private GameObject deerUnity;
     private BoxCollider2D coll;
+    public static bool isDead;
     // Start is called before the first frame update
     void Start()
     {
         ambientLighting = GameObject.Find("DirectionalLight").GetComponent<Light>();
         deerUnity = GameObject.Find("DeerUnity");
         coll = GetComponent<BoxCollider2D>();
+        isDead = false;
     }
 
     // Update is called once per frame
@@ -23,6 +26,11 @@ public class Blackout : MonoBehaviour
         if (coll.IsTouching(deer.GetComponent<BoxCollider2D>()))
         {
             ambientLighting.intensity = getIntensity(deer.transform.position.x);
+        }
+        if (isDead)
+        {
+            ambientLighting.intensity = 1;
+            isDead = false;
         }
     }
 

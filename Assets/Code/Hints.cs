@@ -50,10 +50,21 @@ public class Hints : MonoBehaviour
             " Когда дух активиреут способность стоя на призрачной платформе, \nона становится материальной."},
             {"Soaring", "Чтобы спуститься безопасно с большой высоты, \nнужно использовать возможность парения у духа на Alt." },
             { "ExitFromTheSecondShelter", "Я вышел из леса. Кажется теперь мне нужно направиться к холму. \nНо куда идти дальше я не помню… Надеюсь я догоню своё стадо. \nНо я уже чувствую новые запахи!"},
-            {"HintTemperature", "В тени я охлаждаюсь и чувствую себя лучше. \nНужно стараться вовремя до неё добираться."},
-            {"HintBoulders", "Кажется что-то крупное катится впереди! \nНужно быть осторожным!"},
-            {"HintWindOnSlope", "Ого, какой поток ветра впереди. \nМне нужны какие-то барьеры, чтобы приодолеть его..."},
-            {"HintOnMountain", "Нужно тщательно обыскать территорию горы. \nЯ чувствую новые запахи!" } };
+            { "HintTemperature", "В тени я охлаждаюсь и чувствую себя лучше. \nНужно стараться вовремя до неё добираться."},
+            { "HintBoulders", "Кажется что-то крупное катится впереди! \nНужно быть осторожным!"},
+            { "HintWindOnSlope", "Ого, какой поток ветра впереди. \nМне нужны какие-то барьеры, чтобы приодолеть его..."},
+            { "HintOnMountain", "Нужно тщательно обыскать территорию горы. \nЯ чувствую новые запахи!" },
+            { "CaveBarrier", "I can't go there, I need to check, maybe I missed something." },
+            { "DarkPartCave", "I feel that I may need the help of a spirit." },
+            { "CollectedMoss", "I found moss! Now I can draw out that lemming!" },
+            { "LemmingCaveBeforeCollectingMoss", "It seems that the last lemming is sitting in the mink! But I can't just" +
+            " pull it out. We need to find a way to lure him out."},
+            { "LemmingCaveAfterCollectingMoss", "Happened! I have a lemming. Now you need to get out of this cave." },
+            { "DisabledSpawningIslands", "I see the exit from above. But it's impossible to go up here. We need" +
+            " to try to lure the lemming out, maybe something will change here." },
+            { "ActivatedSpawningIslands" , "Islands have come and gone. But I remember about where" +
+            " they appeared. You should try jumping on them from memory!" } };
+
         
         timer.SetPeriodForTick(5f);
     }

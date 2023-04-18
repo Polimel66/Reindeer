@@ -6,11 +6,17 @@ public class MossLemming : MonoBehaviour
 {
     private static GameObject deerUnity;
     private static BoxCollider2D coll;
+    private GameObject startEmergingIsland;
+    public GameObject firstEmergingPhrase;
+    public GameObject secondEmergingPhrase;
     // Start is called before the first frame update
     void Start()
     {
         deerUnity = GameObject.Find("DeerUnity");
         coll = GetComponent<BoxCollider2D>();
+        startEmergingIsland = GameObject.Find("EmergingIslandsChecker");
+        startEmergingIsland.SetActive(false);
+        secondEmergingPhrase.SetActive(false);
     }
 
     // Update is called once per frame
@@ -20,7 +26,10 @@ public class MossLemming : MonoBehaviour
         if (coll.IsTouching(deer.GetComponent<BoxCollider2D>()) && DeerUnity.CurrentActive == 1 && DeerUnity.isMossFound && DeerUnity.isPossibleTakeLemming)
         {
             DeerUnity.countOfFoundLemmings += 1;
+            startEmergingIsland.SetActive(true);
             gameObject.SetActive(false);
+            firstEmergingPhrase.SetActive(false);
+            secondEmergingPhrase.SetActive(true);
         }
         DeerUnity.isPossibleTakeLemming = false;
     }

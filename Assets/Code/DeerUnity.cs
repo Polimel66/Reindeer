@@ -690,8 +690,10 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
     private void HealthChecked()
     {
         if (currentHealth <= minHealth)
+        {
             currentHealth = minHealth;
 
+        }
         if (currentHealth >= maxHealth)
             currentHealth = maxHealth;
         sliderHealth.value = currentHealth;
@@ -761,7 +763,8 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
 
     public void Respawn()
     {
-        
+        Blackout.isDead = true;
+
         var allHunterControlPoints = GameObject.FindGameObjectsWithTag("HunterPoint");
         foreach (var point in allHunterControlPoints)
         {
