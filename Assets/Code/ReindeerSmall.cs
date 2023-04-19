@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,17 @@ using UnityEngine.UI;
 
 public class ReindeerSmall : MonoBehaviour
 {
+    private enum jumpPhase{
+        Up,
+        Down,
+        Land
+    }
     // Start is called before the first frame update
     public float CurrentHorizontalVelocity { get; private set; } = 0;
     public float CurrentVerticalVelocity { get; private set; } = 0;
     private Rigidbody2D rigidbody;
-    private SpriteRenderer spriteRenderer;
+    //private SpriteRenderer spriteRenderer;
+    public GameObject animation;
     private Light ambientLighting;
     private Light deerLighting;
     private int shiftRatio = 1;
@@ -48,20 +55,40 @@ public class ReindeerSmall : MonoBehaviour
     //public bool isNeedToUpdatePlatformsList = false;
     public bool isInShadow { get; private set; }
 
-    public RuntimeAnimatorController stayAnimation;
-    public RuntimeAnimatorController walkAnimation;
+    //public RuntimeAnimatorController stayAnimation;
+    //public RuntimeAnimatorController walkAnimation;
 
 
     private bool isStayAni = true;
     private bool isWalkAni = false;
 
     public GameObject InputManager;
+    private string currentAniName = "";
+    private string[] allSpecificIdleAnies = new string[] { "IdleEar", "IdleStomp", "IdleTail", "HeadTilt" };
+    private string basicIdleAni = "IdleBasic";
+    private string dieAni = "DieTest";
+    private string joggingAni = "jogging";
+    private string runAni = "RunBasic";
+    private Dictionary<jumpPhase, string> jumpFhaseAnies = new Dictionary<jumpPhase, string>()
+    {
+        { jumpPhase.Up, "JumpBasicUp" },
+        { jumpPhase.Down, "JumpBasicDown" },
+        { jumpPhase.Land, "JumpBasicLand" }
+    };
+    private float stayTime = 0;
+    private float timeToWait;
+    private bool isPlayingSpecificIdle = false;
+    private bool isPlayingDieAnimation = false;
+    private bool isPlayingJumpAnimation = false;
+    private jumpPhase currentJumpPhase = jumpPhase.Up;
+    public GameObject jumpLandTrigger;
+    private bool isPlayingFallAnimation = false;
 
 
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        //spriteRenderer = GetComponent<SpriteRenderer>();
         ambientLighting = GameObject.Find("DirectionalLight").GetComponent<Light>();
         deerLighting = GameObject.Find("DeerLight").GetComponent<Light>();
         this.gameObject.AddComponent<Timer>();
@@ -109,30 +136,187 @@ public class ReindeerSmall : MonoBehaviour
         
         MakeAction();
 
-        if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
+        CheckAnimation();
+
+        UpdateJumpAnimation();
+
+        UpdateFallAnimation();
+    }
+
+    private void CheckAnimation()
+    {
+        if (!isPlayingDieAnimation && !isPlayingJumpAnimation)
         {
-            isStayAni = false;
-            isWalkAni = true;
-            GetComponent<Animator>().runtimeAnimatorController = walkAnimation;
+            if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
+            {
+                isStayAni = false;
+                isWalkAni = true;
+                //SetAnimation(joggingAni);
+                currentAniName = joggingAni;
+            }
+            else if (isWalkAni && (horizontalForceRatio == 0 || CurrentHorizontalVelocity == 0 || !DeerUnity.IsGrounded))
+            {
+                isStayAni = true;
+                isWalkAni = false;
+                SetAnimation(basicIdleAni);
+                currentAniName = basicIdleAni;
+                stayTime = 0;
+            }
+
+            if (isStayAni)
+            {
+                stayTime += Time.deltaTime;
+                if (stayTime > 5 && !isPlayingSpecificIdle)
+                {
+                    PlayRandomIdleAnimation();
+                    isPlayingSpecificIdle = true;
+                }
+            }
+            if (isWalkAni)
+            {
+                if (isRunning)
+                {
+                    SetAnimation(runAni);
+                    currentAniName = runAni;
+                }
+                else
+                {
+                    SetAnimation(joggingAni);
+                    currentAniName = joggingAni;
+                }
+            }
+
+            if(CurrentVerticalVelocity < -1f && !isPlayingFallAnimation && !isTrapped)
+            {
+                PlayFallAnimation();
+                
+            }
         }
-        else if (isWalkAni && (horizontalForceRatio == 0 || CurrentHorizontalVelocity == 0 || !DeerUnity.IsGrounded))
+    }
+
+    private void SetAnimation(string name)
+    {
+        animation.GetComponent<SkeletonAnimation>().AnimationName = name;
+        
+    }
+
+    private void PlayRandomIdleAnimation()
+    {
+        var r = Random.Range(0, 3.33f);
+        //var r = 3;
+        //animation.GetComponent<SkeletonAnimation>().loop = false;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = allSpecificIdleAnies[(int)r];
+        timeToWait = 2f;
+        if ((int)r == 3)
+            timeToWait = 4.4f;
+        Invoke("PlayBasicIdleAnimation", timeToWait);
+    }
+
+    private void PlayBasicIdleAnimation()
+    {
+        isPlayingDieAnimation = false;
+        stayTime = 0;
+        isPlayingSpecificIdle = false;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = basicIdleAni;
+    }
+
+    private void PlayJumpAnimation()
+    {
+        isPlayingJumpAnimation = true;
+        
+        animation.GetComponent<SkeletonAnimation>().loop = false;
+        PlayJumpUpAnimation();
+    }
+
+    private void UpdateJumpAnimation()
+    {
+        if (isPlayingJumpAnimation)
         {
-            isStayAni = true;
-            isWalkAni = false;
-            GetComponent<Animator>().runtimeAnimatorController = stayAnimation;
+            if(currentJumpPhase == jumpPhase.Up && CurrentVerticalVelocity < 0)
+            {
+                
+                //jumpLandTrigger.GetComponent<JumpLandTrigger>().isNearToGround = false;
+                PlayJumpDownAnimation();
+            }
+            if(currentJumpPhase == jumpPhase.Down && DeerUnity.IsGrounded)
+            {
+                
+                PlayJumpLandAnimation();
+            }
         }
+    }
+
+    private void PlayJumpUpAnimation()
+    {
+        currentJumpPhase = jumpPhase.Up;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = jumpFhaseAnies[currentJumpPhase];
+        animation.GetComponent<SkeletonAnimation>().timeScale = 1.5f;
+    }
+
+    private void PlayJumpDownAnimation()
+    {
+        currentJumpPhase = jumpPhase.Down;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = jumpFhaseAnies[currentJumpPhase];
+        animation.GetComponent<SkeletonAnimation>().timeScale = 1.5f;
+    }
+
+    private void PlayJumpLandAnimation()
+    {
+        currentJumpPhase = jumpPhase.Land;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = jumpFhaseAnies[currentJumpPhase];
+        currentJumpPhase = jumpPhase.Up;
+        animation.GetComponent<SkeletonAnimation>().timeScale = 3;
+        var timeToWait = 0.3f / animation.GetComponent<SkeletonAnimation>().timeScale;
+        Invoke("StopJumpAnimation", timeToWait);
+    }
+
+    private void StopJumpAnimation()
+    {
+        isPlayingJumpAnimation = false;
+        isPlayingFallAnimation = false;
+        animation.GetComponent<SkeletonAnimation>().loop = true;
+        animation.GetComponent<SkeletonAnimation>().timeScale = 1;
+    }
+
+    private void PlayFallAnimation()
+    {
+        isPlayingFallAnimation = true;
+        animation.GetComponent<SkeletonAnimation>().loop = false;
+        PlayJumpDownAnimation();
+    }
+
+    private void UpdateFallAnimation()
+    {
+        if (isPlayingFallAnimation)
+        {
+            if (currentJumpPhase == jumpPhase.Down && DeerUnity.IsGrounded)
+            {
+                PlayJumpLandAnimation();
+            }
+        }
+    }
+
+    public void PlayDieAnimation()
+    {
+        StopJumpAnimation();
+        isPlayingDieAnimation = true;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = dieAni;
+        Invoke("PlayBasicIdleAnimation", 1.1f);
     }
 
     public void FlipPlayer()
     {
-        if (direction < 0 && !spriteRenderer.flipX)
+        if (direction < 0 && animation.GetComponent<Transform>().localScale.x > 0)
         {
-            spriteRenderer.flipX = true;
+            animation.GetComponent<Transform>().localScale = new Vector3(-0.027f, 0.027f, 0.027f);
+            animation.GetComponent<Transform>().localPosition = new Vector3(0.15f, -0.61f, 0);
             CurrentActiveTrapTrigger = trapTriggerRight;
         }
-        if (direction > 0 && spriteRenderer.flipX)
+        if (direction > 0 && animation.GetComponent<Transform>().localScale.x < 0)
         {
-            spriteRenderer.flipX = false;
+            //spriteRenderer.flipX = false;
+            animation.GetComponent<Transform>().localScale = new Vector3(0.027f, 0.027f, 0.027f);
+            animation.GetComponent<Transform>().localPosition = new Vector3(-0.15f, -0.61f, 0);
             CurrentActiveTrapTrigger = trapTriggerLeft;
         }
     }
@@ -244,6 +428,8 @@ public class ReindeerSmall : MonoBehaviour
             {
                 rigidbody.AddForce(new Vector2(0, 100 * jumpForceRatio));
                 InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
+
+                PlayJumpAnimation();
             }
         }
         if (isTrapped && countJumpsToEscape > 0 && InputManager.GetComponent<InputManager>().isJumpButtonPressed)
@@ -426,7 +612,7 @@ public class ReindeerSmall : MonoBehaviour
         }
         else if (!isCanMoving)
         {
-            rigidbody.velocity = new Vector2(0, 0);
+            //rigidbody.velocity = new Vector2(0, 0);
         }
         
     }
@@ -468,15 +654,15 @@ public class ReindeerSmall : MonoBehaviour
     {
         isCanMoving = false;
         normalGravityScale = rigidbody.gravityScale;
-        rigidbody.gravityScale = 0;
-        rigidbody.velocity = new Vector2(0, 0);
-        GetComponent<BoxCollider2D>().isTrigger = true;
+        //rigidbody.gravityScale = 3;
+        rigidbody.velocity = new Vector2(0, rigidbody.velocity.y);
+        //GetComponent<BoxCollider2D>().isTrigger = true;
     }
 
     public void StartMoving()
     {
-        GetComponent<BoxCollider2D>().isTrigger = false;
-        rigidbody.gravityScale = normalGravityScale;
+        //GetComponent<BoxCollider2D>().isTrigger = false;
+        //rigidbody.gravityScale = normalGravityScale;
         isCanMoving = true;
     }
 

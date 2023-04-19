@@ -770,8 +770,19 @@ public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвеч
         {
             point.GetComponent<HunterControlPoint>().isAlreadyWorked = false;
         }
+        var timeToWait = 0.0f;
+        if (CurrentActive == 1)
+        {
+            reindeerSmall.GetComponent<ReindeerSmall>().PlayDieAnimation();
+            timeToWait = 1.1f;
+        }
+        Invoke("AfterDieAnimation", timeToWait);
+    }
+
+    private void AfterDieAnimation()
+    {
         MoveAllDeersToSpawn();
-        
+
         if (CurrentActive == 1)
         {
             reindeerSmall.GetComponent<ReindeerSmall>().EscapedTrap();

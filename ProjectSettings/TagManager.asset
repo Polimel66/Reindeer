@@ -28,6 +28,7 @@ TagManager:
   - GroundChecker
   - LaserBound
   - LaserTrigger
+  - TileMap
   layers:
   - Default
   - TransparentFX
