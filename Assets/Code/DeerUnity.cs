@@ -5,16 +5,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class DeerUnity : MonoBehaviour //класс, объедин€ющий всех оленей и отвечающий за переключение между ними. ≈го координата "x" всегда совпадает с координатой "x" у текущего олен€
-{// он €вл€етс€ просто св€зующим звеном, его не видно на камере и у него нет физики
+public class DeerUnity : MonoBehaviour
+{
     private GameObject reindeerGhost;
     private GameObject reindeerSmall;
     private GameObject reindeerBig;
     private GameObject currentActiveDeer;
     private GameObject stamina;
-    private float unityGhostDeltaY;//дельта нужна, чтобы зафиксировать оленей на одной высоте при переключении между ними
-    private float unitySmallDeltaY;//т.к. олень, на которого переключились, по€вл€етс€ на месте объекта Unity, то переключившись с маленького на большого,
-    private float unityBigDeltaY;//большой может застр€ть в текстурах, из-за того, что он больше
+    private float unityGhostDeltaY;
+    private float unitySmallDeltaY;
+    private float unityBigDeltaY;
     private CompositeCollider2D tileMapCollider1;
     private CompositeCollider2D tileMapCollider2;
     public GameObject spawn;

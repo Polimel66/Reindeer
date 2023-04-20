@@ -1,15 +1,22 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ReindeerGhost : MonoBehaviour //Призрачный олень. 
+public class ReindeerGhost : MonoBehaviour 
 {
+    private enum jumpPhase
+    {
+        Up,
+        Down,
+        Land
+    }
     public float CurrentHorizontalVelocity { get; private set; } = 0;
     public float CurrentVerticalVelocity { get; private set; } = 0;
-    private Rigidbody2D rigidbody;//его "физика", его "тело"
-    private SpriteRenderer spriteRenderer;//отрисовщик спрайта, пока нужен только для отзеркаливания спрайта
+    private Rigidbody2D rigidbody;
+    private SpriteRenderer spriteRenderer;
     public float horizontalForceRatio = 1;
     private float shiftRatio = 1;
     public bool isRunning = false;
@@ -42,6 +49,34 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
 
     //public bool isGrounded = true;
     public GameObject InputManager;
+
+    private bool isStayAni = true;
+    private bool isWalkAni = false;
+
+    //private string[] allSpecificIdleAnies = new string[] { "IdleEar", "IdleStomp", "IdleTail", "HeadTilt" };
+    //private string basicIdleAni = "IdleBasic";
+    //private string dieAni = "DieTest";
+    private string levitacia = "Levitacia";
+    private string joggingAni = "Walk";
+    private string runAni = "Beg";
+    /*private Dictionary<jumpPhase, string> jumpFhaseAnies = new Dictionary<jumpPhase, string>()
+    {
+        { jumpPhase.Up, "JumpBasicUp" },
+        { jumpPhase.Down, "JumpBasicDown" },
+        { jumpPhase.Land, "JumpBasicLand" }
+    };*/
+    private float stayTime = 0;
+    private float timeToWait;
+    private bool isPlayingSpecificIdle = false;
+    private bool isPlayingDieAnimation = false;
+    private bool isPlayingJumpAnimation = false;
+    private jumpPhase currentJumpPhase = jumpPhase.Up;
+    public GameObject jumpLandTrigger;
+    private bool isPlayingFallAnimation = false;
+    public GameObject animation;
+    private bool isCoorChangedForFlying = true;
+    private bool isCoorChangedForNormal = true;
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -72,21 +107,209 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         CheckIsStucked();
         MakeAction();
         FlipPlayer();
-        checkProtect();
+        CheckProtect();
 
-        /*if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
+        CheckAnimation();
+
+        //UpdateJumpAnimation();
+
+        //UpdateFallAnimation();
+
+        if (!isCoorChangedForFlying)
         {
-            isStayAni = false;
-            isWalkAni = true;
-            GetComponent<Animator>().runtimeAnimatorController = walkAnimation;
+            if (direction < 0)
+            {
+                animation.GetComponent<Transform>().localScale = new Vector3(-0.28f, 0.28f, 0.28f);
+                animation.GetComponent<Transform>().localPosition = new Vector3(1.76f, -3.19f, 0);
+                //CurrentActiveTrapTrigger = trapTriggerRight;
+            }
+            if (direction > 0)
+            {
+                //spriteRenderer.flipX = false;
+                animation.GetComponent<Transform>().localScale = new Vector3(0.28f, 0.28f, 0.28f);
+                animation.GetComponent<Transform>().localPosition = new Vector3(-1.76f, -3.19f, 0);
+                //CurrentActiveTrapTrigger = trapTriggerLeft;
+            }
+            isCoorChangedForFlying = true;
         }
-        else if (isWalkAni && (horizontalForceRatio == 0 || CurrentHorizontalVelocity == 0 || !DeerUnity.IsGrounded))
+        if (!isCoorChangedForNormal)
         {
-            isStayAni = true;
-            isWalkAni = false;
-            GetComponent<Animator>().runtimeAnimatorController = stayAnimation;
-        }*/
+            if (direction < 0)
+            {
+                animation.GetComponent<Transform>().localScale = new Vector3(-0.28f, 0.28f, 0.28f);
+                animation.GetComponent<Transform>().localPosition = new Vector3(0.65f, -2.3f, 0);
+                //CurrentActiveTrapTrigger = trapTriggerRight;
+            }
+            if (direction > 0)
+            {
+                //spriteRenderer.flipX = false;
+                animation.GetComponent<Transform>().localScale = new Vector3(0.28f, 0.28f, 0.28f);
+                animation.GetComponent<Transform>().localPosition = new Vector3(-0.65f, -2.3f, 0);
+                //CurrentActiveTrapTrigger = trapTriggerLeft;
+            }
+            isCoorChangedForNormal = true;
+        }
     }
+
+    private void CheckAnimation()
+    {
+        if (!isPlayingDieAnimation && !isPlayingJumpAnimation)
+        {
+            if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
+            {
+                isStayAni = false;
+                isWalkAni = true;
+                //SetAnimation(joggingAni);
+            }
+            else if (isWalkAni && (horizontalForceRatio == 0 || CurrentHorizontalVelocity == 0 || !DeerUnity.IsGrounded))
+            {
+                isStayAni = true;
+                isWalkAni = false;
+                //SetAnimation(basicIdleAni);
+                SetAnimation(null);
+                animation.GetComponent<SkeletonAnimation>().ClearState();
+                stayTime = 0;
+            }
+
+            if (isStayAni)
+            {
+                stayTime += Time.deltaTime;
+                if (stayTime > 5 && !isPlayingSpecificIdle)
+                {
+                    //PlayRandomIdleAnimation();
+                    isPlayingSpecificIdle = true;
+                }
+            }
+            if (isWalkAni)
+            {
+                if (isRunning)
+                {
+                    SetAnimation(runAni);
+                }
+                else
+                {
+                    SetAnimation(joggingAni);
+                }
+            }
+
+            /*if (CurrentVerticalVelocity < -1f && !isPlayingFallAnimation)
+            {
+                PlayFallAnimation();
+
+            }*/
+        }
+    }
+
+    private void SetAnimation(string name)
+    {
+        animation.GetComponent<SkeletonAnimation>().AnimationName = name;
+
+    }
+
+    /*private void PlayRandomIdleAnimation()
+    {
+        var r = Random.Range(0, 3.33f);
+        //var r = 3;
+        //animation.GetComponent<SkeletonAnimation>().loop = false;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = allSpecificIdleAnies[(int)r];
+        timeToWait = 2f;
+        if ((int)r == 3)
+            timeToWait = 4.4f;
+        Invoke("PlayBasicIdleAnimation", timeToWait);
+    }
+    
+
+    private void PlayBasicIdleAnimation()
+    {
+        isPlayingDieAnimation = false;
+        stayTime = 0;
+        isPlayingSpecificIdle = false;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = basicIdleAni;
+    }
+
+    private void PlayJumpAnimation()
+    {
+        isPlayingJumpAnimation = true;
+
+        animation.GetComponent<SkeletonAnimation>().loop = false;
+        PlayJumpUpAnimation();
+    }
+
+    private void UpdateJumpAnimation()
+    {
+        if (isPlayingJumpAnimation)
+        {
+            if (currentJumpPhase == jumpPhase.Up && CurrentVerticalVelocity < 0)
+            {
+
+                //jumpLandTrigger.GetComponent<JumpLandTrigger>().isNearToGround = false;
+                PlayJumpDownAnimation();
+            }
+            if (currentJumpPhase == jumpPhase.Down && DeerUnity.IsGrounded)
+            {
+
+                PlayJumpLandAnimation();
+            }
+        }
+    }
+
+    private void PlayJumpUpAnimation()
+    {
+        currentJumpPhase = jumpPhase.Up;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = jumpFhaseAnies[currentJumpPhase];
+        animation.GetComponent<SkeletonAnimation>().timeScale = 1.5f;
+    }
+
+    private void PlayJumpDownAnimation()
+    {
+        currentJumpPhase = jumpPhase.Down;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = jumpFhaseAnies[currentJumpPhase];
+        animation.GetComponent<SkeletonAnimation>().timeScale = 1.5f;
+    }
+
+    private void PlayJumpLandAnimation()
+    {
+        currentJumpPhase = jumpPhase.Land;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = jumpFhaseAnies[currentJumpPhase];
+        currentJumpPhase = jumpPhase.Up;
+        animation.GetComponent<SkeletonAnimation>().timeScale = 3;
+        var timeToWait = 0.3f / animation.GetComponent<SkeletonAnimation>().timeScale;
+        Invoke("StopJumpAnimation", timeToWait);
+    }
+
+    private void StopJumpAnimation()
+    {
+        isPlayingJumpAnimation = false;
+        isPlayingFallAnimation = false;
+        animation.GetComponent<SkeletonAnimation>().loop = true;
+        animation.GetComponent<SkeletonAnimation>().timeScale = 1;
+    }
+
+    private void PlayFallAnimation()
+    {
+        isPlayingFallAnimation = true;
+        animation.GetComponent<SkeletonAnimation>().loop = false;
+        PlayJumpDownAnimation();
+    }
+
+    private void UpdateFallAnimation()
+    {
+        if (isPlayingFallAnimation)
+        {
+            if (currentJumpPhase == jumpPhase.Down && DeerUnity.IsGrounded)
+            {
+                PlayJumpLandAnimation();
+            }
+        }
+    }
+
+    public void PlayDieAnimation()
+    {
+        StopJumpAnimation();
+        isPlayingDieAnimation = true;
+        animation.GetComponent<SkeletonAnimation>().AnimationName = dieAni;
+        Invoke("PlayBasicIdleAnimation", 1.1f);
+    }*/
 
     public void setIsWindProtected(bool condition)
     {
@@ -100,7 +323,7 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         }
     }
 
-    public void checkProtect()
+    public void CheckProtect()
     {
         if (protectionChecker == 2)
         {
@@ -165,6 +388,10 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed)
         {
             isFlying = true;
+
+            isCoorChangedForFlying = false;
+            SetAnimation(levitacia);
+
             InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed = false;
         }
         if (isFlying && rigidbody.velocity.y <= 0)
@@ -183,34 +410,39 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         {
             rigidbody.gravityScale = 1f;
             isFlying = false;
+
+            isCoorChangedForNormal = false;
+            SetAnimation(null);
+            animation.GetComponent<SkeletonAnimation>().ClearState();
+
             InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress = false;
         }
 
-        if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)//если нажали вправо, прибавить горизонтальную скорость вправо
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         {
             CurrentHorizontalVelocity += 4;
             InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)//если отпустили вправо, прибавить горизонтальную скорость влео
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         {
             CurrentHorizontalVelocity += -4;
             InputManager.GetComponent<InputManager>().isGoRightButtonStopPress = false;
             //horizontalForceRatio = 0;
         }
-        if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)//если нажали влево, прибавить горизонтальную скорость влево
+        if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         {
             CurrentHorizontalVelocity += -4;
             InputManager.GetComponent<InputManager>().isGoLeftButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && currendGhostPlatform != null && isCanMater)//если нажали влево, прибавить горизонтальную скорость влево
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && currendGhostPlatform != null && isCanMater)//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         {
             currendGhostPlatform.GetComponent<Materialization>().makeMaterialisation();
             isCanMater = false;
             InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
         }
-        if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)//если отпустили влево, прибавить горизонтальную скорость вправо
+        if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         {
             CurrentHorizontalVelocity += 4;
             InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress = false;
@@ -330,23 +562,48 @@ public class ReindeerGhost : MonoBehaviour //Призрачный олень.
         }*/
 
         CurrentVerticalVelocity = rigidbody.velocity.y;
-        //в итоге получается результирующая горизонтальная скорость, ее мы и присваиваем, оставляя вертикальную скорость той же
-        /*Не знаю как и почему, но присваивать скорость удобнее, чем добавлять силу, если речь идет о горизонтальном движении.
-         * Присвоить скорость можно один раз и объект будет с этой скорстью двигаться, а вот силу нужно прикладывать и постоянно с каждый вызовом метода update(), т.к. сила затухает при одноразовом приложении.
-         * Можешь попробовать сделать через приложении силы, а не через присвоение скорости, просто я так не умею.
+        //пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ
+        /*пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+         * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ update(), пїЅ.пїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+         * пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ.
          */
     }
 
     public void FlipPlayer()
     {
-        if (direction < 0 && !spriteRenderer.flipX)//тут в зависимости от того, в какую сторону движется олень, зеркалится спрайт
+        if (isFlying)
         {
-            spriteRenderer.flipX = true;//тут олень идет влево
+            if (direction < 0 && animation.GetComponent<Transform>().localScale.x > 0)
+            {
+                animation.GetComponent<Transform>().localScale = new Vector3(-0.28f, 0.28f, 0.28f);
+                animation.GetComponent<Transform>().localPosition = new Vector3(1.76f, -3.19f, 0);
+                //CurrentActiveTrapTrigger = trapTriggerRight;
+            }
+            if (direction > 0 && animation.GetComponent<Transform>().localScale.x < 0)
+            {
+                //spriteRenderer.flipX = false;
+                animation.GetComponent<Transform>().localScale = new Vector3(0.28f, 0.28f, 0.28f);
+                animation.GetComponent<Transform>().localPosition = new Vector3(-1.76f, -3.19f, 0);
+                //CurrentActiveTrapTrigger = trapTriggerLeft;
+            }
         }
-        if (direction > 0 && spriteRenderer.flipX)
+        else
         {
-            spriteRenderer.flipX = false;//тут вправо
+            if (direction < 0 && animation.GetComponent<Transform>().localScale.x > 0)
+            {
+                animation.GetComponent<Transform>().localScale = new Vector3(-0.28f, 0.28f, 0.28f);
+                animation.GetComponent<Transform>().localPosition = new Vector3(0.65f, -2.3f, 0);
+                //CurrentActiveTrapTrigger = trapTriggerRight;
+            }
+            if (direction > 0 && animation.GetComponent<Transform>().localScale.x < 0)
+            {
+                //spriteRenderer.flipX = false;
+                animation.GetComponent<Transform>().localScale = new Vector3(0.28f, 0.28f, 0.28f);
+                animation.GetComponent<Transform>().localPosition = new Vector3(-0.65f, -2.3f, 0);
+                //CurrentActiveTrapTrigger = trapTriggerLeft;
+            }
         }
+        
     }
 
     public void SetHorizontalVelocity(float velocity)
