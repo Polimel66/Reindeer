@@ -64,7 +64,7 @@ public class ReindeerSmall : MonoBehaviour
 
     public GameObject InputManager;
     private string currentAniName = "";
-    private string[] allSpecificIdleAnies = new string[] { "IdleEar", "IdleStomp", "IdleTail", "HeadTilt" };
+    private string[] allSpecificIdleAnies = new string[] { "IdleStomp", "IdleStomp", "IdleStomp", "IdleStomp" };
     private string basicIdleAni = "IdleBasic";
     private string dieAni = "DieTest";
     private string joggingAni = "jogging";
@@ -205,8 +205,10 @@ public class ReindeerSmall : MonoBehaviour
         var r = Random.Range(0, 3.33f);
         //var r = 3;
         //animation.GetComponent<SkeletonAnimation>().loop = false;
+        animation.GetComponent<SkeletonAnimation>().loop = false;
         if (DeerUnity.IsGrounded)
             animation.GetComponent<SkeletonAnimation>().AnimationName = allSpecificIdleAnies[(int)r];
+        
         timeToWait = 2f;
         if ((int)r == 3)
             timeToWait = 4.4f;
@@ -218,8 +220,10 @@ public class ReindeerSmall : MonoBehaviour
         isPlayingDieAnimation = false;
         stayTime = 0;
         isPlayingSpecificIdle = false;
+
         if (DeerUnity.IsGrounded)
             animation.GetComponent<SkeletonAnimation>().AnimationName = basicIdleAni;
+        animation.GetComponent<SkeletonAnimation>().loop = true;
     }
 
     private void PlayJumpAnimation()
