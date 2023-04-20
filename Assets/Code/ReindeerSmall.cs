@@ -154,7 +154,7 @@ public class ReindeerSmall : MonoBehaviour
                 //SetAnimation(joggingAni);
                 currentAniName = joggingAni;
             }
-            else if (isWalkAni && (horizontalForceRatio == 0 || CurrentHorizontalVelocity == 0 || !DeerUnity.IsGrounded))
+            else if (isWalkAni && (horizontalForceRatio == 0 || CurrentHorizontalVelocity == 0) && DeerUnity.IsGrounded)
             {
                 isStayAni = true;
                 isWalkAni = false;
@@ -172,7 +172,7 @@ public class ReindeerSmall : MonoBehaviour
                     isPlayingSpecificIdle = true;
                 }
             }
-            if (isWalkAni)
+            if (isWalkAni && !isPlayingJumpAnimation && DeerUnity.IsGrounded)
             {
                 if (isRunning)
                 {
@@ -205,7 +205,8 @@ public class ReindeerSmall : MonoBehaviour
         var r = Random.Range(0, 3.33f);
         //var r = 3;
         //animation.GetComponent<SkeletonAnimation>().loop = false;
-        animation.GetComponent<SkeletonAnimation>().AnimationName = allSpecificIdleAnies[(int)r];
+        if (DeerUnity.IsGrounded)
+            animation.GetComponent<SkeletonAnimation>().AnimationName = allSpecificIdleAnies[(int)r];
         timeToWait = 2f;
         if ((int)r == 3)
             timeToWait = 4.4f;
@@ -217,7 +218,8 @@ public class ReindeerSmall : MonoBehaviour
         isPlayingDieAnimation = false;
         stayTime = 0;
         isPlayingSpecificIdle = false;
-        animation.GetComponent<SkeletonAnimation>().AnimationName = basicIdleAni;
+        if (DeerUnity.IsGrounded)
+            animation.GetComponent<SkeletonAnimation>().AnimationName = basicIdleAni;
     }
 
     private void PlayJumpAnimation()
