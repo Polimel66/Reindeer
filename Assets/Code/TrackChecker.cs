@@ -52,12 +52,12 @@ public class TrackChecker : MonoBehaviour
         parent.GetComponent<Text>().text = "";
 
         text.GetComponent<Text>().text = "";
-        textDict = new Dictionary<string, Tuple<string, bool>> { { "TrapFootprint", Tuple.Create("Сработавшая ловушка, их расставляют эти мерзавцы. \nКажется в неё уже кто-то попался. \nНужно быть внимательнее.", false) },
-            { "WhirlwindFootprint", Tuple.Create("Здесь довольно ветренно. \nВетер опасен, но мама говорила, \nчто он может быть моим союзником.", false) },
-            { "CasingsFootprint", Tuple.Create("Этим охотники стреляют в нас - пули. \nОни для нас очень опасны. Но если пуля попадет в хрупкую платформу, \nона может разрушиться и освободить путь.", false) },
-            { "LittleShadow", Tuple.Create("Помню как с мамой отдыхал в тени.\n Было так прохладно.", false) },
-            { "FallenStalactite", Tuple.Create("Он размером с меня, \nпод такой лучше не попадать.", false) },
-            { "SmellOfDog", Tuple.Create("Я чувствую охотничьих псов, a с ними всегда охотники.\n Нужно срочно убегать отсюда.", false) }};
+        textDict = new Dictionary<string, Tuple<string, bool>> { { "TrapFootprint 1", Tuple.Create("Сработавшая ловушка, их расставляют эти мерзавцы. \nКажется в неё уже кто-то попался. \nНужно быть внимательнее.", false) },
+            { "WhirlwindFootprint 1", Tuple.Create("Здесь довольно ветренно. \nВетер опасен, но мама говорила, \nчто он может быть моим союзником.", false) },
+            { "CasingsFootprint 1", Tuple.Create("Этим охотники стреляют в нас - пули. \nОни для нас очень опасны. Но если пуля попадет в хрупкую платформу, \nона может разрушиться и освободить путь.", false) },
+            { "LittleShadow 2", Tuple.Create("Помню как с мамой отдыхал в тени.\n Было так прохладно.", false) },
+            { "FallenStalactite 2", Tuple.Create("Он размером с меня, \nпод такой лучше не попадать.", false) },
+            { "SmellOfDog 2", Tuple.Create("Я чувствую охотничьих псов, a с ними всегда охотники.\n Нужно срочно убегать отсюда.", false) }};
         timer = text.gameObject.AddComponent<Timer>();
         timer.SetPeriodForTick(5f);
         
@@ -66,12 +66,13 @@ public class TrackChecker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var locationNumber = int.Parse(collision.gameObject.name.Split(' ')[1]);
         if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && ReindeerSmall.isSmell && isInArea)
         {
             if (!textDict[collision.gameObject.name].Item2)
             {
                 deerUnity.GetComponent<DeerUnity>().countOfFoundTracks += 1;
-                deerUnity.GetComponent<DeerUnity>().SetTask(1);
+                deerUnity.GetComponent<DeerUnity>().SetTask(locationNumber);
                 textDict[collision.gameObject.name] = Tuple.Create(textDict[collision.gameObject.name].Item1, true);
             }
             text.GetComponent<Text>().text = textDict[collision.gameObject.name].Item1;

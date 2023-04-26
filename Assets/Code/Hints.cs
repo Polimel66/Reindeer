@@ -54,16 +54,17 @@ public class Hints : MonoBehaviour
             { "HintBoulders", "Кажется что-то крупное катится впереди! \nНужно быть осторожным!"},
             { "HintWindOnSlope", "Ого, какой поток ветра впереди. \nМне нужны какие-то барьеры, чтобы приодолеть его..."},
             { "HintOnMountain", "Нужно тщательно обыскать территорию горы. \nЯ чувствую новые запахи!" },
-            { "CaveBarrier", "I can't go there, I need to check, maybe I missed something." },
-            { "DarkPartCave", "I feel that I may need the help of a spirit." },
-            { "CollectedMoss", "I found moss! Now I can draw out that lemming!" },
-            { "LemmingCaveBeforeCollectingMoss", "It seems that the last lemming is sitting in the mink! But I can't just" +
-            " pull it out. We need to find a way to lure him out."},
-            { "LemmingCaveAfterCollectingMoss", "Happened! I have a lemming. Now you need to get out of this cave." },
-            { "DisabledSpawningIslands", "I see the exit from above. But it's impossible to go up here. We need" +
-            " to try to lure the lemming out, maybe something will change here." },
-            { "ActivatedSpawningIslands" , "Islands have come and gone. But I remember about where" +
-            " they appeared. You should try jumping on them from memory!" } };
+            { "CaveBarrier", "Я не могу туда пройти, нужно проверить, может я что-то пропустил." },
+            { "DarkPartCave", "Я чувствую, что мне может понадобиться помощь духа." },
+            { "CollectedMoss", "Я нашел мох! Теперь я смогу выманить того лемминга!" },
+            { "LemmingCaveBeforeCollectingMoss", "Кажется в норке сидит последний лемминг! Но просто так" +
+            " мне его не вытащить. Нужно найти способ его выманить."},
+            { "LemmingCaveAfterCollectingMoss", "Получилось! Лемминг у меня. Теперь нужно выбираться из этой пещеры." },
+            { "DisabledSpawningIslands", "Я вижу выход сверху. Но подняться тут пока невозможно. Нужно попробовать" +
+            " выманить лемминга, может тут что-то изменится." },
+            { "ActivatedSpawningIslands" , "Острова появились и исчезли. Но я помню в каком месте они появились." +
+            " Нужно попробовать прыгнуть на них по памяти!" },
+            { "HintRiseToTtop", "Тупик! Мне нужно как то попасть наверх."} };
 
         
         timer.SetPeriodForTick(5f);
