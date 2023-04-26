@@ -55,9 +55,9 @@ public class TrackChecker : MonoBehaviour
         textDict = new Dictionary<string, Tuple<string, bool>> { { "TrapFootprint 1", Tuple.Create("Сработавшая ловушка, их расставляют эти мерзавцы. \nКажется в неё уже кто-то попался. \nНужно быть внимательнее.", false) },
             { "WhirlwindFootprint 1", Tuple.Create("Здесь довольно ветренно. \nВетер опасен, но мама говорила, \nчто он может быть моим союзником.", false) },
             { "CasingsFootprint 1", Tuple.Create("Этим охотники стреляют в нас - пули. \nОни для нас очень опасны. Но если пуля попадет в хрупкую платформу, \nона может разрушиться и освободить путь.", false) },
-            { "LittleShadow 2", Tuple.Create("Помню как с мамой отдыхал в тени.\n Было так прохладно.", false) },
-            { "FallenStalactite 2", Tuple.Create("Он размером с меня, \nпод такой лучше не попадать.", false) },
-            { "SmellOfDog 2", Tuple.Create("Я чувствую охотничьих псов, a с ними всегда охотники.\n Нужно срочно убегать отсюда.", false) }};
+            { "LittleShadow 8", Tuple.Create("Помню как с мамой отдыхал в тени.\n Было так прохладно.", false) },
+            { "FallenStalactite 8", Tuple.Create("Он размером с меня, \nпод такой лучше не попадать.", false) },
+            { "SmellOfDog 8", Tuple.Create("Я чувствую охотничьих псов, a с ними всегда охотники.\n Нужно срочно убегать отсюда.", false) }};
         timer = text.gameObject.AddComponent<Timer>();
         timer.SetPeriodForTick(5f);
         
