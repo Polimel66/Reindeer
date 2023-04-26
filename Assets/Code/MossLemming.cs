@@ -30,6 +30,8 @@ public class MossLemming : MonoBehaviour
             gameObject.SetActive(false);
             firstEmergingPhrase.SetActive(false);
             secondEmergingPhrase.SetActive(true);
+            deerUnity.GetComponent<DeerUnity>().SetTask(12);
+            deerUnity.GetComponent<DeerUnity>().SetTask(10);
         }
         DeerUnity.isPossibleTakeLemming = false;
     }

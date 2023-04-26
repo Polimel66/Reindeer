@@ -504,6 +504,9 @@ public class ReindeerSmall : MonoBehaviour
         if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && currentLemmingArea != null)
         {
             currentLemmingArea.GetComponent<CollectionLemming>().assembleLemming();
+            deerUnity.GetComponent<DeerUnity>().SetTask(10);
+            DeerUnity.countOfFoundLemmings += 1;
+
         }
         if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed)
         {

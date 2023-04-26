@@ -40,6 +40,7 @@ public class Moss : MonoBehaviour
             darkPartCave.SetActive(false);
             phraseBeforeCollectingMoss.SetActive(false);
             phraseAfterCollectingMoss.SetActive(true);
+            deerUnity.GetComponent<DeerUnity>().SetTask(13);
         }
         DeerUnity.isPossibleTakeMoss = false;
     }
