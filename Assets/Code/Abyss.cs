@@ -8,6 +8,7 @@ public class Abyss : MonoBehaviour
     private BoxCollider2D coll;
     private GameObject deerUnity;
     private Color defaultColor = new Color(0, 0, 0, 0);
+    private bool isInAbyss = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,9 +21,9 @@ public class Abyss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var deer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
-        if (coll.IsTouching(deer.GetComponent<BoxCollider2D>()))
+        if (isInAbyss)
         {
+            var deer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
             sr.color = new Color(0, 0, 0, GetAlpha(deer.transform.position.y));
         }
         else
@@ -51,5 +52,21 @@ public class Abyss : MonoBehaviour
         if (alpha < 0 || alpha > 1)
             return 0;
         return alpha;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("Player"))
+        {
+            isInAbyss = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("Player"))
+        {
+            isInAbyss = false;
+        }
     }
 }

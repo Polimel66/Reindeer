@@ -81,7 +81,7 @@ public class ReindeerSmall : MonoBehaviour
     private bool isPlayingDieAnimation = false;
     private bool isPlayingJumpAnimation = false;
     private jumpPhase currentJumpPhase = jumpPhase.Up;
-    public GameObject jumpLandTrigger;
+    //public GameObject jumpLandTrigger;
     private bool isPlayingFallAnimation = false;
 
 
@@ -109,8 +109,8 @@ public class ReindeerSmall : MonoBehaviour
         rightWallChecker = transform.Find("RightWallChecker").gameObject;
         leftWallChecker = transform.Find("LeftWallChecker").gameObject;
 
-        trapTriggerLeft = transform.Find("TrapTriggerLeft").gameObject;
-        trapTriggerRight = transform.Find("TrapTriggerRight").gameObject;
+        trapTriggerLeft = transform.Find("TrapTrigger Left").gameObject;
+        trapTriggerRight = transform.Find("TrapTrigger Right").gameObject;
         CurrentActiveTrapTrigger = trapTriggerLeft;
         snowDrifts = GameObject.FindGameObjectsWithTag("SnowDrift");
 
@@ -145,6 +145,7 @@ public class ReindeerSmall : MonoBehaviour
 
     private void CheckAnimation()
     {
+        
         if (!isPlayingDieAnimation && !isPlayingJumpAnimation)
         {
             if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
@@ -238,7 +239,7 @@ public class ReindeerSmall : MonoBehaviour
     {
         if (isPlayingJumpAnimation)
         {
-            if(currentJumpPhase == jumpPhase.Up && CurrentVerticalVelocity < 0)
+            if(currentJumpPhase == jumpPhase.Up && CurrentVerticalVelocity < -0.05)
             {
                 
                 //jumpLandTrigger.GetComponent<JumpLandTrigger>().isNearToGround = false;
@@ -711,6 +712,14 @@ public class ReindeerSmall : MonoBehaviour
     {
         anotherHorForceRatio = 4f;
         jumpForceRatio = 1f;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("thorns"))
+        {
+            deerUnity.GetComponent<DeerUnity>().TakeDamage(1000);
+        }
     }
 }
 

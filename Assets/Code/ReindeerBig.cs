@@ -65,8 +65,8 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
         lungeImpulse = 1000;
         isLunge = false;
 
-        trapTriggerLeft = transform.Find("TrapTriggerLeft").gameObject;
-        trapTriggerRight = transform.Find("TrapTriggerRight").gameObject;
+        trapTriggerLeft = transform.Find("TrapTrigger Left").gameObject;
+        trapTriggerRight = transform.Find("TrapTrigger Right").gameObject;
         CurrentActiveTrapTrigger = trapTriggerLeft;
         collapsingPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
         moveObjects.AddRange(GameObject.FindGameObjectsWithTag("MoveObject"));
@@ -463,5 +463,13 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
     public void WindOut()
     {
         isInWind = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("thorns"))
+        {
+            deerUnity.GetComponent<DeerUnity>().TakeDamage(1000);
+        }
     }
 }

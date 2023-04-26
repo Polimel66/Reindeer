@@ -24,6 +24,8 @@ public class Wind : MonoBehaviour
     private bool isFullVisible;
     private bool isWithCollider = true;
     public bool isIgnoreShift = false;
+    public bool isNeedToChangeHearingRadius = true;
+    private bool isWithAudioSource;
     //public bool isPaused = false;
     // Start is called before the first frame update
     void Start()
@@ -36,9 +38,9 @@ public class Wind : MonoBehaviour
         gameObject.AddComponent<Timer>();
         GetComponent<Timer>().SetPeriodForTick(periodForTick);
         GetComponent<Timer>().StartTimer();
-        if (isWithSound)
+        isWithAudioSource = TryGetComponent<AudioSource>(out audio);
+        if (isNeedToChangeHearingRadius && isWithAudioSource)
         {
-            audio = GetComponent<AudioSource>();
             audio.volume = 1f;
             audio.maxDistance = 25;
             audio.spatialBlend = 1;
@@ -72,22 +74,27 @@ public class Wind : MonoBehaviour
                 GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, alphaRatio);
             }
 
-            if (isWithSound && isWorking && alphaRatio > 0.5f && !isPlayingSound)
+            if (isWithSound && isWorking && alphaRatio > 0.5f && !isPlayingSound && isWithAudioSource)
             {
                 isPlayingSound = true;
-                if (DeerUnity.VolumeRatio == 0)
+                var distance = Mathf.Sqrt((deerUnity.transform.position.x - transform.position.x) * (deerUnity.transform.position.x - transform.position.x)
+                    + (deerUnity.transform.position.y - transform.position.y) * (deerUnity.transform.position.y - transform.position.y));
+                if(distance < audio.maxDistance)
                 {
-                    audio.volume = 0;
+                    if (DeerUnity.VolumeRatio == 0)
+                    {
+                        audio.volume = 0;
+                    }
+                    else
+                    {
+                        audio.volume = 1;
+                    }
+                    audio.PlayOneShot(windSound);
                 }
-                else
-                {
-                    audio.volume = 1;
-                }
-                audio.PlayOneShot(windSound);
             }
         }
 
-        if (!isWorking)
+        if (!isWorking && isPlayingSound)
         {
             isPlayingSound = false;
         }

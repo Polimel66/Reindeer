@@ -14,11 +14,11 @@ public class GhostPlatform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (DeerUnity.CurrentActive == 2 && (platform.tag == "GhostPlatform" || platform.tag == "CircleGhostPlatform"))
+        if (DeerUnity.CurrentActive == 2 && !platform.activeSelf && (platform.tag == "GhostPlatform" || platform.tag == "CircleGhostPlatform"))
         {
             platform.SetActive(true);
         }
-        else if(platform.tag == "GhostPlatform" || platform.tag == "CircleGhostPlatform")
+        else if(platform.activeSelf && DeerUnity.CurrentActive != 2 && (platform.tag == "GhostPlatform" || platform.tag == "CircleGhostPlatform"))
         {
             platform.SetActive(false);
         }

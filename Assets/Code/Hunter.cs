@@ -176,7 +176,8 @@ public class Hunter : MonoBehaviour
                 if (deltaX > -5 && deltaX < 5 && !deerUnity.GetComponent<DeerUnity>().isBushed)
                 {
                     mode = HunterMode.Chasing;
-                    dog.GetComponent<Dog>().mode = HunterMode.Chasing;
+                    if(dog != null)
+                        dog.GetComponent<Dog>().mode = HunterMode.Chasing;
                     //dog.transform.position = transform.position;
                     isCanShooting = true;
                     
@@ -332,24 +333,28 @@ public class Hunter : MonoBehaviour
     public void StayAtPoint(Transform tr)
     {
         mode = HunterMode.Chasing;
-        dog.GetComponent<Dog>().mode = HunterMode.Searching;
+        if (dog != null)
+            dog.GetComponent<Dog>().mode = HunterMode.Searching;
         
         isCanShooting = true;
         isStayAtPoint = true;
         StopMoving();
         transform.position = tr.position;
-        dog.transform.position = transform.position;
+        if (dog != null)
+            dog.transform.position = transform.position;
     }
 
     public void HuntDeerAtPoint(Transform tr)
     {
         mode = HunterMode.Chasing;
-        dog.GetComponent<Dog>().mode = HunterMode.Chasing;
+        if (dog != null)
+            dog.GetComponent<Dog>().mode = HunterMode.Chasing;
         
         isCanShooting = true;
         isStayAtPoint = false;
         transform.position = tr.position;
-        dog.transform.position = transform.position;
+        if (dog != null)
+            dog.transform.position = transform.position;
     }
 
     private void GoRight()

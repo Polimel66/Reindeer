@@ -28,22 +28,6 @@ public class Trap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isTriggered && DeerUnity.CurrentActive != 2 && GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveTrapTrigger().GetComponent<BoxCollider2D>()))
-        {
-            Trigger();
-            deerUnity.GetComponent<DeerUnity>().Trapped();
-            var audio = gameObject.GetComponent<AudioSource>();
-            audio.volume = 1f;
-            if (DeerUnity.VolumeRatio == 0)
-            {
-                audio.volume = 0;
-            }
-            else
-            {
-                audio.volume = 1;
-            }
-            audio.PlayOneShot(triggerSound);
-        }
         if (isTriggered && !isAniFinished)
         {
             time += Time.deltaTime;
@@ -72,5 +56,30 @@ public class Trap : MonoBehaviour
     {
         isTriggered = true;
         //GetComponent<SpriteRenderer>().color = Color.blue;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        var name = collision.name.Split();
+        if (name[0].Equals("TrapTrigger"))
+        {
+            if (name[1].Equals(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveTrapTrigger().name.Split()[1])
+                && !isTriggered && DeerUnity.CurrentActive != 2)
+            {
+                Trigger();
+                deerUnity.GetComponent<DeerUnity>().Trapped();
+                var audio = gameObject.GetComponent<AudioSource>();
+                audio.volume = 1f;
+                if (DeerUnity.VolumeRatio == 0)
+                {
+                    audio.volume = 0;
+                }
+                else
+                {
+                    audio.volume = 1;
+                }
+                audio.PlayOneShot(triggerSound);
+            }
+        }
     }
 }

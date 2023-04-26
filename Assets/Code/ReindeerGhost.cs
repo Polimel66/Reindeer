@@ -71,7 +71,7 @@ public class ReindeerGhost : MonoBehaviour
     private bool isPlayingDieAnimation = false;
     private bool isPlayingJumpAnimation = false;
     private jumpPhase currentJumpPhase = jumpPhase.Up;
-    public GameObject jumpLandTrigger;
+    //public GameObject jumpLandTrigger;
     private bool isPlayingFallAnimation = false;
     public GameObject animation;
     private bool isCoorChangedForFlying = true;
@@ -153,6 +153,7 @@ public class ReindeerGhost : MonoBehaviour
 
     private void CheckAnimation()
     {
+
         if (!isPlayingDieAnimation && !isPlayingJumpAnimation)
         {
             if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
@@ -191,13 +192,14 @@ public class ReindeerGhost : MonoBehaviour
                     SetAnimation(joggingAni);
                 }
             }
-
+        
             /*if (CurrentVerticalVelocity < -1f && !isPlayingFallAnimation)
             {
                 PlayFallAnimation();
 
             }*/
         }
+        
     }
 
     private void SetAnimation(string name)
@@ -622,5 +624,13 @@ public class ReindeerGhost : MonoBehaviour
     public void WindOut()
     {
         isInWind = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("thorns"))
+        {
+            deerUnity.GetComponent<DeerUnity>().TakeDamage(1000);
+        }
     }
 }
