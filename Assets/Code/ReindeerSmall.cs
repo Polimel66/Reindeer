@@ -239,7 +239,7 @@ public class ReindeerSmall : MonoBehaviour
     {
         if (isPlayingJumpAnimation)
         {
-            if(currentJumpPhase == jumpPhase.Up && CurrentVerticalVelocity < -0.05)
+            if(currentJumpPhase == jumpPhase.Up && CurrentVerticalVelocity < -0.05f)
             {
                 
                 //jumpLandTrigger.GetComponent<JumpLandTrigger>().isNearToGround = false;

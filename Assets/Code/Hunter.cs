@@ -48,8 +48,11 @@ public class Hunter : MonoBehaviour
     private HunterMode previousHunterMode = HunterMode.Searching;
     public bool isCanShooting = false;
     public GameObject dog;
+    public bool isExtraDamage = true;
+    private Vector3 startPos;
     void Start()
     {
+        startPos = transform.position;
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         this.gameObject.AddComponent<Timer>();
@@ -218,18 +221,28 @@ public class Hunter : MonoBehaviour
                 StopRunning();
             }
 
-            if (deltaX > -7 && deltaX < 7)
+            if (deltaX > -9 && deltaX < 9)
             {
                 if (GetComponent<Timer>().GetTime() - shootTime > 3f)
                 {
                     Shoot();
                     shootTime = GetComponent<Timer>().GetTime();
+                    if (isExtraDamage)
+                    {
+                        Invoke("ResetHunter", 2f);
+                        //ResetHunter();
+                    }
                 }
             }
 
             if (deltaX < 0.5 && deltaX > -0.5 && !deerUnity.GetComponent<DeerUnity>().isCatched && deltaY < 5)
             {
                 deerUnity.GetComponent<DeerUnity>().CatchDeer();
+                if (isExtraDamage)
+                {
+                    Invoke("ResetHunter", 2f);
+                    //ResetHunter();
+                }
             }
         }
         
@@ -414,7 +427,12 @@ public class Hunter : MonoBehaviour
             }
             audio.PlayOneShot(shootSound);
             var newBullet = GameObject.Instantiate(GameObject.Find("HunterKit1").transform.Find("Bullet").gameObject, transform.position, transform.rotation);
-            newBullet.GetComponent<Bullet>().GoToDeer();
+            if(isExtraDamage)
+                newBullet.GetComponent<Bullet>().GoToDeer(20, 1000);
+            else
+            {
+                newBullet.GetComponent<Bullet>().GoToDeer();
+            }
         }
     }
 
@@ -445,5 +463,11 @@ public class Hunter : MonoBehaviour
     public void DisableHunter()
     {
         deerUnity.GetComponent<DeerUnity>().PlayMainTheme();
+    }
+
+    private void ResetHunter()
+    {
+        transform.position = startPos;
+        mode = HunterMode.Searching;
     }
 }

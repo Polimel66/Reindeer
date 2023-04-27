@@ -18,6 +18,7 @@ public class SearchingHunter : MonoBehaviour
     private bool isShooted = false;
     public GameObject laserTargetPoint;
     private bool isStopRotation = false;
+    private float tForRaycast = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,48 +58,56 @@ public class SearchingHunter : MonoBehaviour
                 }
             }
         }
-
-        var directionOfRay = new Vector2(10 * Mathf.Sin(zRotation * Mathf.PI / 180), -10 * Mathf.Sin((90 - Mathf.Abs(zRotation)) * Mathf.PI / 180));
-        var origin = new Vector2(circle.transform.position.x, circle.transform.position.y);
-        var hits = Physics2D.RaycastAll(origin, directionOfRay);
-        var distance = 0.0f;
-        var dis = new Vector2();
-        foreach (var hit in hits)
+        tForRaycast += Time.deltaTime;
+        if(tForRaycast > 0.033f)
         {
-            if (hit.collider.tag.Equals("LaserBound"))
+            tForRaycast = 0;
+            var directionOfRay = new Vector2(10 * Mathf.Sin(zRotation * Mathf.PI / 180), -10 * Mathf.Sin((90 - Mathf.Abs(zRotation)) * Mathf.PI / 180));
+            var origin = new Vector2(circle.transform.position.x, circle.transform.position.y);
+            var hits = Physics2D.RaycastAll(origin, directionOfRay);
+            var distance = 0.0f;
+            var dis = new Vector2();
+            foreach (var hit in hits)
             {
-                distance = hit.distance;
-                laserTargetPoint.transform.position = hit.point;
-                dis = hit.point;
-                break;
+                if (hit.collider.tag.Equals("LaserBound"))
+                {
+                    distance = hit.distance;
+                    laserTargetPoint.transform.position = hit.point;
+                    dis = hit.point;
+
+                    //Debug.DrawLine(circle.transform.position, hit.point, Color.red);
+
+                    break;
+                }
+            }
+            if (distance != 0)
+            {
+                var scaleRatio = laser.transform.parent.parent.localScale.x;
+                distance += 0.2f;
+                //distance = Mathf.Sqrt((circle.transform.position.x - dis.x) * (circle.transform.position.x - dis.x) + (circle.transform.position.y - dis.y) * (circle.transform.position.y - dis.y));
+                laser.transform.localScale = new Vector3(0.1f, distance / scaleRatio, 1);
+                laser.transform.localPosition = new Vector3(0, (-distance / 2) / scaleRatio, 0);
+            }
+            else
+            {
+                laser.transform.localScale = new Vector3(0.1f, 20, 1);
+                laser.transform.localPosition = new Vector3(0, -10, 0);
+            }
+            circle.transform.localEulerAngles = new Vector3(0, 0, zRotation);
+            if (!isShooted
+                && laser.GetComponent<Laser>().isTouching
+                && !deerUnity.GetComponent<DeerUnity>().isBushed)
+            {
+                isStopRotation = true;
+                Shoot();
+                isShooted = true;
+                //deerUnity.GetComponent<DeerUnity>().CatchDeer();
+                deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().StopMoving();
+                Invoke("UnShoot", 1f);
+                Invoke("UnStopRotation", 1f);
             }
         }
-        if (distance != 0)
-        {
-            var scaleRatio = laser.transform.parent.parent.localScale.x;
-            distance += 0.2f;
-            //distance = Mathf.Sqrt((circle.transform.position.x - dis.x) * (circle.transform.position.x - dis.x) + (circle.transform.position.y - dis.y) * (circle.transform.position.y - dis.y));
-            laser.transform.localScale = new Vector3(0.1f, distance / scaleRatio, 1);
-            laser.transform.localPosition = new Vector3(0, (-distance / 2) / scaleRatio, 0);
-        }
-        else
-        {
-            laser.transform.localScale = new Vector3(0.1f, 20, 1);
-            laser.transform.localPosition = new Vector3(0, -10, 0);
-        }
-        circle.transform.localEulerAngles = new Vector3(0, 0, zRotation);
-        if (!isShooted 
-            && laser.GetComponent<Laser>().isTouching
-            && !deerUnity.GetComponent<DeerUnity>().isBushed)
-        {
-            isStopRotation = true;
-            Shoot();
-            isShooted = true;
-            //deerUnity.GetComponent<DeerUnity>().CatchDeer();
-            deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().StopMoving();
-            Invoke("UnShoot", 1f);
-            Invoke("UnStopRotation", 1f);
-        }
+        
     }
 
     private void UnShoot()

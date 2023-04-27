@@ -524,7 +524,6 @@ public class DeerUnity : MonoBehaviour
         hunter.GetComponent<Hunter>().StartMoving();
         hunter.GetComponent<Hunter>().isCanShooting = true;
         TakeDamage(100000);
-        isCatched = false;
     }
 
     public void SetTask(int numberOfTask)
@@ -816,6 +815,9 @@ public class DeerUnity : MonoBehaviour
         SwitchOnFirst();
         GetCurrentActiveDeer().GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         maxFallVelocity = 0;
+
+        isCatched = false;
+
         Invoke("ResetTraps", 0.1f);
     }
 

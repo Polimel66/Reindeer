@@ -59,12 +59,12 @@ public class ReindeerGhost : MonoBehaviour
     private string levitacia = "Levitacia";
     private string joggingAni = "Walk";
     private string runAni = "Beg";
-    /*private Dictionary<jumpPhase, string> jumpFhaseAnies = new Dictionary<jumpPhase, string>()
+    private Dictionary<jumpPhase, string> jumpFhaseAnies = new Dictionary<jumpPhase, string>()
     {
-        { jumpPhase.Up, "JumpBasicUp" },
-        { jumpPhase.Down, "JumpBasicDown" },
-        { jumpPhase.Land, "JumpBasicLand" }
-    };*/
+        { jumpPhase.Up, "JumpUp" },
+        { jumpPhase.Down, "JumpDown" },
+        { jumpPhase.Land, "JumpLand" }
+    };
     private float stayTime = 0;
     private float timeToWait;
     private bool isPlayingSpecificIdle = false;
@@ -111,9 +111,9 @@ public class ReindeerGhost : MonoBehaviour
 
         CheckAnimation();
 
-        //UpdateJumpAnimation();
+        UpdateJumpAnimation();
 
-        //UpdateFallAnimation();
+        UpdateFallAnimation();
 
         if (!isCoorChangedForFlying)
         {
@@ -192,14 +192,14 @@ public class ReindeerGhost : MonoBehaviour
                     SetAnimation(joggingAni);
                 }
             }
-        
-            /*if (CurrentVerticalVelocity < -1f && !isPlayingFallAnimation)
+
+            if (CurrentVerticalVelocity < -1f && !isPlayingFallAnimation)
             {
                 PlayFallAnimation();
 
-            }*/
+            }
         }
-        
+
     }
 
     private void SetAnimation(string name)
@@ -227,7 +227,7 @@ public class ReindeerGhost : MonoBehaviour
         stayTime = 0;
         isPlayingSpecificIdle = false;
         animation.GetComponent<SkeletonAnimation>().AnimationName = basicIdleAni;
-    }
+    }*/
 
     private void PlayJumpAnimation()
     {
@@ -241,7 +241,7 @@ public class ReindeerGhost : MonoBehaviour
     {
         if (isPlayingJumpAnimation)
         {
-            if (currentJumpPhase == jumpPhase.Up && CurrentVerticalVelocity < 0)
+            if (currentJumpPhase == jumpPhase.Up && CurrentVerticalVelocity < -0.05f)
             {
 
                 //jumpLandTrigger.GetComponent<JumpLandTrigger>().isNearToGround = false;
@@ -304,7 +304,7 @@ public class ReindeerGhost : MonoBehaviour
             }
         }
     }
-
+    /*
     public void PlayDieAnimation()
     {
         StopJumpAnimation();
@@ -386,6 +386,8 @@ public class ReindeerGhost : MonoBehaviour
         {
             rigidbody.AddForce(new Vector2(0, 45));
             InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
+
+            PlayJumpAnimation();
         }
         if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed)
         {

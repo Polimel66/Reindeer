@@ -8,6 +8,7 @@ public class HunterControlPoint : MonoBehaviour
     private GameObject hunterPoint;
     public bool isStayAtPoint;
     public bool isAlreadyWorked = false;
+    public bool isExtraDamage = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,7 @@ public class HunterControlPoint : MonoBehaviour
     {
         if (collision.tag.Equals("Player") && !isAlreadyWorked)
         {
+            hunter.GetComponent<Hunter>().isExtraDamage = isExtraDamage;
             isAlreadyWorked = true;
             if (isStayAtPoint)
             {
@@ -38,6 +40,7 @@ public class HunterControlPoint : MonoBehaviour
 
     public void DoSame()
     {
+        hunter.GetComponent<Hunter>().isExtraDamage = isExtraDamage;
         if (isStayAtPoint)
         {
             hunter.GetComponent<Hunter>().StayAtPoint(hunterPoint.transform);
