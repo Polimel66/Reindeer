@@ -10,8 +10,8 @@ public class CollectionLemming : MonoBehaviour
     public void assembleLemming()
     {
         gameObject.transform.Find("Lemming").gameObject.SetActive(false);
-        //DeerUnity.countOfFoundLemmings += 1;
-        //deerUnity.GetComponent<DeerUnity>().SetTask(10);
+        DeerUnity.countOfFoundLemmings += 1;
+        deerUnity.GetComponent<DeerUnity>().SetTask(10);
         if (DeerUnity.countOfFoundLemmings == 2)
         {
             caveBarrier.SetActive(false);

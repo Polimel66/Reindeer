@@ -276,6 +276,7 @@ public class DeerUnity : MonoBehaviour
         ActivateDeer();
         UpdateIsOnGround();
         updateWindOnRise();
+        ActivateCooling();
         if (isActivateCooling)
         {
             Shadow();

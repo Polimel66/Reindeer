@@ -124,6 +124,10 @@ public class PlatformChecker : MonoBehaviour
             reindeer.GetComponent<BoxCollider2D>().isTrigger = false;
             reindeer.GetComponent<ReindeerSmall>().StartMoving();
         }
+        else if (collision.tag == "CollectionArea")
+        {
+            deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().currentLemmingArea = null;
+        }
     }
 
     void Update()
