@@ -46,7 +46,11 @@ public class GhostControlPoint : MonoBehaviour
                 ani.GetComponent<SkeletonAnimation>().AnimationName = levit;
                 ani.transform.localPosition = new Vector3(-1.69f, -3.22f, 0);
                 ani.transform.localEulerAngles = new Vector3(0, 0, 0);
-                GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().StartMoving();
+                if(DeerUnity.CurrentActive == 1)
+                {
+                    GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().StartMoving();
+                }
+                
                 isEnd = true;
                 Invoke("TurnOffCameraTiedGhost", 1f);
             }
@@ -95,7 +99,10 @@ public class GhostControlPoint : MonoBehaviour
             }
             if (gameObject.transform.tag == "moveCamera" && !isActivateCameraTiedBefore)
             {
-                GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().StopMoving();
+                if (DeerUnity.CurrentActive == 1)
+                {
+                    GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().StopMoving();
+                }
                 isActivateCameraTiedBefore = true;
                 TurnOnCameraTiedGhost();
                 GameObject.Find("FirstGroupHints").SetActive(false);
