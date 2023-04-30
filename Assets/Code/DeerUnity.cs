@@ -232,6 +232,16 @@ public class DeerUnity : MonoBehaviour
         tileMapCollider2 = GameObject.Find("Tilemap2").GetComponent<CompositeCollider2D>();
 
         spawn = GameObject.Find("Spawn");
+
+        if(MainMenu.LocationStartNumber == 1)
+        {
+            spawn.transform.position = new Vector3(70, -114, 0);
+        }
+        if(MainMenu.LocationStartNumber == 2)
+        {
+            spawn.transform.position = new Vector3(922, -105, 0);
+        }
+
         MoveAllDeersToSpawn();
         ActivateCooling();
 
@@ -777,7 +787,7 @@ public class DeerUnity : MonoBehaviour
             point.GetComponent<HunterControlPoint>().isAlreadyWorked = false;
         }
         var timeToWait = 0.0f;
-        if (CurrentActive == 1)
+        if (CurrentActive == 1 && currentHealth <= 0)
         {
             reindeerSmall.GetComponent<ReindeerSmall>().PlayDieAnimation();
             timeToWait = 1.1f;

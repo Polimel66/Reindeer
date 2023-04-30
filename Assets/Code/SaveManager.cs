@@ -14,7 +14,7 @@ public static class SaveManager
         }
         else
         {
-            PlayerPrefs.SetString("LastCheckPoint", "Map1CheckPoint0");
+            //PlayerPrefs.SetString("LastCheckPoint", "Map1CheckPoint0");
         }
         PlayerPrefs.Save();
     }
@@ -24,10 +24,22 @@ public static class SaveManager
         if (PlayerPrefs.HasKey("LastCheckPoint"))
         {
             LastCheckPointName = PlayerPrefs.GetString("LastCheckPoint");
+            if(MainMenu.LocationStartNumber == 1)
+            {
+                LastCheckPointName = "Map1CheckPoint0";
+            }
+            if(MainMenu.LocationStartNumber == 2)
+            {
+                LastCheckPointName = "Map1CheckPoint8";
+            }
+            if(MainMenu.LocationStartNumber == 0)
+            {
+                LastCheckPointName = null;
+            }
         }
         else
         {
-            LastCheckPointName = "Map1CheckPoint0";
+            //LastCheckPointName = "Map1CheckPoint0";
         }
     }
 
