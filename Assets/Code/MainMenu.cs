@@ -43,6 +43,8 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
         /*if (SaveManager.isAnySaves())
         {
             continueButton.SetActive(true);
