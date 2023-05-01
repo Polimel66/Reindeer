@@ -66,7 +66,7 @@ public class TrackChecker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && ReindeerSmall.isSmell && isInArea)
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && isInArea)
         {
             var locationNumber = int.Parse(collision.gameObject.name.Split(' ')[1]);
             if (!textDict[collision.gameObject.name].Item2)

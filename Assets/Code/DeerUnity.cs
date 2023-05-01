@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class DeerUnity : MonoBehaviour
 {
@@ -177,6 +178,9 @@ public class DeerUnity : MonoBehaviour
     public GameObject message;
     public bool isBited;
 
+    private bool isTasksShowing = true;
+    public GameObject tasks;
+
 
     // Start is called before the first frame update
     void Start()
@@ -269,11 +273,14 @@ public class DeerUnity : MonoBehaviour
         xDelMidBack = midesBack[1].transform.localPosition.x - midesBack[2].transform.localPosition.x;
         xDelBack = backs[1].transform.localPosition.x - backs[2].transform.localPosition.x;
 
-        TaskMenuParent.transform.Find("TextBackground").GetComponent<Image>().color = new Color(0, 0, 0, 0);
-        Head.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        /*TaskMenuParent.transform.Find("TextBackground").GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        Head.GetComponent<Image>().color = new Color(0, 0, 0, 0);*/
         TaskMenu.GetComponent<Text>().text = "";
 
         message.SetActive(false);
+
+        isTasksShowing = true;
+        tasks.transform.localScale = new Vector3(1, 1, 1);
     }
 
     // Update is called once per frame
@@ -538,6 +545,8 @@ public class DeerUnity : MonoBehaviour
 
     public void SetTask(int numberOfTask)
     {
+        isTasksShowing = true;
+        tasks.transform.localScale = new Vector3(1, 1, 1);
         if (indexOfCurrentTasks.Count == 0)
         {
             TaskMenuParent.transform.Find("TextBackground").GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
@@ -580,9 +589,11 @@ public class DeerUnity : MonoBehaviour
         s = s.Remove(s.Length - 1);
         if (s.Equals(Tasks[0].Remove(Tasks[0].Length - 1)))
         {
+            /*
             TaskMenuParent.transform.Find("TextBackground").gameObject.GetComponent<Image>().color = new Color(0, 0, 0, 0);
             Head.GetComponent<Image>().color = new Color(0, 0, 0, 0);
-            TaskMenu.GetComponent<Text>().color = new Color(0, 0, 0, 0);
+            TaskMenu.GetComponent<Text>().color = new Color(0, 0, 0, 0);*/
+            s = "";
         }
         else
         {
@@ -1192,6 +1203,27 @@ public class DeerUnity : MonoBehaviour
     private void UnBite()
     {
         isBited = false;
+    }
+
+    public void OnExitGameButtonClick()
+    {
+        SaveManager.SaveGame();
+        SceneManager.LoadScene("Menu");
+        
+    }
+
+    public void OnShowHideTasksButtonClick()
+    {
+        if (isTasksShowing)
+        {
+            isTasksShowing = false;
+            tasks.transform.localScale = new Vector3(0, 1, 1);
+        }
+        else
+        {
+            isTasksShowing = true;
+            tasks.transform.localScale = new Vector3(1, 1, 1);
+        }
     }
 
     public void SetIsGrounded(bool value) { IsGrounded = value; }
