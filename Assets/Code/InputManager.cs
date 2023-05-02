@@ -18,6 +18,9 @@ public class InputManager : MonoBehaviour
     public bool isAnyMoveButtonPressing = false;
     private bool isGoRightPressing = false;
     private bool isGoLeftPressing = false;
+    private bool isBoostPressed = false;
+    private bool isWalkingPressed = false;
+    public Joystick joystick;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,16 +39,54 @@ public class InputManager : MonoBehaviour
         {
             isAnyMoveButtonPressing = false;
         }
+        if (joystick.Horizontal > 0)
+        {
+            OnGoLeftButtonStopPress();
+            OnGoRightButtonPressed();
+            isWalkingPressed = true;
+            isGoRightPressing = true;
+            isGoLeftPressing = false;
+        }
+        else if (joystick.Horizontal < 0)
+        {
+            OnGoRightButtonStopPress();
+            OnGoLeftButtonPressed();
+            isWalkingPressed = true;
+            isGoRightPressing = false;
+            isGoLeftPressing = true;
+        }
+        else
+        {
+            OnGoLeftButtonStopPress();
+            OnGoRightButtonStopPress();
+            isWalkingPressed = false;
+            isGoRightPressing = false;
+            isGoLeftPressing = false;
+        }
+        if (joystick.Vertical > 0.5f)
+        {
+            if (t > 0.3f)
+            {
+                OnJumpButtonPressed();
+                t = 0;
+            }
+            
+        }
     }
 
     public void OnGoRightButtonPressed()
     {
         isGoRightButtonPressed = true;
-        if (t < 0.3f)
+        if (isBoostPressed)
         {
             isRunMode = true;
         }
-        t = 0;
+        //if (t < 0.3f)
+        //{
+        //    isRunMode = true;
+        //}
+        //t = 0;
+        isWalkingPressed = true;
         isGoRightPressing = true;
     }
 
@@ -54,17 +95,37 @@ public class InputManager : MonoBehaviour
         isGoRightButtonStopPress = true;
         isRunMode = false;
         isGoRightPressing = false;
+        isWalkingPressed = false;
     }
 
-    public void OnGoLeftButtonPressed()
+    public void OnBoostPressed()
     {
-        isGoLeftButtonPressed = true;
-        if (t < 0.3f)
+        isBoostPressed = true;
+        if (isWalkingPressed)
         {
             isRunMode = true;
         }
-        t = 0;
+    }
+
+    public void OnBoostStopPress()
+    {
+        isBoostPressed = false;
+        isRunMode = false;
+    }
+    public void OnGoLeftButtonPressed()
+    {
+        isGoLeftButtonPressed = true;
+        if (isBoostPressed)
+        {
+            isRunMode = true;
+        }
+        //if (t < 0.3f)
+        //{
+        //    isRunMode = true;
+        //}
+        //t = 0;
         isGoLeftPressing = true;
+        isWalkingPressed = true;
     }
 
     public void OnGoLeftButtonStopPress()
@@ -72,6 +133,7 @@ public class InputManager : MonoBehaviour
         isGoLeftButtonStopPress = true;
         isRunMode = false;
         isGoLeftPressing = false;
+        isWalkingPressed = false;
     }
 
     public void OnJumpButtonPressed()

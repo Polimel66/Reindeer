@@ -74,6 +74,7 @@ public class DeerUnity : MonoBehaviour
 
     public GameObject inGameMenu;
     private float maxFallVelocity = 0;
+    public GameObject InputManager;
 
     public GameObject firstAbility;
     public GameObject secondAbility;
@@ -853,8 +854,8 @@ public class DeerUnity : MonoBehaviour
 
     private void StaminaKeys()
     {
-        if ((Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift) && isRunning)
-            || (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift) && isRunning))
+        if ((InputManager.GetComponent<InputManager>().isRunMode && isRunning)
+            || (InputManager.GetComponent<InputManager>().isRunMode && isRunning))
         {
             currentStamina -= Time.deltaTime * 20f;
         }

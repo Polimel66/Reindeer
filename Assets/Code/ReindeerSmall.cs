@@ -52,6 +52,8 @@ public class ReindeerSmall : MonoBehaviour
     private float jumpForceRatio = 1f;
     private bool isIgnoreShift = false;
     private GameObject[] snowDrifts;
+    private int prevWalk = 0;
+    public Joystick joystick;
     //public bool isNeedToUpdatePlatformsList = false;
     public bool isInShadow { get; private set; }
 
@@ -451,7 +453,39 @@ public class ReindeerSmall : MonoBehaviour
         }
         InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
 
-        
+        //if (joystick.Horizontal > 0)
+        //{
+        //    if (prevWalk < 0)
+        //    {
+        //        CurrentHorizontalVelocity += 4;
+        //    }
+        //    CurrentHorizontalVelocity += 4;
+        //    prevWalk = 1;
+        //    InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing = true;
+        //}
+        //else if (joystick.Horizontal < 0)
+        //{
+        //    if (prevWalk > 0)
+        //    {
+        //        CurrentHorizontalVelocity -= 4;
+        //    }
+        //    CurrentHorizontalVelocity -= 4;
+        //    prevWalk = -1;
+        //    InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing = true;
+        //}
+        //else
+        //{
+        //    if (prevWalk > 0)
+        //    {
+        //        CurrentHorizontalVelocity -= 4;
+        //    }
+        //    else if (prevWalk < 0)
+        //    {
+        //        CurrentHorizontalVelocity += 4;
+        //    }
+        //    prevWalk = 0;
+        //    InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing = false;
+        //}
 
         if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)
         {

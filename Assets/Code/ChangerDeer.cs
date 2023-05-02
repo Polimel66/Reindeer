@@ -8,6 +8,7 @@ public class ChangerDeer : MonoBehaviour
     public GameObject circleSmall;
     public GameObject circleGhost;
     public GameObject circleBig;
+    public GameObject currentActiveCircle;
     // Start is called before the first frame update
     private GameObject deerUnity;
     void Start()
@@ -20,30 +21,45 @@ public class ChangerDeer : MonoBehaviour
     {
         if (DeerUnity.CurrentActive == 1)
         {
+            currentActiveCircle.GetComponent<Image>().color = Color.grey;
+            currentActiveCircle.GetComponent<RectTransform>().localScale = new Vector3(76.4f, 76.4f, 1f);
+            var center = currentActiveCircle.GetComponent<RectTransform>().position;
+            if (center.x != circleSmall.GetComponent<RectTransform>().position.x)
+            {
+                currentActiveCircle.GetComponent<RectTransform>().position -= new Vector3(center.x - circleSmall.GetComponent<RectTransform>().position.x, center.y - circleSmall.GetComponent<RectTransform>().position.y, 0);
+                circleSmall.GetComponent<RectTransform>().position += new Vector3(center.x - circleSmall.GetComponent<RectTransform>().position.x, center.y - circleSmall.GetComponent<RectTransform>().position.y, 0);
+            }
             circleSmall.GetComponent<Image>().color = Color.white;
             circleSmall.GetComponent<RectTransform>().localScale = new Vector3(130f, 130f, 1f);
-            circleGhost.GetComponent<Image>().color = Color.grey;
-            circleGhost.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
-            circleBig.GetComponent<Image>().color = Color.grey;
-            circleBig.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
+            currentActiveCircle = circleSmall;
         }
         else if (DeerUnity.CurrentActive == 2)
         {
-            circleSmall.GetComponent<Image>().color = Color.grey;
-            circleSmall.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
+            currentActiveCircle.GetComponent<Image>().color = Color.grey;
+            currentActiveCircle.GetComponent<RectTransform>().localScale = new Vector3(76.4f, 76.4f, 1f);
+            var center = currentActiveCircle.GetComponent<RectTransform>().position;
+            if (center.x != circleGhost.GetComponent<RectTransform>().position.x)
+            {
+                currentActiveCircle.GetComponent<RectTransform>().position -= new Vector3(center.x - circleGhost.GetComponent<RectTransform>().position.x, center.y - circleGhost.GetComponent<RectTransform>().position.y, 0);
+                circleGhost.GetComponent<RectTransform>().position += new Vector3(center.x - circleGhost.GetComponent<RectTransform>().position.x, center.y - circleGhost.GetComponent<RectTransform>().position.y, 0);
+            }
             circleGhost.GetComponent<Image>().color = Color.white;
             circleGhost.GetComponent<RectTransform>().localScale = new Vector3(130f, 130f, 1f);
-            circleBig.GetComponent<Image>().color = Color.grey;
-            circleBig.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
+            currentActiveCircle = circleGhost;
         }
         else if (DeerUnity.CurrentActive == 3)
         {
-            circleSmall.GetComponent<Image>().color = Color.grey;
-            circleSmall.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
-            circleGhost.GetComponent<Image>().color = Color.grey;
-            circleGhost.GetComponent<RectTransform>().localScale = new Vector3(94.5f, 94.5f, 1f);
+            currentActiveCircle.GetComponent<Image>().color = Color.grey;
+            currentActiveCircle.GetComponent<RectTransform>().localScale = new Vector3(76.4f, 76.4f, 1f);
+            var center = currentActiveCircle.GetComponent<RectTransform>().position;
+            if (center.x != circleBig.GetComponent<RectTransform>().position.x)
+            {
+                currentActiveCircle.GetComponent<RectTransform>().position -= new Vector3(center.x - circleBig.GetComponent<RectTransform>().position.x, center.y - circleBig.GetComponent<RectTransform>().position.y, 0);
+                circleBig.GetComponent<RectTransform>().position += new Vector3(center.x - circleBig.GetComponent<RectTransform>().position.x, center.y - circleBig.GetComponent<RectTransform>().position.y, 0);
+            }
             circleBig.GetComponent<Image>().color = Color.white;
             circleBig.GetComponent<RectTransform>().localScale = new Vector3(130f, 130f, 1f);
+            currentActiveCircle = circleBig;
         }
     }
 }
