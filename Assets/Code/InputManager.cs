@@ -28,18 +28,20 @@ public class InputManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         t += Time.deltaTime;
-        if (isGoRightPressing || isGoLeftPressing)
+        if ((isGoRightPressing || isGoLeftPressing) && !isAnyMoveButtonPressing)
         {
             isAnyMoveButtonPressing = true;
         }
-        else
+        else if(!isGoRightPressing && !isGoLeftPressing && isAnyMoveButtonPressing)
         {
             isAnyMoveButtonPressing = false;
         }
-        if (joystick.Horizontal > 0)
+        
+        
+        /*if (joystick.Horizontal > 0.25)
         {
             OnGoLeftButtonStopPress();
             OnGoRightButtonPressed();
@@ -47,7 +49,7 @@ public class InputManager : MonoBehaviour
             isGoRightPressing = true;
             isGoLeftPressing = false;
         }
-        else if (joystick.Horizontal < 0)
+        else if (joystick.Horizontal < -0.25)
         {
             OnGoRightButtonStopPress();
             OnGoLeftButtonPressed();
@@ -71,7 +73,7 @@ public class InputManager : MonoBehaviour
                 t = 0;
             }
             
-        }
+        }*/
     }
 
     public void OnGoRightButtonPressed()
@@ -81,11 +83,11 @@ public class InputManager : MonoBehaviour
         {
             isRunMode = true;
         }
-        //if (t < 0.3f)
-        //{
-        //    isRunMode = true;
-        //}
-        //t = 0;
+        if (t < 0.3f)
+        {
+            isRunMode = true;
+        }
+        t = 0;
         isWalkingPressed = true;
         isGoRightPressing = true;
     }
@@ -119,11 +121,11 @@ public class InputManager : MonoBehaviour
         {
             isRunMode = true;
         }
-        //if (t < 0.3f)
-        //{
-        //    isRunMode = true;
-        //}
-        //t = 0;
+        if (t < 0.3f) 
+        {
+            isRunMode = true;
+        }
+        t = 0;
         isGoLeftPressing = true;
         isWalkingPressed = true;
     }

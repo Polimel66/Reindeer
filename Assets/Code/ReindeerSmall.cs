@@ -54,6 +54,7 @@ public class ReindeerSmall : MonoBehaviour
     private GameObject[] snowDrifts;
     private int prevWalk = 0;
     public Joystick joystick;
+    
     //public bool isNeedToUpdatePlatformsList = false;
     public bool isInShadow { get; private set; }
 
@@ -85,6 +86,8 @@ public class ReindeerSmall : MonoBehaviour
     private jumpPhase currentJumpPhase = jumpPhase.Up;
     //public GameObject jumpLandTrigger;
     private bool isPlayingFallAnimation = false;
+
+    private int movingButtonsNotPressingFramesCounter = 0;
 
 
     void Start()
@@ -147,7 +150,9 @@ public class ReindeerSmall : MonoBehaviour
 
     private void CheckAnimation()
     {
-        
+        //GameObject.Find("Info").GetComponent<Text>().text = animation.GetComponent<SkeletonAnimation>().AnimationName;
+
+
         if (!isPlayingDieAnimation && !isPlayingJumpAnimation)
         {
             if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
@@ -524,17 +529,18 @@ public class ReindeerSmall : MonoBehaviour
             InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress = false;
             TurnOffScent();
         }
-        if ((InputManager.GetComponent<InputManager>().isRunMode || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0 && DeerUnity.IsGrounded)
+        if ((InputManager.GetComponent<InputManager>().isRunMode || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0.25 && DeerUnity.IsGrounded)
         {
             shiftRatio = 2;
             isRunning = true;
             deerUnity.GetComponent<DeerUnity>().isRunning = true;
         }
-        if (!InputManager.GetComponent<InputManager>().isRunMode || !isRunning || (isRunning && deerUnity.GetComponent<DeerUnity>().currentStamina <= 0))
+        if (!InputManager.GetComponent<InputManager>().isRunMode || !isRunning || deerUnity.GetComponent<DeerUnity>().currentStamina <= 0)
         {
             shiftRatio = 1;
             isRunning = false;
             deerUnity.GetComponent<DeerUnity>().isRunning = false;
+            InputManager.GetComponent<InputManager>().isRunMode = false;
         }
         if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && currentLemmingArea != null)
         {
@@ -560,9 +566,19 @@ public class ReindeerSmall : MonoBehaviour
             horizontalForceRatio = 0;
         }
 
-        if (!InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing && CurrentHorizontalVelocity != 0)
+        if (!InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing && Mathf.Abs(CurrentHorizontalVelocity) > 1)
         {
-            CurrentHorizontalVelocity = 0;
+            movingButtonsNotPressingFramesCounter++;
+            if(movingButtonsNotPressingFramesCounter > 10)
+            {
+                CurrentHorizontalVelocity = 0;
+                movingButtonsNotPressingFramesCounter = 0;
+            }
+            if (movingButtonsNotPressingFramesCounter > 1000000)
+            {
+                movingButtonsNotPressingFramesCounter = 1;
+            }
+
         }
 
         if (GetComponent<Timer>().IsTicked())

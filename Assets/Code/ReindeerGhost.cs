@@ -452,17 +452,18 @@ public class ReindeerGhost : MonoBehaviour
             InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress = false;
             //horizontalForceRatio = 0;
         }
-        if ((InputManager.GetComponent<InputManager>().isRunMode || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0 && DeerUnity.IsGrounded)
+        if ((InputManager.GetComponent<InputManager>().isRunMode || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0.25 && DeerUnity.IsGrounded)
         {
             shiftRatio = 1.5f;
             isRunning = true;
             deerUnity.GetComponent<DeerUnity>().isRunning = true;
         }
-        if (!InputManager.GetComponent<InputManager>().isRunMode || !isRunning || (isRunning && deerUnity.GetComponent<DeerUnity>().currentStamina <= 0))
+        if (!InputManager.GetComponent<InputManager>().isRunMode || !isRunning || deerUnity.GetComponent<DeerUnity>().currentStamina <= 0)
         {
             shiftRatio = 1;
             isRunning = false;
             deerUnity.GetComponent<DeerUnity>().isRunning = false;
+            InputManager.GetComponent<InputManager>().isRunMode = false;
         }
         if (DeerUnity.IsGrounded)
         {
@@ -481,6 +482,11 @@ public class ReindeerGhost : MonoBehaviour
         {
             horizontalForceRatio = 0;
         }
+
+        /*if (!InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing && CurrentHorizontalVelocity != 0)
+        {
+            CurrentHorizontalVelocity = 0;
+        }*/
 
         //if (!InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress && !InputManager.GetComponent<InputManager>().isGoRightButtonStopPress && CurrentHorizontalVelocity != 0)
         //{

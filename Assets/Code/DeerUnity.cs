@@ -792,7 +792,7 @@ public class DeerUnity : MonoBehaviour
     public void Respawn()
     {
         Blackout.isDead = true;
-
+        GetCurrentActiveDeer().GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         var allHunterControlPoints = GameObject.FindGameObjectsWithTag("HunterPoint");
         foreach (var point in allHunterControlPoints)
         {
@@ -841,6 +841,13 @@ public class DeerUnity : MonoBehaviour
         isCatched = false;
 
         Invoke("ResetTraps", 0.1f);
+
+        lastTime = -1;
+        backgroundOfTimer.GetComponent<Image>().fillAmount = 0;
+        lastTime = ghostActiveTime;
+        textTimer.GetComponent<Text>().text = "";
+        isCanSwitchOnGhost = true;
+        isGhostOn = false;
     }
 
     private void ResetTraps()
@@ -859,7 +866,7 @@ public class DeerUnity : MonoBehaviour
         {
             currentStamina -= Time.deltaTime * 20f;
         }
-        else if (currentStamina < maxStamina)
+        else if (currentStamina < maxStamina && !isRunning)
         {
             currentStamina += Time.deltaTime * 10f;
         }

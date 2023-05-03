@@ -14,6 +14,19 @@ public class RotateBox : MonoBehaviour
         rotateSpeed = defaultSpeed;
         localWind = transform.parent.Find("Wind").gameObject;
         localWind.GetComponent<Wind>().isWorking = false;
+        localWind.GetComponent<Wind>().isSimpleWind = true;
+        /*if (GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().name.Equals("ReindeerBig"))
+        {
+            localWind.GetComponent<Wind>().totalForce = 50;
+        }
+        else if (GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().name.Equals("ReindeerGhost"))
+        {
+            localWind.GetComponent<Wind>().totalForce = 8;
+        }
+        else
+        {
+            localWind.GetComponent<Wind>().totalForce = 5;
+        }*/
     }
 
     // Update is called once per frame
@@ -35,7 +48,7 @@ public class RotateBox : MonoBehaviour
             localWind.GetComponent<Wind>().isWorking = true;
             if (GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().name.Equals("ReindeerBig"))
             {
-                localWind.GetComponent<Wind>().totalForce = 50;
+                localWind.GetComponent<Wind>().totalForce = 100;
             }
             else if (GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().name.Equals("ReindeerGhost"))
             {
@@ -43,7 +56,7 @@ public class RotateBox : MonoBehaviour
             }
             else
             {
-                localWind.GetComponent<Wind>().totalForce = 10;
+                localWind.GetComponent<Wind>().totalForce = 25;
             }
         }
         else
