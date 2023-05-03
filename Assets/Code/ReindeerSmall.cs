@@ -446,9 +446,9 @@ public class ReindeerSmall : MonoBehaviour
                 PlayJumpAnimation();
             }
         }
-        if (isTrapped && countJumpsToEscape > 0 && InputManager.GetComponent<InputManager>().isJumpButtonPressed)
+        if (isTrapped && countJumpsToEscape > 0 && InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed)
         {
-            InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
+            InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
             countJumpsToEscape--;
             deerUnity.GetComponent<DeerUnity>().TakeDamage(2);
             if (countJumpsToEscape <= 0)

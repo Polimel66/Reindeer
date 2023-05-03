@@ -41,7 +41,7 @@ public class InputManager : MonoBehaviour
         }
         
         
-        /*if (joystick.Horizontal > 0.25)
+        if (joystick.Horizontal > 0.25)
         {
             OnGoLeftButtonStopPress();
             OnGoRightButtonPressed();
@@ -73,7 +73,7 @@ public class InputManager : MonoBehaviour
                 t = 0;
             }
             
-        }*/
+        }
     }
 
     public void OnGoRightButtonPressed()
@@ -83,11 +83,11 @@ public class InputManager : MonoBehaviour
         {
             isRunMode = true;
         }
-        if (t < 0.3f)
-        {
-            isRunMode = true;
-        }
-        t = 0;
+        //if (t < 0.3f)
+        //{
+        //    isRunMode = true;
+        //}
+        //t = 0;
         isWalkingPressed = true;
         isGoRightPressing = true;
     }
@@ -121,11 +121,11 @@ public class InputManager : MonoBehaviour
         {
             isRunMode = true;
         }
-        if (t < 0.3f) 
-        {
-            isRunMode = true;
-        }
-        t = 0;
+        //if (t < 0.3f) 
+        //{
+        //    isRunMode = true;
+        //}
+        //t = 0;
         isGoLeftPressing = true;
         isWalkingPressed = true;
     }
