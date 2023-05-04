@@ -12,7 +12,7 @@ public class ReindeerSmall : MonoBehaviour
         Land
     }
     // Start is called before the first frame update
-    public float CurrentHorizontalVelocity { get; private set; } = 0;
+    public int CurrentHorizontalVelocity { get; private set; } = 0;
     public float CurrentVerticalVelocity { get; private set; } = 0;
     private Rigidbody2D rigidbody;
     //private SpriteRenderer spriteRenderer;
@@ -494,28 +494,33 @@ public class ReindeerSmall : MonoBehaviour
 
         if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)
         {
-            CurrentHorizontalVelocity += 4;
+            CurrentHorizontalVelocity = 4;
+            
             InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)
+        /*if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)
         {
             CurrentHorizontalVelocity += -4;
             InputManager.GetComponent<InputManager>().isGoRightButtonStopPress = false;
             //horizontalForceRatio = 0;
-        }
+        }*/
         if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
         {
-            CurrentHorizontalVelocity += -4;
+            CurrentHorizontalVelocity = -4;
             InputManager.GetComponent<InputManager>().isGoLeftButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)
+        /*if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)
         {
             CurrentHorizontalVelocity += 4;
+            
             InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress = false;
             //horizontalForceRatio = 0;
-        }
+        }*/
+
+        GameObject.Find("Info").GetComponent<Text>().text = CurrentHorizontalVelocity.ToString();
+
         if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed)
         {
             isSmell = true;
@@ -555,6 +560,7 @@ public class ReindeerSmall : MonoBehaviour
         var previousDirection = direction;
         if (CurrentHorizontalVelocity > 0)
         {
+            
             direction = 1;
         }
         else if (CurrentHorizontalVelocity < 0)
@@ -563,26 +569,29 @@ public class ReindeerSmall : MonoBehaviour
         }
         if (previousDirection != direction)
         {
+            
             horizontalForceRatio = 0;
         }
 
         if (!InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing && Mathf.Abs(CurrentHorizontalVelocity) > 1)
         {
             movingButtonsNotPressingFramesCounter++;
-            if(movingButtonsNotPressingFramesCounter > 10)
+            if(movingButtonsNotPressingFramesCounter > 33)
             {
                 CurrentHorizontalVelocity = 0;
                 movingButtonsNotPressingFramesCounter = 0;
             }
-            if (movingButtonsNotPressingFramesCounter > 1000000)
-            {
-                movingButtonsNotPressingFramesCounter = 1;
-            }
+            
 
+        }
+        else
+        {
+            movingButtonsNotPressingFramesCounter = 0;
         }
 
         if (GetComponent<Timer>().IsTicked())
         {
+            
             if (horizontalForceRatio < 1 && CurrentHorizontalVelocity != 0)
             {
                 horizontalForceRatio += 0.2f;
@@ -689,7 +698,7 @@ public class ReindeerSmall : MonoBehaviour
         isSmell = false;
     }
 
-    public void SetHorizontalVelocity(float velocity)
+    public void SetHorizontalVelocity(int velocity)
     {
         CurrentHorizontalVelocity = velocity;
     }

@@ -957,7 +957,7 @@ public class DeerUnity : MonoBehaviour
 
         reindeerSmall.transform.position = new Vector3(transform.position.x, transform.position.y - unitySmallDeltaY);
 
-        var previousHorizontalVelocity = 0f;
+        var previousHorizontalVelocity = 0;
         var previousVerticalVelocity = 0f;
         var previousIsRunning = false;
         var previousHorizontalForceRatio = 0f;
@@ -1011,7 +1011,7 @@ public class DeerUnity : MonoBehaviour
             }
             reindeerGhost.transform.position = new Vector3(transform.position.x, transform.position.y - unityGhostDeltaY);
 
-            var previousHorizontalVelocity = 0f;
+            var previousHorizontalVelocity = 0;
             var previousVerticalVelocity = 0f;
             var previousIsRunning = false;
             var previousHorizontalForceRatio = 0f;
@@ -1065,7 +1065,7 @@ public class DeerUnity : MonoBehaviour
         }
         reindeerBig.transform.position = new Vector3(transform.position.x, transform.position.y - unityBigDeltaY);
 
-        var previousHorizontalVelocity = 0f;
+        var previousHorizontalVelocity = 0;
         var previousVerticalVelocity = 0f;
         var previousIsRunning = false;
         var previousHorizontalForceRatio = 0f;
