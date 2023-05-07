@@ -185,6 +185,8 @@ public class DeerUnity : MonoBehaviour
     public static bool isFirstLocationComplete;
     public static bool isThirdDeerComplete;
 
+    public GameObject exitWarningPanel;
+
 
     // Start is called before the first frame update
     void Start()
@@ -957,7 +959,7 @@ public class DeerUnity : MonoBehaviour
 
         reindeerSmall.transform.position = new Vector3(transform.position.x, transform.position.y - unitySmallDeltaY);
 
-        var previousHorizontalVelocity = 0f;
+        var previousHorizontalVelocity = 0;
         var previousVerticalVelocity = 0f;
         var previousIsRunning = false;
         var previousHorizontalForceRatio = 0f;
@@ -1011,7 +1013,7 @@ public class DeerUnity : MonoBehaviour
             }
             reindeerGhost.transform.position = new Vector3(transform.position.x, transform.position.y - unityGhostDeltaY);
 
-            var previousHorizontalVelocity = 0f;
+            var previousHorizontalVelocity = 0;
             var previousVerticalVelocity = 0f;
             var previousIsRunning = false;
             var previousHorizontalForceRatio = 0f;
@@ -1065,7 +1067,7 @@ public class DeerUnity : MonoBehaviour
         }
         reindeerBig.transform.position = new Vector3(transform.position.x, transform.position.y - unityBigDeltaY);
 
-        var previousHorizontalVelocity = 0f;
+        var previousHorizontalVelocity = 0;
         var previousVerticalVelocity = 0f;
         var previousIsRunning = false;
         var previousHorizontalForceRatio = 0f;
@@ -1222,9 +1224,19 @@ public class DeerUnity : MonoBehaviour
 
     public void OnExitGameButtonClick()
     {
+        exitWarningPanel.SetActive(true);
+        
+    }
+
+    public void OnCancelExitGameButtonClick()
+    {
+        exitWarningPanel.SetActive(false);
+    }
+
+    public void OnConfirmExitGameButtonClick()
+    {
         SaveManager.SaveGame();
         SceneManager.LoadScene("Menu");
-        
     }
 
     public void OnShowHideTasksButtonClick()

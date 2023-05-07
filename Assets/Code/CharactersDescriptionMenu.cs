@@ -84,7 +84,7 @@ public class CharactersDescriptionMenu : MonoBehaviour
         firstAbilityButton.GetComponent<Image>().sprite = bigDeerFirstAbility;
         secondAbilityButton.GetComponent<Image>().sprite = bigDeerSecondAbility;
         deerImage.GetComponent<Image>().sprite = bigDeer;
-        deerName.GetComponent<Text>().text = "СИЛАЧ(ЛОЛ)";
+        deerName.GetComponent<Text>().text = "СИЛАЧ";
         chosenDeer = ChosenDeer.Big;
         OnFirstAbilityButtonClick();
 
@@ -96,15 +96,23 @@ public class CharactersDescriptionMenu : MonoBehaviour
         secondAbilityButton.GetComponent<Image>().color = defaultColor;
         if(chosenDeer == ChosenDeer.Small)
         {
-            abilityDescription.GetComponent<Text>().text = "что-то про подбор предметов";
+            abilityDescription.GetComponent<Text>().text = "ВЗАИМОДЕЙСТВИЕ\n" +
+                                                           "-----------------------------\n" +
+                                                           "При активации позволяет\nперсонажу взаимодействовать\nс игровыми сущностями.";
         }
         else if(chosenDeer == ChosenDeer.Ghost)
         {
-            abilityDescription.GetComponent<Text>().text = "что-то про материализацию";
+            abilityDescription.GetComponent<Text>().text = "МАТЕРИАЛИЗАЦИЯ\n" +
+                                                           "-----------------------------\n" +
+                                                           "Позволяет персонажу делать\nплатформы активными для\nостальных оленей. Один вызов\nпризрака = 1 платформа.";
         }
         else if(chosenDeer == ChosenDeer.Big)
         {
-            abilityDescription.GetComponent<Text>().text = "что-то про разрушение";
+            abilityDescription.GetComponent<Text>().text = "ПОГРОМ\n" +
+                                                           "-------------\n" +
+                                                           "При активации позволяет\n" +
+                                                           "персонажу ломать предметы\n" +
+                                                           "с трещинами.";
         }
         else
         {
@@ -120,15 +128,26 @@ public class CharactersDescriptionMenu : MonoBehaviour
         abilityDescription.GetComponent<Text>().text = "";
         if (chosenDeer == ChosenDeer.Small)
         {
-            abilityDescription.GetComponent<Text>().text = "что-то про нюх";
+            abilityDescription.GetComponent<Text>().text = "СЛЕДЫ\n" +
+                                                           "-----------\n" +
+                                                           "Ограничивает видимость\nперсонажа, а также\nподсвечивает следы.";
         }
         else if (chosenDeer == ChosenDeer.Ghost)
         {
-            abilityDescription.GetComponent<Text>().text = "что-то про парение";
+            abilityDescription.GetComponent<Text>().text = "ЛЕВИТАЦИЯ\n" +
+                                                           "-------------------\n" +
+                                                           "Персонаж может медленно\n" +
+                                                           "скользить по направлению\n" +
+                                                           "к земле.";
         }
         else if (chosenDeer == ChosenDeer.Big)
         {
-            abilityDescription.GetComponent<Text>().text = "что-то перемещение";
+            abilityDescription.GetComponent<Text>().text = "КИНЕЗ\n" +
+                                                           "----------\n" +
+                                                           "Удерживайте кнопку\n" +
+                                                           "способности и идите в нужную\n" +
+                                                           "сторону, чтобы передвигать\n" +
+                                                           "подсвеченные предметы.";
         }
         else
         {

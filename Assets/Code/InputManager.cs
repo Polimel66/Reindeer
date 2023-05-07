@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-
+    enum Direction
+    {
+        Right,
+        Left,
+        No
+    }
     public bool isGoLeftButtonPressed = false;
-    public bool isGoLeftButtonStopPress = false;
     public bool isGoRightButtonPressed = false;
-    public bool isGoRightButtonStopPress = false;
     public bool isJumpButtonPressed = false;
     public bool isFirstAbilityButtonPressed = false;
     public bool isSecondAbilityButtonPressed = false;
@@ -21,6 +24,8 @@ public class InputManager : MonoBehaviour
     private bool isBoostPressed = false;
     private bool isWalkingPressed = false;
     public Joystick joystick;
+    private Direction currentDirection = Direction.No;
+    private Direction previousDirection = Direction.No;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,27 +48,42 @@ public class InputManager : MonoBehaviour
         
         if (joystick.Horizontal > 0.25)
         {
-            OnGoLeftButtonStopPress();
-            OnGoRightButtonPressed();
-            isWalkingPressed = true;
-            isGoRightPressing = true;
-            isGoLeftPressing = false;
+            currentDirection = Direction.Right;
+            
         }
         else if (joystick.Horizontal < -0.25)
         {
-            OnGoRightButtonStopPress();
-            OnGoLeftButtonPressed();
-            isWalkingPressed = true;
-            isGoRightPressing = false;
-            isGoLeftPressing = true;
+            currentDirection = Direction.Left;
+            
         }
         else
         {
-            OnGoLeftButtonStopPress();
-            OnGoRightButtonStopPress();
-            isWalkingPressed = false;
-            isGoRightPressing = false;
-            isGoLeftPressing = false;
+            currentDirection = Direction.No;
+            
+        }
+        if(currentDirection != previousDirection)
+        {
+            if (currentDirection == Direction.Right)
+            {
+                OnGoRightButtonPressed();
+                isWalkingPressed = true;
+                isGoRightPressing = true;
+                isGoLeftPressing = false;
+            }
+            else if (currentDirection == Direction.Left)
+            {
+                OnGoLeftButtonPressed();
+                isWalkingPressed = true;
+                isGoRightPressing = false;
+                isGoLeftPressing = true;
+            }
+            else
+            {
+                isWalkingPressed = false;
+                isGoRightPressing = false;
+                isGoLeftPressing = false;
+            }
+            previousDirection = currentDirection;
         }
         if (joystick.Vertical > 0.5f)
         {
@@ -90,14 +110,6 @@ public class InputManager : MonoBehaviour
         //t = 0;
         isWalkingPressed = true;
         isGoRightPressing = true;
-    }
-
-    public void OnGoRightButtonStopPress()
-    {
-        isGoRightButtonStopPress = true;
-        isRunMode = false;
-        isGoRightPressing = false;
-        isWalkingPressed = false;
     }
 
     public void OnBoostPressed()
@@ -128,14 +140,6 @@ public class InputManager : MonoBehaviour
         //t = 0;
         isGoLeftPressing = true;
         isWalkingPressed = true;
-    }
-
-    public void OnGoLeftButtonStopPress()
-    {
-        isGoLeftButtonStopPress = true;
-        isRunMode = false;
-        isGoLeftPressing = false;
-        isWalkingPressed = false;
     }
 
     public void OnJumpButtonPressed()

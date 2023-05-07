@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпадает с призрачным, кроме сил передвижени€. ѕодробно все описано в призрачном
 {
-    public float CurrentHorizontalVelocity { get; private set; } = 0;
+    public int CurrentHorizontalVelocity { get; private set; } = 0;
     public float CurrentVerticalVelocity { get; private set; } = 0;
     private Rigidbody2D rigidbody;
     private SpriteRenderer spriteRenderer;
@@ -166,28 +166,28 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
         InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
         if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)
         {
-            CurrentHorizontalVelocity += 4;
+            CurrentHorizontalVelocity = 4;
             InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)
+        /*if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)
         {
             CurrentHorizontalVelocity += -4;
             InputManager.GetComponent<InputManager>().isGoRightButtonStopPress = false;
             //horizontalForceRatio = 0;
-        }
+        }*/
         if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
         {
-            CurrentHorizontalVelocity += -4;
+            CurrentHorizontalVelocity = -4;
             InputManager.GetComponent<InputManager>().isGoLeftButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)
+        /*if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)
         {
             CurrentHorizontalVelocity += 4;
             InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress = false;
             //horizontalForceRatio = 0;
-        }
+        }*/
         if ((InputManager.GetComponent<InputManager>().isRunMode || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0.25 && DeerUnity.IsGrounded)
         {
             shiftRatio = 2;
@@ -437,7 +437,7 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
 
     }*/
 
-    public void SetHorizontalVelocity(float velocity)
+    public void SetHorizontalVelocity(int velocity)
     {
         CurrentHorizontalVelocity = velocity;
     }
