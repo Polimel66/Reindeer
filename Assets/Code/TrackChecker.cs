@@ -17,6 +17,9 @@ public class TrackChecker : MonoBehaviour
     private GameObject back;
     public GameObject InputManager;
     private GameObject firstHintBarier;
+    private GameObject secondHintBarier;
+    private GameObject thirdHintBarier;
+    private GameObject fourthHintBarier;
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Track")
@@ -47,6 +50,9 @@ public class TrackChecker : MonoBehaviour
         deerUnity = GameObject.Find("DeerUnity");
         text = GameObject.Find("TracksText");
         firstHintBarier = GameObject.Find("FirstHintBarier");
+        secondHintBarier = GameObject.Find("SecondHintBarier");
+        thirdHintBarier = GameObject.Find("ThirdHintBarier");
+        fourthHintBarier = GameObject.Find("FourthHintBarier");
         parent = text.transform.parent.Find("TracksTextParent").transform.gameObject;
         back = parent.transform.Find("TextBackground").gameObject;
         back.GetComponent<Image>().color = new Color(0, 0, 0, 0);
@@ -76,6 +82,18 @@ public class TrackChecker : MonoBehaviour
                 if (deerUnity.GetComponent<DeerUnity>().countOfFoundTracks == 3)
                 {
                     firstHintBarier.SetActive(false);
+                }
+                if (deerUnity.GetComponent<DeerUnity>().countOfFoundTracks == 4)
+                {
+                    secondHintBarier.SetActive(false);
+                }
+                if (deerUnity.GetComponent<DeerUnity>().countOfFoundTracks == 5)
+                {
+                    thirdHintBarier.SetActive(false);
+                }
+                if (deerUnity.GetComponent<DeerUnity>().countOfFoundTracks == 6)
+                {
+                    fourthHintBarier.SetActive(false);
                 }
                 deerUnity.GetComponent<DeerUnity>().SetTask(locationNumber);
                 textDict[collision.gameObject.name] = Tuple.Create(textDict[collision.gameObject.name].Item1, true);
