@@ -1,0 +1,34 @@
+
+skeleton.png
+size: 8192,8192
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Голова
+  rotate: true
+  xy: 2, 2
+  size: 1511, 1460
+  orig: 1576, 1503
+  offset: 38, 43
+  index: -1
+Куртка
+  rotate: false
+  xy: 2, 1515
+  size: 2147, 2202
+  orig: 2558, 2202
+  offset: 0, 0
+  index: -1
+Левая нога
+  rotate: false
+  xy: 1558, 3797
+  size: 1201, 2964
+  orig: 2245, 3235
+  offset: 572, 0
+  index: -1
+Правя нога
+  rotate: false
+  xy: 2, 3719
+  size: 1554, 3042
+  orig: 1554, 3042
+  offset: 0, 0
+  index: -1

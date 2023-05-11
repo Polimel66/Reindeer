@@ -151,7 +151,7 @@ public class ReindeerSmall : MonoBehaviour
         {
             StopMoving();
         }
-        if(!isPlayingDieAnimation && !isCanMoving && !isTrapped)
+        if(!isPlayingDieAnimation && !isCanMoving && !isTrapped && !deerUnity.GetComponent<DeerUnity>().isBushed)
         {
             StartMoving();
         }
@@ -189,7 +189,7 @@ public class ReindeerSmall : MonoBehaviour
                     isPlayingSpecificIdle = true;
                 }
             }
-            if (isWalkAni && !isPlayingJumpAnimation && DeerUnity.IsGrounded)
+            if (isWalkAni && !isPlayingJumpAnimation && DeerUnity.IsGrounded && isCanMoving && !isStacked)
             {
                 if (isRunning)
                 {
