@@ -191,6 +191,8 @@ public class DeerUnity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
+
         isFirstLocationComplete = false;
         isThirdDeerComplete = false;
         isPossibleTakeMoss = false;

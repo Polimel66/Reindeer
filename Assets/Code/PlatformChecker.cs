@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlatformChecker : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PlatformChecker : MonoBehaviour
     private Collider2D collision;
     private Queue<Collider2D> queueOn = new Queue<Collider2D>();
     private Queue<Collider2D> queueOff = new Queue<Collider2D>();
+    private int counter = 0;
     void Start()
     {
         deerUnity = GameObject.Find("DeerUnity");
@@ -71,12 +73,15 @@ public class PlatformChecker : MonoBehaviour
         }
         else if (collision.tag == "LavinaMovingPlat")
         {
-            var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
+            /*var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
             reindeer.transform.parent = collision.transform;
             deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = true;
             reindeer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             reindeer.GetComponent<BoxCollider2D>().isTrigger = true;
             reindeer.GetComponent<ReindeerSmall>().StopMoving();
+            reindeer.GetComponent<Rigidbody2D>().gravityScale = 0f;
+            counter++;
+            GameObject.Find("Info").GetComponent<Text>().text = counter.ToString();*/
         }
         if (collision.tag == "CollectionArea")
         {
@@ -117,12 +122,13 @@ public class PlatformChecker : MonoBehaviour
         }
         else if (collision.tag == "LavinaMovingPlat")
         {
-            var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
+            /*var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
             reindeer.transform.parent = null;
             deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = false;
             reindeer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
             reindeer.GetComponent<BoxCollider2D>().isTrigger = false;
             reindeer.GetComponent<ReindeerSmall>().StartMoving();
+            reindeer.GetComponent<Rigidbody2D>().gravityScale = 1.5f;*/
         }
         else if (collision.tag == "CollectionArea")
         {

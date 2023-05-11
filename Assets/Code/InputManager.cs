@@ -98,6 +98,13 @@ public class InputManager : MonoBehaviour
         {
             t = 0;
         }
+        if (isLavinaPlaying)
+        {
+            isLavinaPlaying = false;
+            isWalkingPressed = false;
+            isGoRightPressing = false;
+            isGoLeftPressing = false;
+        }
     }
 
     public void OnGoRightButtonPressed()
@@ -170,4 +177,6 @@ public class InputManager : MonoBehaviour
     {
         isSecondAbilityButtonStopPress = true;
     }
+
+    public static bool isLavinaPlaying = false;
 }

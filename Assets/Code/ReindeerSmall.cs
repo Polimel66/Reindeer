@@ -151,7 +151,7 @@ public class ReindeerSmall : MonoBehaviour
         {
             StopMoving();
         }
-        if(!isPlayingDieAnimation && !isCanMoving)
+        if(!isPlayingDieAnimation && !isCanMoving && !isTrapped)
         {
             StartMoving();
         }

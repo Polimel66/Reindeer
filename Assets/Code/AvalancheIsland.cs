@@ -44,9 +44,12 @@ public class AvalancheIsland : MonoBehaviour
                 reindeer.transform.parent = null;
                 this.gameObject.SetActive(false);
                 reindeer.transform.parent = null;
-                reindeer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                reindeer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+                reindeer.transform.Find("Animation").gameObject.SetActive(true);
                 reindeer.GetComponent<BoxCollider2D>().isTrigger = false;
                 reindeer.GetComponent<ReindeerSmall>().StartMoving();
+                deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = false;
+                reindeer.GetComponent<Rigidbody2D>().gravityScale = 1.5f;
                 canvas.SetActive(true);
 
                 //Destroy(this);
@@ -60,11 +63,23 @@ public class AvalancheIsland : MonoBehaviour
         else
         {
             if (GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>()
-                .GetCurrentActiveDeer().transform.Find("Ground").gameObject.GetComponent<BoxCollider2D>()))
+                .GetCurrentActiveDeer().transform.Find("Ground").gameObject.GetComponent<BoxCollider2D>()) && !isLavinaStartInvoked)
             {
+                canvas.SetActive(false);
+                InputManager.isLavinaPlaying = true;
                 isLavinaStartInvoked = true;
                 SnowSystem.GetComponent<ParticleSystem>().Play();
                 FogSystem.GetComponent<ParticleSystem>().Play();
+                var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
+                reindeer.transform.parent = transform;
+                deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = true;
+                reindeer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+                reindeer.transform.Find("Animation").gameObject.SetActive(false);
+                reindeer.GetComponent<BoxCollider2D>().isTrigger = true;
+                reindeer.GetComponent<ReindeerSmall>().StopMoving();
+                reindeer.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+                reindeer.GetComponent<Rigidbody2D>().gravityScale = 0f;
+                
                 Invoke("StartLavina", 1f);
             }
         }
@@ -73,6 +88,11 @@ public class AvalancheIsland : MonoBehaviour
     private void StartLavina()
     {
         isLavinaStart = true;
-        canvas.SetActive(false);
+        
+        /*var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
+        reindeer.transform.parent = this.gameObject.transform;
+        reindeer.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        reindeer.GetComponent<BoxCollider2D>().isTrigger = true;
+        reindeer.GetComponent<ReindeerSmall>().StopMoving();*/
     }
 }
