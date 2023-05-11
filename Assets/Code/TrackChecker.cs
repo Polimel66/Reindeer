@@ -65,9 +65,9 @@ public class TrackChecker : MonoBehaviour
             { "LittleShadow 8", Tuple.Create("Помню как с мамой отдыхал в тени.\n Было так прохладно.", false) },
             { "FallenStalactite 8", Tuple.Create("Он размером с меня, \nпод такой лучше не попадать.", false) },
             { "SmellOfDog 8", Tuple.Create("Я чувствую охотничьих псов, a с ними всегда охотники.\n Нужно срочно убегать отсюда.", false) }};
-        timer = text.gameObject.AddComponent<Timer>();
+        timer = text.gameObject.GetComponent<Timer>();
         timer.SetPeriodForTick(5f);
-        
+
     }
 
     // Update is called once per frame
