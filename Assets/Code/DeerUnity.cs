@@ -1120,9 +1120,10 @@ public class DeerUnity : MonoBehaviour
         }
         if (nextIsGrounded && !IsGrounded)
         {
+            GameObject.Find("Info").GetComponent<Text>().text = maxFallVelocity.ToString();
             if (maxFallVelocity > 15)
             {
-                TakeDamage((int)((maxFallVelocity - 15) * 100 / 15));
+                TakeDamage((int)((maxFallVelocity - 15) * 100 / 5));
             }
 
             maxFallVelocity = 0;
