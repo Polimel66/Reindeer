@@ -70,12 +70,17 @@ public class ReindeerGhost : MonoBehaviour
     private bool isPlayingSpecificIdle = false;
     private bool isPlayingDieAnimation = false;
     private bool isPlayingJumpAnimation = false;
+    private bool isPlayingLevitaciaAnimation = false;
     private jumpPhase currentJumpPhase = jumpPhase.Up;
     //public GameObject jumpLandTrigger;
     private bool isPlayingFallAnimation = false;
     public GameObject animation;
     private bool isCoorChangedForFlying = true;
     private bool isCoorChangedForNormal = true;
+    private int movingButtonsNotPressingFramesCounter = 0;
+    private GameObject rightWallChecker;
+    private GameObject leftWallChecker;
+    private GameObject tilemap2;
 
     void Start()
     {
@@ -88,10 +93,15 @@ public class ReindeerGhost : MonoBehaviour
         protectionChecker = 0;
         protectionDelay = 0;
         tilemap1 = GameObject.Find("Tilemap1");
+        tilemap2 = GameObject.Find("Tilemap2");
 
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("Platform"));
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("GhostPlatform"));
+        allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("MaterialisedPlatform"));
+
+        rightWallChecker = transform.Find("RightWallChecker").gameObject;
+        leftWallChecker = transform.Find("LeftWallChecker").gameObject;
     }
 
     void FixedUpdate()
@@ -115,7 +125,9 @@ public class ReindeerGhost : MonoBehaviour
 
         UpdateFallAnimation();
 
-        if (!isCoorChangedForFlying)
+        
+
+        if (!isCoorChangedForFlying)// && animation.GetComponent<SkeletonAnimation>().AnimationName.Equals(levitacia))
         {
             if (direction < 0)
             {
@@ -131,8 +143,9 @@ public class ReindeerGhost : MonoBehaviour
                 //CurrentActiveTrapTrigger = trapTriggerLeft;
             }
             isCoorChangedForFlying = true;
+            //isCoorChangedForNormal = false;
         }
-        if (!isCoorChangedForNormal)
+        if (!isCoorChangedForNormal)// && !animation.GetComponent<SkeletonAnimation>().AnimationName.Equals(levitacia))
         {
             if (direction < 0)
             {
@@ -148,13 +161,14 @@ public class ReindeerGhost : MonoBehaviour
                 //CurrentActiveTrapTrigger = trapTriggerLeft;
             }
             isCoorChangedForNormal = true;
+            //isCoorChangedForFlying = false;
         }
     }
 
     private void CheckAnimation()
     {
 
-        if (!isPlayingDieAnimation && !isPlayingJumpAnimation)
+        if (!isPlayingDieAnimation && !isPlayingJumpAnimation && !isPlayingLevitaciaAnimation)
         {
             if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
             {
@@ -351,29 +365,50 @@ public class ReindeerGhost : MonoBehaviour
 
     private void CheckIsStucked()
     {
-        if (!isStacked && !DeerUnity.IsGrounded
-            && (GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) || isTouchingAnythingElse()))
+        if (!isStacked)
         {
-            directionOfStack = direction;
-            isStacked = true;
+            if (rightWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) || isTouchingAnythingElse(rightWallChecker)
+                || rightWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>()))
+            {
+                directionOfStack = 1;
+                isStacked = true;
+            }
+            if (leftWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) || isTouchingAnythingElse(leftWallChecker)
+                || leftWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>()))
+            {
+                directionOfStack = -1;
+                isStacked = true;
+            }
         }
         else if (isStacked
-            && (DeerUnity.IsGrounded
-            || (!GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) && !isTouchingAnythingElse())))
+            && !rightWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) && !isTouchingAnythingElse(rightWallChecker)
+            && !leftWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap1.GetComponent<CompositeCollider2D>()) && !isTouchingAnythingElse(leftWallChecker)
+            && !rightWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>())
+            && !leftWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>()))
         {
             isStacked = false;
             directionOfStack = 0;
         }
     }
 
-    private bool isTouchingAnythingElse()
+    private bool isTouchingAnythingElse(GameObject e)
     {
         foreach (var obj in allAnotherPlatforms)
         {
             var vector = transform.position - obj.transform.position;
             if (vector.x < 10 && vector.x > -10 && vector.y > -10 && vector.y < 10)
             {
-                if (GetComponent<BoxCollider2D>().IsTouching(obj.GetComponent<BoxCollider2D>()))
+                var a = e.GetComponent<BoxCollider2D>();
+                var b = obj.GetComponent<BoxCollider2D>();
+                if (a == null)
+                {
+
+                }
+                else if (b == null)
+                {
+
+                }
+                else if (a.IsTouching(b))
                     return true;
             }
         }
@@ -393,16 +428,23 @@ public class ReindeerGhost : MonoBehaviour
         {
             isFlying = true;
 
-            isCoorChangedForFlying = false;
-            SetAnimation(levitacia);
+            //isCoorChangedForFlying = false;
+            
 
             InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed = false;
         }
-        if (isFlying && rigidbody.velocity.y <= 0)
+        if (isFlying && rigidbody.velocity.y <= -0.1f)
         {
             rigidbody.gravityScale = 0.1f;
+            if (!isPlayingLevitaciaAnimation)
+            {
+                StopJumpAnimation();
+                SetAnimation(levitacia);
+                isPlayingLevitaciaAnimation = true;
+                isCoorChangedForFlying = false;
+            }
         }
-        if (isFlying && rigidbody.velocity.y > 0)
+        if (isFlying && rigidbody.velocity.y >= 0)
         {
             rigidbody.gravityScale = 1f;
         }
@@ -410,14 +452,19 @@ public class ReindeerGhost : MonoBehaviour
         {
             rigidbody.gravityScale = 1f;
         }
-        if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress)
+        if (isFlying && (InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress || DeerUnity.IsGrounded))
         {
             rigidbody.gravityScale = 1f;
             isFlying = false;
 
+            //isCoorChangedForNormal = false;
+            //SetAnimation(null);
+            //animation.GetComponent<SkeletonAnimation>().ClearState();
+            isPlayingFallAnimation = false;
+            isPlayingLevitaciaAnimation = false;
+            
             isCoorChangedForNormal = false;
-            SetAnimation(null);
-            animation.GetComponent<SkeletonAnimation>().ClearState();
+            
 
             InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress = false;
         }
@@ -492,6 +539,20 @@ public class ReindeerGhost : MonoBehaviour
         //{
         //    CurrentHorizontalVelocity = 0;
         //}
+
+        if (!InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing && Mathf.Abs(CurrentHorizontalVelocity) > 1)
+        {
+            movingButtonsNotPressingFramesCounter++;
+            if (movingButtonsNotPressingFramesCounter > 5)
+            {
+                CurrentHorizontalVelocity = 0;
+                movingButtonsNotPressingFramesCounter = 0;
+            }
+        }
+        else
+        {
+            movingButtonsNotPressingFramesCounter = 0;
+        }
 
         if (GetComponent<Timer>().IsTicked())
         {

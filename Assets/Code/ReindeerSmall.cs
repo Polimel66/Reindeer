@@ -146,6 +146,15 @@ public class ReindeerSmall : MonoBehaviour
         UpdateJumpAnimation();
 
         UpdateFallAnimation();
+        //GameObject.Find("Info").GetComponent<Text>().text = animation.GetComponent<SkeletonAnimation>().loop.ToString();
+        if (isPlayingDieAnimation && isCanMoving)
+        {
+            StopMoving();
+        }
+        if(!isPlayingDieAnimation && !isCanMoving)
+        {
+            StartMoving();
+        }
     }
 
     private void CheckAnimation()
@@ -213,7 +222,7 @@ public class ReindeerSmall : MonoBehaviour
         var r = Random.Range(0, 3.33f);
         //var r = 3;
         //animation.GetComponent<SkeletonAnimation>().loop = false;
-        animation.GetComponent<SkeletonAnimation>().loop = false;
+        //animation.GetComponent<SkeletonAnimation>().loop = false;
         if (DeerUnity.IsGrounded)
             animation.GetComponent<SkeletonAnimation>().AnimationName = allSpecificIdleAnies[(int)r];
         
@@ -230,8 +239,12 @@ public class ReindeerSmall : MonoBehaviour
         isPlayingSpecificIdle = false;
 
         if (DeerUnity.IsGrounded)
+        {
             animation.GetComponent<SkeletonAnimation>().AnimationName = basicIdleAni;
+            
+        }
         animation.GetComponent<SkeletonAnimation>().loop = true;
+
     }
 
     private void PlayJumpAnimation()
@@ -314,8 +327,14 @@ public class ReindeerSmall : MonoBehaviour
     {
         StopJumpAnimation();
         isPlayingDieAnimation = true;
+        
         animation.GetComponent<SkeletonAnimation>().AnimationName = dieAni;
-        Invoke("PlayBasicIdleAnimation", 1.1f);
+        Invoke("StopPlayingDieAnimation", 1.1f);
+    }
+
+    private void StopPlayingDieAnimation()
+    {
+        isPlayingDieAnimation = false;
     }
 
     public void FlipPlayer()
@@ -519,7 +538,7 @@ public class ReindeerSmall : MonoBehaviour
             //horizontalForceRatio = 0;
         }*/
 
-        GameObject.Find("Info").GetComponent<Text>().text = CurrentHorizontalVelocity.ToString();
+        
 
         if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed)
         {

@@ -904,7 +904,7 @@ public class DeerUnity : MonoBehaviour
     }
     public void ActivateDeer()
     {
-        if (isFirstDeerAvailable && isNeedSwitchOnFirst && CurrentActive != 1 && isCanSwitch)//в зависимости от того, на какую цифру нажали, активируются и дизактивируются нужные олени
+        if (isFirstDeerAvailable && isNeedSwitchOnFirst && CurrentActive != 1 && isCanSwitch)
         {
             if (CurrentActive == 2)
             {

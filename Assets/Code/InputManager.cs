@@ -87,12 +87,16 @@ public class InputManager : MonoBehaviour
         }
         if (joystick.Vertical > 0.5f)
         {
-            if (t > 0.3f)
+            if (t > 0.125f)
             {
                 OnJumpButtonPressed();
                 t = 0;
             }
             
+        }
+        if (!DeerUnity.IsGrounded)
+        {
+            t = 0;
         }
     }
 
