@@ -67,10 +67,7 @@ public class PlatformChecker : MonoBehaviour
             deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerGhost>().currendGhostPlatform = collision.gameObject;
             deerUnity.GetComponent<DeerUnity>().isOnPlatform = true;
         }
-        else if (collision.tag == "Circle")
-        {
-            deerUnity.GetComponent<DeerUnity>().TakeDamage(100f);
-        }
+        
         else if (collision.tag == "LavinaMovingPlat")
         {
             /*var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
