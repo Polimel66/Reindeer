@@ -83,15 +83,15 @@ public class TrackChecker : MonoBehaviour
                 {
                     firstHintBarier.SetActive(false);
                 }
-                if (deerUnity.GetComponent<DeerUnity>().countOfFoundTracks == 4)
+                if (collision.gameObject.name == "LittleShadow 8")
                 {
                     secondHintBarier.SetActive(false);
                 }
-                if (deerUnity.GetComponent<DeerUnity>().countOfFoundTracks == 5)
+                if (collision.gameObject.name == "FallenStalactite 8")
                 {
                     thirdHintBarier.SetActive(false);
                 }
-                if (deerUnity.GetComponent<DeerUnity>().countOfFoundTracks == 6)
+                if (collision.gameObject.name == "SmellOfDog 8")
                 {
                     fourthHintBarier.SetActive(false);
                 }
