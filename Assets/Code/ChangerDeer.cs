@@ -23,10 +23,15 @@ public class ChangerDeer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isSecondOn && DeerUnity.isFirstLocationComplete)
+        if (!isSecondOn && deerUnity.GetComponent<DeerUnity>().isSecondDeerAvailable)
         {
             circleGhost.transform.GetChild(2).gameObject.SetActive(false);
             isSecondOn = true;
+        }
+        else if(isSecondOn && !deerUnity.GetComponent<DeerUnity>().isSecondDeerAvailable)
+        {
+            circleGhost.transform.GetChild(2).gameObject.SetActive(true);
+            isSecondOn = false;
         }
         if (!isThirdOn && DeerUnity.isThirdDeerComplete)
         {

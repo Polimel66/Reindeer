@@ -60,7 +60,7 @@ public class PlatformChecker : MonoBehaviour
         }
         else if (collision.tag == "throns")
         {
-            deerUnity.GetComponent<DeerUnity>().TakeDamage(100f);
+            deerUnity.GetComponent<DeerUnity>().TakeDamage(1000f);
         }
         else if (collision.tag == "GhostPlatform")
         {

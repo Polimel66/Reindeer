@@ -20,7 +20,11 @@ public class WallChecker : MonoBehaviour
     {
         if (collision.tag == "Circle")
         {
-            GameObject.Find("DeerUnity").GetComponent<DeerUnity>().TakeDamage(100f);
+            GameObject.Find("DeerUnity").GetComponent<DeerUnity>().TakeDamage(1000f);
+        }
+        if(collision.tag == "thorns" && name.Equals("UpWallChecker"))
+        {
+            GameObject.Find("DeerUnity").GetComponent<DeerUnity>().TakeDamage(1000f);
         }
     }
 }
