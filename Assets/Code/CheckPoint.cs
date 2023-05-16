@@ -33,7 +33,9 @@ public class CheckPoint : MonoBehaviour
             deerUnity.GetComponent<DeerUnity>().spawn.transform.position = transform.position;
             isReached = true;
             isApplied = true;
-            deerUnity.GetComponent<DeerUnity>().HealHealth(100);
+            deerUnity.GetComponent<DeerUnity>().HealHealth(deerUnity.GetComponent<DeerUnity>().maxHealth);
+            deerUnity.GetComponent<DeerUnity>().currentCooling = deerUnity.GetComponent<DeerUnity>().maxCooling;
+            deerUnity.GetComponent<DeerUnity>().currentStamina = deerUnity.GetComponent<DeerUnity>().maxStamina;
             SaveManager.SetLastCheckPointName(name);
         }
     }

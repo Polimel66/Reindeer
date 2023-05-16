@@ -790,12 +790,12 @@ public class ReindeerSmall : MonoBehaviour
         jumpForceRatio = 1f;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag.Equals("thorns"))
         {
             deerUnity.GetComponent<DeerUnity>().TakeDamage(1000);
         }
-    }
+    }*/
 }
 

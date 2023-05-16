@@ -7,8 +7,8 @@ public class LocationComplete : MonoBehaviour
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name == "RightWallChecker")
-            DeerUnity.isFirstLocationComplete = true;
+        /*if (collision.name == "RightWallChecker")
+            DeerUnity.isFirstLocationComplete = true;*/
     }
     void Start()
     {

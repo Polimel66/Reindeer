@@ -601,11 +601,11 @@ public class ReindeerGhost : MonoBehaviour
             {
                 if (isIgnoreShift)
                 {
-                    velocity += new Vector2((windForceRatio * windHorizontal * shiftRatio) / 1, 0);
+                    velocity += new Vector2((windForceRatio * windHorizontal * shiftRatio * 7) / 1, 0);
                 }
                 else
                 {
-                    velocity += new Vector2((windForceRatio * windHorizontal) / 1, 0);
+                    velocity += new Vector2((windForceRatio * windHorizontal * 7) / 1, 0);
                 }
             }
             rigidbody.velocity = velocity;
@@ -617,11 +617,11 @@ public class ReindeerGhost : MonoBehaviour
             {
                 if (isIgnoreShift)
                 {
-                    velocity += new Vector2((windForceRatio * windHorizontal * shiftRatio) / 1, 0);
+                    velocity += new Vector2((windForceRatio * windHorizontal * shiftRatio * 7) / 1, 0);
                 }
                 else
                 {
-                    velocity += new Vector2((windForceRatio * windHorizontal) / 1, 0);
+                    velocity += new Vector2((windForceRatio * windHorizontal * 7) / 1, 0);
                 }
 
             }

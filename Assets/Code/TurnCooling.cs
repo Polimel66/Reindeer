@@ -8,10 +8,14 @@ public class TurnCooling : MonoBehaviour
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (gameObject.name == "ShadOnCheck")
-            deerUnity.GetComponent<DeerUnity>().isActivateCooling = true;
-        else if (gameObject.name == "ShadOffCheck")
-            deerUnity.GetComponent<DeerUnity>().isActivateCooling = false;
+        if (collision.tag.Equals("Player"))
+        {
+            if (gameObject.name == "ShadOnCheck")
+                deerUnity.GetComponent<DeerUnity>().isActivateCooling = true;
+            else if (gameObject.name == "ShadOffCheck")
+                deerUnity.GetComponent<DeerUnity>().isActivateCooling = false;
+        }
+        
     }
     void Start()
     {
