@@ -20,7 +20,7 @@ public class hunterDisablePoint : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isTriggered)
+        if (!isTriggered && collision.tag.Equals("Player"))
         {
             isTriggered = true;
             hunter.GetComponent<Hunter>().DisableHunter();

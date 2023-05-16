@@ -810,6 +810,7 @@ public class DeerUnity : MonoBehaviour
             if (currentHealth <= 0)
             {
                 Respawn();
+                currentHealth = maxHealth;
             }
             //isDamage = false;
         }
@@ -829,7 +830,7 @@ public class DeerUnity : MonoBehaviour
             point.GetComponent<HunterControlPoint>().isAlreadyWorked = false;
         }
         var timeToWait = 0.0f;
-        if (CurrentActive == 1 && currentHealth <= 0)
+        if (CurrentActive == 1)
         {
             reindeerSmall.GetComponent<ReindeerSmall>().PlayDieAnimation();
             timeToWait = 1.1f;

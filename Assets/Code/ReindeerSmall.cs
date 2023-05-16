@@ -327,7 +327,7 @@ public class ReindeerSmall : MonoBehaviour
     {
         StopJumpAnimation();
         isPlayingDieAnimation = true;
-        
+        animation.GetComponent<SkeletonAnimation>().loop = false;
         animation.GetComponent<SkeletonAnimation>().AnimationName = dieAni;
         Invoke("StopPlayingDieAnimation", 1.1f);
     }
