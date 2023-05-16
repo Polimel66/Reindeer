@@ -31,19 +31,24 @@ public class HunterEnableArea : MonoBehaviour
 
     public void MoveHunterAtNearestPoint()
     {
-        hunter.GetComponent<Hunter>().isEnabled = true;
-
-        GameObject min = null;
-        var mind = float.MaxValue;
-        foreach (var e in hunterPoints)
+        Hunter h;
+        var isHunter = hunter.TryGetComponent<Hunter>(out h);
+        if (isHunter)
         {
-            if (Math.Abs(e.transform.position.x - GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x) < mind)
+            hunter.GetComponent<Hunter>().isEnabled = true;
+            GameObject min = null;
+            var mind = float.MaxValue;
+            foreach (var e in hunterPoints)
             {
-                mind = Math.Abs(e.transform.position.x - GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x);
-                min = e;
+                if (Math.Abs(e.transform.position.x - GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x) < mind)
+                {
+                    mind = Math.Abs(e.transform.position.x - GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x);
+                    min = e;
+                }
             }
+            min.GetComponent<HunterControlPoint>().DoSame();
         }
-        min.GetComponent<HunterControlPoint>().DoSame();
+        
     }
 
     /*private void OnTriggerStay2D(Collider2D collision)
@@ -58,7 +63,12 @@ public class HunterEnableArea : MonoBehaviour
     {
         if (collision.tag.Equals("Player"))
         {
-            hunter.GetComponent<Hunter>().isEnabled = false;
+            Hunter h;
+            var isHunter = hunter.TryGetComponent<Hunter>(out h);
+            if (isHunter)
+            {
+                hunter.GetComponent<Hunter>().isEnabled = false;
+            }
         }
     }
 }

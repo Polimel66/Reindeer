@@ -102,9 +102,9 @@ public class SearchingHunter : MonoBehaviour
                 Shoot();
                 isShooted = true;
                 //deerUnity.GetComponent<DeerUnity>().CatchDeer();
-                deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().StopMoving();
-                Invoke("UnShoot", 1f);
-                Invoke("UnStopRotation", 1f);
+                deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().Trapped();
+                Invoke("UnShoot", 5f);
+                Invoke("UnStopRotation", 5f);
             }
         }
         
@@ -136,7 +136,7 @@ public class SearchingHunter : MonoBehaviour
             audio.PlayOneShot(shootSound);
             var newBullet = GameObject.Instantiate(GameObject.Find("HunterKit1").transform.Find("Bullet").gameObject, transform.position, transform.rotation);
             newBullet.GetComponent<Bullet>().isDestroyOnTileCollision = false;
-            newBullet.GetComponent<Bullet>().GoToDeer(20, 200);
+            newBullet.GetComponent<Bullet>().GoToDeer(50, 1000);
         }
     }
 

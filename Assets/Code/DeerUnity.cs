@@ -354,15 +354,15 @@ public class DeerUnity : MonoBehaviour
 
         if (Math.Abs(transform.position.x - previousX) < 5)
         {
-            smokesFront[0].transform.parent.gameObject.transform.localPosition -= new Vector3(2 * (transform.position.x - previousX), 0, 0);
-            smokesMid[0].transform.parent.gameObject.transform.localPosition -= new Vector3(1.5f * (transform.position.x - previousX), 0, 0);
+            smokesFront[0].transform.parent.gameObject.transform.localPosition -= new Vector3(1.5f * (transform.position.x - previousX), 0, 0);
+            smokesMid[0].transform.parent.gameObject.transform.localPosition -= new Vector3(1.25f * (transform.position.x - previousX), 0, 0);
             smokesBack[0].transform.parent.gameObject.transform.localPosition -= new Vector3(1 * (transform.position.x - previousX), 0, 0);
 
-            midesFront[0].transform.parent.gameObject.transform.localPosition -= new Vector3(0.5f * (transform.position.x - previousX), 0, 0);
-            midesMid[0].transform.parent.gameObject.transform.localPosition -= new Vector3(0.33f * (transform.position.x - previousX), 0, 0);
-            midesBack[0].transform.parent.gameObject.transform.localPosition -= new Vector3(0.25f * (transform.position.x - previousX), 0, 0);
+            midesFront[0].transform.parent.gameObject.transform.localPosition -= new Vector3(0.25f * (transform.position.x - previousX), 0, 0);
+            midesMid[0].transform.parent.gameObject.transform.localPosition -= new Vector3(0.125f * (transform.position.x - previousX), 0, 0);
+            midesBack[0].transform.parent.gameObject.transform.localPosition -= new Vector3(0.06f * (transform.position.x - previousX), 0, 0);
 
-            backs[0].transform.parent.gameObject.transform.localPosition -= new Vector3(0.1f * (transform.position.x - previousX), 0, 0);
+            backs[0].transform.parent.gameObject.transform.localPosition -= new Vector3(0.03f * (transform.position.x - previousX), 0, 0);
         }
 
 
@@ -1150,7 +1150,7 @@ public class DeerUnity : MonoBehaviour
         }
         if (nextIsGrounded && !IsGrounded)
         {
-            GameObject.Find("Info").GetComponent<Text>().text = maxFallVelocity.ToString();
+            
             if (maxFallVelocity > 15)
             {
                 TakeDamage((int)((maxFallVelocity - 15) * 100 / 5));

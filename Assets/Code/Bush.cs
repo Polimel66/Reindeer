@@ -38,7 +38,7 @@ public class Bush : MonoBehaviour
             GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         }
         else if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && !isTriggered && DeerUnity.CurrentActive == 1
-            && GetComponent<PolygonCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
+            && GetComponent<BoxCollider2D>().IsTouching(deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<BoxCollider2D>()))
         {
             InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
             if (DeerUnity.VolumeRatio == 0)

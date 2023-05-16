@@ -423,7 +423,7 @@ public class ReindeerSmall : MonoBehaviour
         {
             SnowIn();
         }
-        else if(!isInSnow && DeerUnity.IsGrounded)
+        else if(!isInSnow && DeerUnity.IsGrounded && !deerUnity.GetComponent<DeerUnity>().isBited)
         {
             SnowOut();
         }
@@ -655,6 +655,7 @@ public class ReindeerSmall : MonoBehaviour
                     horizontalForceRatio = 0;
                 }
                 var velocity = new Vector2(anotherHorForceRatio * direction * horizontalForceRatio * shiftRatio, rigidbody.velocity.y);
+                //GameObject.Find("Info").GetComponent<Text>().text = anotherHorForceRatio.ToString();
                 if (isInWind)
                 {
                     if (isIgnoreShift)
