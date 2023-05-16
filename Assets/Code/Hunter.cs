@@ -581,28 +581,28 @@ public class Hunter : MonoBehaviour
     public void StayAtPoint(Transform tr)
     {
         mode = HunterMode.Chasing;
-        if (dog != null)
-            dog.GetComponent<Dog>().mode = HunterMode.Searching;
+        /*if (dog != null)
+            dog.GetComponent<Dog>().mode = HunterMode.Searching;*/
         
         isCanShooting = true;
         isStayAtPoint = true;
         StopMoving();
         transform.position = tr.position;
         if (dog != null)
-            dog.transform.position = transform.position;
+            dog.GetComponent<Dog>().StayAtPoint(tr);
     }
 
     public void HuntDeerAtPoint(Transform tr)
     {
         mode = HunterMode.Chasing;
-        if (dog != null)
-            dog.GetComponent<Dog>().mode = HunterMode.Chasing;
+        /*if (dog != null)
+            dog.GetComponent<Dog>().mode = HunterMode.Chasing;*/
         
         isCanShooting = true;
         isStayAtPoint = false;
         transform.position = tr.position;
         if (dog != null)
-            dog.transform.position = transform.position;
+            dog.GetComponent<Dog>().HuntDeerAtPoint(tr);
     }
 
     private void GoRight()

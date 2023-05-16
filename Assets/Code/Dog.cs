@@ -48,7 +48,7 @@ public class Dog : MonoBehaviour
         tilemap1 = GameObject.Find("Tilemap1");
         tilemap2 = GameObject.Find("Tilemap2");
 
-        allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
+        //allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("Platform"));
 
         rightWallChecker = transform.Find("RightWallChecker").gameObject;
