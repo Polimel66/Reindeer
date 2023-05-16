@@ -34,6 +34,11 @@ public class DeerUnity : MonoBehaviour
     public bool isSecondDeerAvailable;
     public bool isThirdDeerAvailable;
 
+    public bool isFirstAbilityGhostAvailable;
+    public bool isSecondAbilityGhostAvailable;
+    public GameObject firstAbilLock;
+    public GameObject secondAbilLock;
+
     public static bool isBlackoutNow;
 
     public static float VolumeRatio = 0.5f;
@@ -185,6 +190,8 @@ public class DeerUnity : MonoBehaviour
     //public static bool isFirstLocationComplete;
     public static bool isThirdDeerComplete;
 
+
+
     public GameObject exitWarningPanel;
 
 
@@ -194,6 +201,8 @@ public class DeerUnity : MonoBehaviour
         Application.targetFrameRate = 60;
 
         //isFirstLocationComplete = false;
+        isFirstAbilityGhostAvailable = false;
+        isSecondAbilityGhostAvailable = false;
         isThirdDeerComplete = false;
         isPossibleTakeMoss = false;
         isPossibleTakeLemming = false;
@@ -291,6 +300,10 @@ public class DeerUnity : MonoBehaviour
 
         isTasksShowing = true;
         tasks.transform.localScale = new Vector3(1, 1, 1);
+        firstAbilLock = firstAbility.transform.Find("lockFirstAbility").gameObject;
+        firstAbilLock.SetActive(false);
+        secondAbilLock = secondAbility.transform.Find("lockSecondAbility").gameObject;
+        secondAbilLock.SetActive(false);
     }
 
     // Update is called once per frame
@@ -323,7 +336,8 @@ public class DeerUnity : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            OnE();
+            
+            OnE(); 
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
@@ -946,7 +960,6 @@ public class DeerUnity : MonoBehaviour
 
     public void SwitchOnFirst()
     {
-
         if (isOnMovePlatform)
         {
             var collisionTransform = GetCurrentActiveDeer().transform.parent;
@@ -966,6 +979,7 @@ public class DeerUnity : MonoBehaviour
             currentActiveDeer = reindeerSmall;
         }
 
+
         reindeerSmall.transform.position = new Vector3(transform.position.x, transform.position.y - unitySmallDeltaY);
 
         var previousHorizontalVelocity = 0;
@@ -975,6 +989,10 @@ public class DeerUnity : MonoBehaviour
         var previousDirection = 0;
         if (CurrentActive == 2)
         {
+            if (!isSecondAbilityGhostAvailable)
+                secondAbilLock.SetActive(false);
+            if (!isFirstAbilityGhostAvailable)
+                firstAbilLock.SetActive(false);
             previousHorizontalVelocity = reindeerGhost.GetComponent<ReindeerGhost>().CurrentHorizontalVelocity;
             previousVerticalVelocity = reindeerGhost.GetComponent<ReindeerGhost>().CurrentVerticalVelocity;
             previousIsRunning = reindeerGhost.GetComponent<ReindeerGhost>().isRunning;
@@ -1025,6 +1043,10 @@ public class DeerUnity : MonoBehaviour
         var previousIsRunning = false;
         var previousHorizontalForceRatio = 0f;
         var previousDirection = 0;
+        if (!isFirstAbilityGhostAvailable)
+            firstAbilLock.SetActive(true);
+        if (!isSecondAbilityGhostAvailable)
+            secondAbilLock.SetActive(true);
         if (CurrentActive == 1)
         {
             previousHorizontalVelocity = reindeerSmall.GetComponent<ReindeerSmall>().CurrentHorizontalVelocity;
@@ -1088,6 +1110,10 @@ public class DeerUnity : MonoBehaviour
         }
         else if (CurrentActive == 2)
         {
+            if (!isSecondAbilityGhostAvailable)
+                secondAbilLock.SetActive(false);
+            if (!isFirstAbilityGhostAvailable)
+                firstAbilLock.SetActive(false);
             previousHorizontalVelocity = reindeerGhost.GetComponent<ReindeerGhost>().CurrentHorizontalVelocity;
             previousVerticalVelocity = reindeerGhost.GetComponent<ReindeerGhost>().CurrentVerticalVelocity;
             previousIsRunning = reindeerGhost.GetComponent<ReindeerGhost>().isRunning;

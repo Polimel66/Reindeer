@@ -424,7 +424,7 @@ public class ReindeerGhost : MonoBehaviour
 
             PlayJumpAnimation();
         }
-        if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed)
+        if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed && deerUnity.GetComponent<DeerUnity>().isSecondAbilityGhostAvailable)
         {
             isFlying = true;
 
@@ -487,7 +487,7 @@ public class ReindeerGhost : MonoBehaviour
             InputManager.GetComponent<InputManager>().isGoLeftButtonPressed = false;
             //horizontalForceRatio = 0;
         }
-        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && currendGhostPlatform != null && isCanMater)//���� ������ �����, ��������� �������������� �������� �����
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && currendGhostPlatform != null && isCanMater && deerUnity.GetComponent<DeerUnity>().isFirstAbilityGhostAvailable)//���� ������ �����, ��������� �������������� �������� �����
         {
             currendGhostPlatform.GetComponent<Materialization>().makeMaterialisation();
             isCanMater = false;

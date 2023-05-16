@@ -43,6 +43,7 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
         /*if (SaveManager.isAnySaves())
