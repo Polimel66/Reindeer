@@ -141,9 +141,8 @@ public class Hints : MonoBehaviour
         }
         else if(tick && TrackChecker.isChanged)
         {
-            timer.StopTimer();
             timer.ClearTimer();
-            isChanged = false;
+            TrackChecker.isChanged = false;
         }
     }
 }

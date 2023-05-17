@@ -29,6 +29,7 @@ TagManager:
   - LaserBound
   - LaserTrigger
   - TileMap
+  - GeneralPlayer
   layers:
   - Default
   - TransparentFX

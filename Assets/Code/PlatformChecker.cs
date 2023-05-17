@@ -58,7 +58,7 @@ public class PlatformChecker : MonoBehaviour
                 Invoke("TurnOffPlatform", 1f);
             }
         }
-        else if (collision.tag == "thorns")
+        else if (collision.tag == "thorns" && collision.isTrigger)
         {
             deerUnity.GetComponent<DeerUnity>().TakeDamage(1000f);
         }

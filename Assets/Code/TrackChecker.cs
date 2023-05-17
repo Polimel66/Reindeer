@@ -126,8 +126,7 @@ public class TrackChecker : MonoBehaviour
         {
             timer.ClearTimer();
             timer.SetPeriodForTick(5f);
-            timer.StopTimer();
-            isChanged = false;
+            Hints.isChanged = false;
         }
     }
 }

@@ -8,10 +8,12 @@ public class HunterEnableArea : MonoBehaviour
     private List<GameObject> hunterPoints = new List<GameObject>();
     private bool isAlreadyMoved = false;
     public GameObject hunter;
+    private GameObject deerUnity;
     // Start is called before the first frame update
     void Start()
     {
         hunterPoints.AddRange(GameObject.FindGameObjectsWithTag("HunterPoint"));
+        deerUnity = GameObject.Find("DeerUnity");
     }
 
     // Update is called once per frame
@@ -22,7 +24,16 @@ public class HunterEnableArea : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag.Equals("Player") && !isAlreadyMoved)
+        if (collision.tag.Equals("GeneralPlayer") && !isAlreadyMoved)
+        {
+            MoveHunterAtNearestPoint();
+            isAlreadyMoved = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("GeneralPlayer") && !isAlreadyMoved)
         {
             MoveHunterAtNearestPoint();
             isAlreadyMoved = true;
@@ -40,7 +51,7 @@ public class HunterEnableArea : MonoBehaviour
             var mind = float.MaxValue;
             foreach (var e in hunterPoints)
             {
-                if (Math.Abs(e.transform.position.x - GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x) < mind)
+                if (Math.Abs(e.transform.position.x - deerUnity.GetComponent<DeerUnity>().spawn.transform.position.x) < mind)
                 {
                     mind = Math.Abs(e.transform.position.x - GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x);
                     min = e;
@@ -61,7 +72,7 @@ public class HunterEnableArea : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag.Equals("Player"))
+        if (collision.tag.Equals("GeneralPlayer"))
         {
             Hunter h;
             var isHunter = hunter.TryGetComponent<Hunter>(out h);
@@ -69,6 +80,7 @@ public class HunterEnableArea : MonoBehaviour
             {
                 hunter.GetComponent<Hunter>().isEnabled = false;
             }
+            isAlreadyMoved = false;
         }
     }
 }

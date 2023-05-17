@@ -113,29 +113,30 @@ public class Dog : MonoBehaviour
         }
         else if (mode == HunterMode.Chasing)
         {
-            var delta = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x - transform.position.x;
-            if (delta > 0)
+            var deltaX = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.x - transform.position.x;
+            var deltaY = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().transform.position.y - transform.position.y;
+            if (deltaX > 0)
             {
                 direction = 1;
             }
-            else if (delta < 0)
+            else if (deltaX < 0)
             {
                 direction = -1;
             }
-            if (delta > 0.5 && isCanMoving && !isStayAtPoint)
+            if (deltaX > 0.5 && isCanMoving && !isStayAtPoint)
             {
                 GoRight();
             }
-            else if (delta < -0.5 && isCanMoving && !isStayAtPoint)
+            else if (deltaX < -0.5 && isCanMoving && !isStayAtPoint)
             {
                 GoLeft();
             }
-            else if (delta > -0.5 && delta < 0.5)
+            else if (deltaX > -0.5 && deltaX < 0.5)
             {
                 StopMoving();
             }
 
-            if ((delta > 10 || delta < -10) && !isStayAtPoint)
+            if ((deltaX > 10 || deltaX < -10) && !isStayAtPoint)
             {
                 Run();
             }
@@ -146,7 +147,8 @@ public class Dog : MonoBehaviour
 
             
 
-            if (delta < 0.5 && delta > -0.5 && !deerUnity.GetComponent<DeerUnity>().isCatched && !deerUnity.GetComponent<DeerUnity>().isBited)
+            if (deltaX < 0.5 && deltaX > -0.5 && !deerUnity.GetComponent<DeerUnity>().isCatched && !deerUnity.GetComponent<DeerUnity>().isBited
+                && deltaY < 0.5 && deltaY > -0.5)
             {
                 //deerUnity.GetComponent<DeerUnity>().CatchDeer();
                 deerUnity.GetComponent<DeerUnity>().Bite();

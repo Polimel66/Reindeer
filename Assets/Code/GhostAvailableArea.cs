@@ -19,7 +19,7 @@ public class GhostAvailableArea : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag.Equals("Player"))
+        if (collision.tag.Equals("GeneralPlayer"))
         {
             deerUnity.GetComponent<DeerUnity>().isSecondDeerAvailable = true;
         }
@@ -27,7 +27,7 @@ public class GhostAvailableArea : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag.Equals("Player"))
+        if (collision.tag.Equals("GeneralPlayer"))
         {
             deerUnity.GetComponent<DeerUnity>().isSecondDeerAvailable = false;
         }

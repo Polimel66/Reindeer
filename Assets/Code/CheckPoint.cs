@@ -7,6 +7,7 @@ public class CheckPoint : MonoBehaviour
     private GameObject deerUnity;
     public bool isReached;
     private bool isApplied = false;
+    public GameObject nearestHunterPoint;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +37,7 @@ public class CheckPoint : MonoBehaviour
             deerUnity.GetComponent<DeerUnity>().HealHealth(deerUnity.GetComponent<DeerUnity>().maxHealth);
             deerUnity.GetComponent<DeerUnity>().currentCooling = deerUnity.GetComponent<DeerUnity>().maxCooling;
             deerUnity.GetComponent<DeerUnity>().currentStamina = deerUnity.GetComponent<DeerUnity>().maxStamina;
+            deerUnity.GetComponent<DeerUnity>().lastSpawn = this.gameObject;
             SaveManager.SetLastCheckPointName(name);
         }
     }

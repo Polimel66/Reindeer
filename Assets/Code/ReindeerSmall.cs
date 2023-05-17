@@ -110,6 +110,7 @@ public class ReindeerSmall : MonoBehaviour
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("CollapsingPlat"));
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("Platform"));
         allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("MaterialisedPlatform"));
+        allAnotherPlatforms.AddRange(GameObject.FindGameObjectsWithTag("EmergIsland"));
 
         rightWallChecker = transform.Find("RightWallChecker").gameObject;
         leftWallChecker = transform.Find("LeftWallChecker").gameObject;

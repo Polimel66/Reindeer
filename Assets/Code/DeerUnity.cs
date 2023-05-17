@@ -191,7 +191,7 @@ public class DeerUnity : MonoBehaviour
     public static bool isThirdDeerComplete;
 
 
-
+    public GameObject lastSpawn;
     public GameObject exitWarningPanel;
 
 
@@ -201,8 +201,8 @@ public class DeerUnity : MonoBehaviour
         Application.targetFrameRate = 60;
 
         //isFirstLocationComplete = false;
-        isFirstAbilityGhostAvailable = false;
-        isSecondAbilityGhostAvailable = false;
+        //isFirstAbilityGhostAvailable = false;
+        //isSecondAbilityGhostAvailable = false;
         isThirdDeerComplete = false;
         isPossibleTakeMoss = false;
         isPossibleTakeLemming = false;
@@ -810,7 +810,7 @@ public class DeerUnity : MonoBehaviour
             if (currentHealth <= 0)
             {
                 Respawn();
-                currentHealth = maxHealth;
+                currentHealth = 1;
             }
             //isDamage = false;
         }
