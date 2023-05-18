@@ -11,6 +11,7 @@ public class Moss : MonoBehaviour
     public GameObject phraseMoss;
     public GameObject phraseBeforeCollectingMoss;
     public GameObject phraseAfterCollectingMoss;
+    public GameObject stoneWithoutMoss;
     // Start is called before the first frame update
     public void takeMoss()
     {
@@ -23,6 +24,8 @@ public class Moss : MonoBehaviour
         wind = GameObject.Find("LiftingWind (2)");
         phraseMoss.SetActive(false);
         phraseAfterCollectingMoss.SetActive(false);
+        stoneWithoutMoss = GameObject.Find("StoneWithoutMoss");
+        stoneWithoutMoss.SetActive(false);
     }
 
     // Update is called once per frame
@@ -41,6 +44,7 @@ public class Moss : MonoBehaviour
             phraseBeforeCollectingMoss.SetActive(false);
             phraseAfterCollectingMoss.SetActive(true);
             deerUnity.GetComponent<DeerUnity>().SetTask(13);
+            stoneWithoutMoss.SetActive(true);
         }
         DeerUnity.isPossibleTakeMoss = false;
     }

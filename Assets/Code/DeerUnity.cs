@@ -194,6 +194,9 @@ public class DeerUnity : MonoBehaviour
     public GameObject lastSpawn;
     public GameObject exitWarningPanel;
 
+    public static bool isShakeCamera;
+    public static bool isShortShakeCamera;
+
 
     // Start is called before the first frame update
     void Start()
@@ -304,6 +307,8 @@ public class DeerUnity : MonoBehaviour
         firstAbilLock.SetActive(false);
         secondAbilLock = secondAbility.transform.Find("lockSecondAbility").gameObject;
         secondAbilLock.SetActive(false);
+        isShakeCamera = false;
+        isShortShakeCamera = false;
     }
 
     // Update is called once per frame

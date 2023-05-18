@@ -156,6 +156,14 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
             if (isTrapped && countJumpsToEscape > 0)
             {
                 countJumpsToEscape--;
+                if (countJumpsToEscape >= 1)
+                {
+                    DeerUnity.isShortShakeCamera = true;
+                }
+                else
+                {
+                    DeerUnity.isShakeCamera = true;
+                }
                 deerUnity.GetComponent<DeerUnity>().TakeDamage(10);
                 if (countJumpsToEscape <= 0)
                 {
@@ -446,6 +454,7 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
     {
         isTrapped = true;
         countJumpsToEscape = 5;
+        DeerUnity.isShakeCamera = true;
         normalGravityScale = rigidbody.gravityScale;
         rigidbody.gravityScale = 0;
         rigidbody.velocity = new Vector2(0, 0);
@@ -454,6 +463,7 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
     public void EscapedTrap()
     {
         countJumpsToEscape = 0;
+        //DeerUnity.isShakeCamera = true;
         isTrapped = false;
         rigidbody.gravityScale = normalGravityScale;
     }

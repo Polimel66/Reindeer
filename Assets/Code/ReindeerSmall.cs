@@ -470,6 +470,14 @@ public class ReindeerSmall : MonoBehaviour
         {
             InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
             countJumpsToEscape--;
+            if (countJumpsToEscape >= 1)
+            {
+                DeerUnity.isShortShakeCamera = true;
+            }
+            else
+            {
+                DeerUnity.isShakeCamera = true;
+            }
             deerUnity.GetComponent<DeerUnity>().TakeDamage(2);
             if (countJumpsToEscape <= 0)
             {
@@ -727,6 +735,7 @@ public class ReindeerSmall : MonoBehaviour
     public void Trapped()
     {
         isTrapped = true;
+        DeerUnity.isShakeCamera = true;
         countJumpsToEscape = 5;
         StopMoving();
     }
@@ -735,6 +744,7 @@ public class ReindeerSmall : MonoBehaviour
     {
         countJumpsToEscape = 0;
         isTrapped = false;
+        //DeerUnity.isShakeCamera = true;
         StartMoving();
     }
 
