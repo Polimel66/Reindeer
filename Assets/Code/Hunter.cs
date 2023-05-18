@@ -84,6 +84,7 @@ public class Hunter : MonoBehaviour
     private bool isPlayingFallAnimation = false;
     public GameObject animation;
     public GameObject handsRotatingPoint;
+    private float t = 0;
     void Start()
     {
         startPos = transform.position;
@@ -111,6 +112,7 @@ public class Hunter : MonoBehaviour
 
     void Update()
     {
+        t += Time.deltaTime;
         CheckIsStucked();
         MakeAction();
         FlipPlayer();
@@ -485,8 +487,9 @@ public class Hunter : MonoBehaviour
             || (direction > 0 && rightWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>()))
             || (direction < 0 && leftWallChecker.GetComponent<BoxCollider2D>().IsTouching(tilemap2.GetComponent<CompositeCollider2D>())))
         {
-            if (previousTime == 0)
+            if (previousTime == 0 && t > 1f)
             {
+                t = 0;
                 isCanMoving = false;
                 StopMoving();
                 Jump();
@@ -495,6 +498,7 @@ public class Hunter : MonoBehaviour
             }
             if (previousTime != 0 && GetComponent<Timer>().GetTime() - previousTime > 1)
             {
+                t = 0;
                 Jump();
                 PlayJumpAnimation();
                 previousTime = GetComponent<Timer>().GetTime();

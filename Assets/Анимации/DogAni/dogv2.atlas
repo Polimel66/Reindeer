@@ -1,0 +1,41 @@
+
+dogv2.png
+size: 4096,4096
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+body+head
+  rotate: false
+  xy: 2, 2146
+  size: 2841, 1881
+  orig: 2841, 1881
+  offset: 0, 0
+  index: -1
+l_back
+  rotate: true
+  xy: 2845, 2395
+  size: 279, 1152
+  orig: 279, 1152
+  offset: 0, 0
+  index: -1
+l_front
+  rotate: true
+  xy: 2845, 2676
+  size: 294, 1179
+  orig: 313, 1179
+  offset: 19, 0
+  index: -1
+r_back
+  rotate: true
+  xy: 2845, 1734
+  size: 659, 1035
+  orig: 659, 1035
+  offset: 0, 0
+  index: -1
+r_front
+  rotate: true
+  xy: 2845, 2972
+  size: 1055, 1182
+  orig: 1055, 1182
+  offset: 0, 0
+  index: -1
