@@ -520,12 +520,23 @@ public class ReindeerSmall : MonoBehaviour
         //    InputManager.GetComponent<InputManager>().isAnyMoveButtonPressing = false;
         //}
 
-        if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed && InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
+        {
+            CurrentHorizontalVelocity = 0;
+            //InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
+            //horizontalForceRatio = 0;
+        }
+        else if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)
         {
             CurrentHorizontalVelocity = 4;
-            
-            InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
-            //horizontalForceRatio = 0;
+        }
+        else if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
+        {
+            CurrentHorizontalVelocity = -4;
+        }
+        else
+        {
+            CurrentHorizontalVelocity = 0;
         }
         /*if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)
         {
@@ -533,12 +544,12 @@ public class ReindeerSmall : MonoBehaviour
             InputManager.GetComponent<InputManager>().isGoRightButtonStopPress = false;
             //horizontalForceRatio = 0;
         }*/
-        if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
+        /*if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
         {
             CurrentHorizontalVelocity = -4;
             InputManager.GetComponent<InputManager>().isGoLeftButtonPressed = false;
             //horizontalForceRatio = 0;
-        }
+        }*/
         /*if (InputManager.GetComponent<InputManager>().isGoLeftButtonStopPress)
         {
             CurrentHorizontalVelocity += 4;

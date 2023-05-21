@@ -470,11 +470,23 @@ public class ReindeerGhost : MonoBehaviour
             InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress = false;
         }
 
-        if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)//���� ������ ������, ��������� �������������� �������� ������
+        if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed && InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
+        {
+            CurrentHorizontalVelocity = 0;
+            //InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
+            //horizontalForceRatio = 0;
+        }
+        else if (InputManager.GetComponent<InputManager>().isGoRightButtonPressed)
         {
             CurrentHorizontalVelocity = 4;
-            InputManager.GetComponent<InputManager>().isGoRightButtonPressed = false;
-            //horizontalForceRatio = 0;
+        }
+        else if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)
+        {
+            CurrentHorizontalVelocity = -4;
+        }
+        else
+        {
+            CurrentHorizontalVelocity = 0;
         }
         /*if (InputManager.GetComponent<InputManager>().isGoRightButtonStopPress)//���� ��������� ������, ��������� �������������� �������� ����
         {
@@ -482,12 +494,12 @@ public class ReindeerGhost : MonoBehaviour
             InputManager.GetComponent<InputManager>().isGoRightButtonStopPress = false;
             //horizontalForceRatio = 0;
         }*/
-        if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)//���� ������ �����, ��������� �������������� �������� �����
+        /*if (InputManager.GetComponent<InputManager>().isGoLeftButtonPressed)//���� ������ �����, ��������� �������������� �������� �����
         {
             CurrentHorizontalVelocity = -4;
             InputManager.GetComponent<InputManager>().isGoLeftButtonPressed = false;
             //horizontalForceRatio = 0;
-        }
+        }*/
         if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && currendGhostPlatform != null && isCanMater && deerUnity.GetComponent<DeerUnity>().isFirstAbilityGhostAvailable)//���� ������ �����, ��������� �������������� �������� �����
         {
             currendGhostPlatform.GetComponent<Materialization>().makeMaterialisation();

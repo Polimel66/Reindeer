@@ -37,8 +37,10 @@ public class MainMenu : MonoBehaviour
     public GameObject exitWarningPanel;
 
     public GameObject whatLocationStartDebugButton;
-    public static int LocationStartNumber = 0;
+    public static int TypeOfInputSystem = 0;
     public GameObject charactersDescriptionPanel;
+    public Image joystickInputIcon;
+    public Image buttonsInputIcon;
 
 
     void Start()
@@ -60,7 +62,7 @@ public class MainMenu : MonoBehaviour
         settingsMovingPanel.transform.localPosition += new Vector3(0, settingsPanelHeight, 0);
         settingsPanelOffPosition = settingsMovingPanel.transform.localPosition;
 
-        whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = LocationStartNumber.ToString();
+        //whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = LocationStartNumber.ToString();
 
         //settingsButton.transform.localEulerAngles = new Vector3(0, 0, 0);
     }
@@ -211,14 +213,19 @@ public class MainMenu : MonoBehaviour
         loadingScreen.SetActive(false);
     }
 
-    public void OnSwitchLocationStartNumber()
+    public void OnSwitchInputSystem()
     {
-        LocationStartNumber += 1;
-        if(LocationStartNumber > 2)
+        if(TypeOfInputSystem == 0)
         {
-            LocationStartNumber = 0;
+            TypeOfInputSystem = 1;
+            whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = "кноп\nки";
         }
-        whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = LocationStartNumber.ToString();
+        else
+        {
+            TypeOfInputSystem = 0;
+            whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = "джой\nстик";
+        }
+        //whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = LocationStartNumber.ToString();
     }
 
     public void OnCharactersDiscriptionOpenButtonClick()

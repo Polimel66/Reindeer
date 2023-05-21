@@ -259,14 +259,14 @@ public class DeerUnity : MonoBehaviour
 
         spawn = GameObject.Find("Spawn");
 
-        if(MainMenu.LocationStartNumber == 1)
+        /*if(MainMenu.LocationStartNumber == 1)
         {
             spawn.transform.position = new Vector3(70, -114, 0);
         }
         if(MainMenu.LocationStartNumber == 2)
         {
             spawn.transform.position = new Vector3(922, -105, 0);
-        }
+        }*/
 
         MoveAllDeersToSpawn();
         ActivateCooling();

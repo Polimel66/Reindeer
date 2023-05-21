@@ -24,7 +24,7 @@ public static class SaveManager
         if (PlayerPrefs.HasKey("LastCheckPoint"))
         {
             LastCheckPointName = PlayerPrefs.GetString("LastCheckPoint");
-            if(MainMenu.LocationStartNumber == 1)
+            /*if(MainMenu.LocationStartNumber == 1)
             {
                 LastCheckPointName = "Map1CheckPoint0";
             }
@@ -35,7 +35,7 @@ public static class SaveManager
             if(MainMenu.LocationStartNumber == 0)
             {
                 LastCheckPointName = null;
-            }
+            }*/
         }
         else
         {
