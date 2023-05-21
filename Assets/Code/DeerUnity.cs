@@ -196,6 +196,7 @@ public class DeerUnity : MonoBehaviour
 
     public static bool isShakeCamera;
     public static bool isShortShakeCamera;
+    private bool isFirstTimeRespawn = true;
 
 
     // Start is called before the first frame update
@@ -314,6 +315,10 @@ public class DeerUnity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Mathf.Abs(currentActiveDeer.GetComponent<Rigidbody2D>().velocity.y) > 50)
+        {
+            TakeDamage(10000);
+        }
         HealthChecked();
         StaminaChecked();
         StaminaKeys();
@@ -835,11 +840,12 @@ public class DeerUnity : MonoBehaviour
             point.GetComponent<HunterControlPoint>().isAlreadyWorked = false;
         }
         var timeToWait = 0.0f;
-        if (CurrentActive == 1)
+        if (CurrentActive == 1 && !isFirstTimeRespawn)
         {
             reindeerSmall.GetComponent<ReindeerSmall>().PlayDieAnimation();
             timeToWait = 1.1f;
         }
+        isFirstTimeRespawn = false;
         Invoke("AfterDieAnimation", timeToWait);
     }
 

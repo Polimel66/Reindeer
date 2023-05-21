@@ -62,6 +62,16 @@ public class MainMenu : MonoBehaviour
         settingsMovingPanel.transform.localPosition += new Vector3(0, settingsPanelHeight, 0);
         settingsPanelOffPosition = settingsMovingPanel.transform.localPosition;
 
+        if (TypeOfInputSystem == 0)
+        {
+            whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = "джой\nстик";
+            
+        }
+        else
+        {
+            whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = "кноп\nки";
+
+        }
         //whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = LocationStartNumber.ToString();
 
         //settingsButton.transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -162,10 +172,7 @@ public class MainMenu : MonoBehaviour
 
     public void OnStartNewGameButtonCkick()
     {
-        SaveManager.DeleteSaves();
-        SaveManager.LoadGame();
-        Load();
-        
+        SaveManager.DeleteSaves();     
     }
 
     public void OnExitButtonClick()

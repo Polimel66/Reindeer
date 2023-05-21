@@ -46,6 +46,7 @@ public static class SaveManager
     public static void DeleteSaves()
     {
         PlayerPrefs.DeleteAll();
+        LastCheckPointName = null;
     }
 
     public static bool isAnySaves()
