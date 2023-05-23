@@ -36,6 +36,8 @@ public class DeerUnity : MonoBehaviour
 
     public bool isFirstAbilityGhostAvailable;
     public bool isSecondAbilityGhostAvailable;
+    public bool isFirstAbilitySmallAvailable;
+    public bool isSecondAbilitySmallAvailable;
     public GameObject firstAbilLock;
     public GameObject secondAbilLock;
 
@@ -310,6 +312,8 @@ public class DeerUnity : MonoBehaviour
         secondAbilLock.SetActive(false);
         isShakeCamera = false;
         isShortShakeCamera = false;
+        isFirstAbilitySmallAvailable = false;
+        isSecondAbilitySmallAvailable = false;
     }
 
     // Update is called once per frame

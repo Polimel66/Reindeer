@@ -12,6 +12,8 @@ public class EmergIsland : MonoBehaviour
     public bool isEmergIslandActivated;
     public GameObject nextGroup;
     public int counterPlat;
+    private GameObject timerIsland;
+    private bool platOn;
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
     //    if (collision.tag == "Player")
@@ -30,6 +32,8 @@ public class EmergIsland : MonoBehaviour
         isFirstPlatformShown = false;
         isSecondPlatformShown = false;
         counterPlat = 0;
+        timerIsland = GameObject.Find("TimerIsland");
+        platOn = false;
     }
 
     // Update is called once per frame
@@ -42,6 +46,10 @@ public class EmergIsland : MonoBehaviour
             GetComponent<Timer>().SetPeriodForTick(1f);
             GetComponent<Timer>().StartTimer();
             isEmergIslandActivated = false;
+            //timerIsland.GetComponent<Timer>().SetPeriodForTick(6f);
+            //timerIsland.GetComponent<Timer>().StopTimer();
+            //timerIsland.GetComponent<Timer>().ClearTimer();
+            //timerIsland.GetComponent<Timer>().StartTimer();
         }
         if (isPlatformShowOn)
         {
@@ -57,6 +65,8 @@ public class EmergIsland : MonoBehaviour
             secondPlatformShown.GetComponent<SpriteRenderer>().color -= new Color(0, 0, 0, 255);
             isFirstPlatformShown = false;
         }
+
+
         if (counterPlat == 2)
         {
             if (nextGroup != null)
@@ -66,7 +76,36 @@ public class EmergIsland : MonoBehaviour
                 isFirstPlatformShown = false;
                 isSecondPlatformShown = false;
                 counterPlat = 0;
+                platOn = false;
             }
         }
+        //else
+        //{
+        //    if (timerIsland.GetComponent<Timer>().IsTicked() && !platOn)
+        //    {
+        //        firstPlatformShown.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 255);
+        //        secondPlatformShown.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 255);
+        //        platOn = true;
+        //        Invoke("TurnOffBothPlat", 1f);
+        //    }
+        //    //else if (counterPlat == 1 && timerIsland.GetComponent<Timer>().IsTicked() && !platOn)
+        //    //{
+        //    //    secondPlatformShown.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 255);
+        //    //    platOn = true;
+        //    //    Invoke("TurnOffOnePlat", 1f);
+        //    //}
+        //}
+    }
+
+    public void TurnOffBothPlat()
+    {
+        firstPlatformShown.GetComponent<SpriteRenderer>().color -= new Color(0, 0, 0, 255);
+        secondPlatformShown.GetComponent<SpriteRenderer>().color -= new Color(0, 0, 0, 255);
+        platOn = false;
+    }
+    public void TurnOffOnePlat()
+    {
+        secondPlatformShown.GetComponent<SpriteRenderer>().color -= new Color(0, 0, 0, 255);
+        platOn = false;
     }
 }

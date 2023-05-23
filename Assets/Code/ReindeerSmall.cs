@@ -24,7 +24,7 @@ public class ReindeerSmall : MonoBehaviour
     public float horizontalForceRatio = 0;
     private GameObject deerUnity;
     private bool isTrapped = false;
-    private int countJumpsToEscape = 0;
+    public int countJumpsToEscape = 0;
     private float normalGravityScale = 0;
     public int direction = 1;
     private bool isCanMoving = true;
@@ -479,10 +479,10 @@ public class ReindeerSmall : MonoBehaviour
                 DeerUnity.isShakeCamera = true;
             }
             deerUnity.GetComponent<DeerUnity>().TakeDamage(2);
-            if (countJumpsToEscape <= 0)
-            {
-                EscapedTrap();
-            }
+            //if (countJumpsToEscape <= 0)
+            //{
+            //    EscapedTrap();
+            //}
         }
         InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;
 

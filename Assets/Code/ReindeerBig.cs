@@ -14,7 +14,7 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
     public bool isRunning = false;
     private GameObject deerUnity;
     private bool isTrapped = false;
-    private int countJumpsToEscape = 0;
+    public int countJumpsToEscape = 0;
     private float normalGravityScale = 0;
     public int direction = 1;
     //public bool isGrounded = true;
@@ -165,10 +165,10 @@ public class ReindeerBig : MonoBehaviour //большой олень. ѕока полностью совпада
                     DeerUnity.isShakeCamera = true;
                 }
                 deerUnity.GetComponent<DeerUnity>().TakeDamage(10);
-                if (countJumpsToEscape <= 0)
-                {
-                    EscapedTrap();
-                }
+                //if (countJumpsToEscape <= 0)
+                //{
+                //    EscapedTrap();
+                //}
             }
         }
         InputManager.GetComponent<InputManager>().isJumpButtonPressed = false;

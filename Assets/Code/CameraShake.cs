@@ -6,10 +6,12 @@ public class CameraShake : MonoBehaviour
 {
     public GameObject shakeFX;
     public float shakeDur;
+    private GameObject deerUnity;
     // Start is called before the first frame update
     void Start()
     {
         shakeFX.SetActive(false);
+        deerUnity = GameObject.Find("DeerUnity");
     }
 
     // Update is called once per frame
@@ -25,7 +27,7 @@ public class CameraShake : MonoBehaviour
         {
             DeerUnity.isShortShakeCamera = false;
             StopAllCoroutines();
-            StartCoroutine(Shake(0.2f));
+            StartCoroutine(Shake(0.3f));
         }
     }
 
@@ -34,5 +36,13 @@ public class CameraShake : MonoBehaviour
         shakeFX.SetActive(true);
         yield return new WaitForSeconds(time);
         shakeFX.SetActive(false);
+        if (DeerUnity.CurrentActive == 1 && deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().countJumpsToEscape <= 0)
+        {
+            deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().EscapedTrap();
+        }
+        else if (DeerUnity.CurrentActive == 3 && deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerBig>().countJumpsToEscape <= 0)
+        {
+            deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerBig>().EscapedTrap();
+        }
     }
 }
