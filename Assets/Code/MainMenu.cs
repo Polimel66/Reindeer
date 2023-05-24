@@ -19,7 +19,7 @@ public class MainMenu : MonoBehaviour
     public Sprite audiOff;
     private Color settingsButtonActive = new Color(1, 0, 1, 1);
     private Color settingsButtonDisactive = new Color(1, 1, 1, 1);
-    private bool isAudiOn = true;
+    public static bool isAudiOn = true;
     public GameObject audioButton;
     public GameObject settingsButton;
     private bool isSettingsOn = false;
@@ -35,6 +35,7 @@ public class MainMenu : MonoBehaviour
 
     private float debugger = 0;
     public GameObject exitWarningPanel;
+    public GameObject deleteSavesWarningPanel;
 
     public GameObject whatLocationStartDebugButton;
     public static int TypeOfInputSystem = 0;
@@ -71,6 +72,17 @@ public class MainMenu : MonoBehaviour
         {
             whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = "кноп\nки";
 
+        }
+
+        if (isAudiOn)
+        {
+            audioButton.GetComponent<Image>().sprite = audiOn;
+            audioMixer.SetFloat("MasterVolume", 0);
+        }
+        else
+        {
+            audioButton.GetComponent<Image>().sprite = audiOff;
+            audioMixer.SetFloat("MasterVolume", -80);
         }
         //whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = LocationStartNumber.ToString();
 
@@ -170,10 +182,10 @@ public class MainMenu : MonoBehaviour
         Load();
     }
 
-    public void OnStartNewGameButtonCkick()
+    /*public void OnStartNewGameButtonCkick()
     {
-        SaveManager.DeleteSaves();     
-    }
+            
+    }*/
 
     public void OnExitButtonClick()
     {
@@ -189,6 +201,22 @@ public class MainMenu : MonoBehaviour
     public void OnCancelExitButtonClick()
     {
         exitWarningPanel.SetActive(false);
+    }
+
+    public void OnDeleteSavesButtonClick()
+    {
+        deleteSavesWarningPanel.SetActive(true);
+    }
+
+    public void OnDeleteSavesAcceptButtonClick()
+    {
+        SaveManager.DeleteSaves();
+        deleteSavesWarningPanel.SetActive(false);
+    }
+
+    public void OnCancelDeleteSavesButtonClick()
+    {
+        deleteSavesWarningPanel.SetActive(false);
     }
 
     private void Load()

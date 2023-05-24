@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GhostControlPoint : MonoBehaviour
 {
+    public GameObject mainCanvas;
     private GameObject ghost;
     private GameObject ghostPoint;
     private GameObject ani;
@@ -66,10 +67,14 @@ public class GhostControlPoint : MonoBehaviour
     private void TurnOffCameraTiedGhost()
     {
         DeerUnity.isCameraTiedGhost = false;
+        if(mainCanvas != null)
+            mainCanvas.SetActive(true);
     }
 
     private void TurnOnCameraTiedGhost()
     {
+        if (mainCanvas != null)
+            mainCanvas.SetActive(false);
         active.SetActive(true);
         DeerUnity.isCameraTiedGhost = true;
         //GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().isNeedToUpdatePlatformsList = true;

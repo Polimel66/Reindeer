@@ -464,6 +464,7 @@ public class Hunter : MonoBehaviour
                     shootTime = GetComponent<Timer>().GetTime();
                     if (isExtraDamage)
                     {
+                        deerUnity.GetComponent<DeerUnity>().StopDeer();
                         Invoke("ResetHunter", 2f);
                         //ResetHunter();
                     }
@@ -706,6 +707,7 @@ public class Hunter : MonoBehaviour
 
     private void ResetHunter()
     {
+        DisableHunter();
         transform.position = startPos;
         mode = HunterMode.Searching;
     }

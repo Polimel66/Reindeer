@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bush : MonoBehaviour
 {
     private GameObject deerUnity;
-    private bool isTriggered = false;
+    public bool isTriggered = false;
     public AudioClip bushInSound;
     private AudioSource audio;
     public GameObject InputManager;
@@ -20,7 +20,7 @@ public class Bush : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && isTriggered)
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && isTriggered && !deerUnity.GetComponent<DeerUnity>().isRespawning)
         {
             InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
 
@@ -54,5 +54,18 @@ public class Bush : MonoBehaviour
             deerUnity.GetComponent<DeerUnity>().Bushed(gameObject);
             GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
         }
+    }
+
+    public void UnBushSelf()
+    {
+        InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed = false;
+        isTriggered = false;
+        deerUnity.GetComponent<DeerUnity>().UnBushed(gameObject);
+        Invoke("ColorBush", 2f);
+    }
+
+    private void ColorBush()
+    {
+        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
     }
 }

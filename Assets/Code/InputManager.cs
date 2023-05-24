@@ -71,6 +71,7 @@ public class InputManager : MonoBehaviour
         else if(!isGoRightPressing && !isGoLeftPressing && isAnyMoveButtonPressing)
         {
             isAnyMoveButtonPressing = false;
+            isRunMode = false;
         }
         
         if(MainMenu.TypeOfInputSystem == 0)

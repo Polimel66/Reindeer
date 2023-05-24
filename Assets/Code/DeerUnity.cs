@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class DeerUnity : MonoBehaviour
 {
+    public bool isRespawning = false;
+    public GameObject mainCanvas;
     private GameObject reindeerGhost;
     private GameObject reindeerSmall;
     private GameObject reindeerBig;
@@ -40,7 +42,7 @@ public class DeerUnity : MonoBehaviour
     public bool isSecondAbilitySmallAvailable;
     public GameObject firstAbilLock;
     public GameObject secondAbilLock;
-
+    private GameObject lastBush;
     public static bool isBlackoutNow;
 
     public static float VolumeRatio = 0.5f;
@@ -277,7 +279,10 @@ public class DeerUnity : MonoBehaviour
         if (SaveManager.LastCheckPointName != null)
         {
             GameObject.Find(SaveManager.LastCheckPointName).GetComponent<CheckPoint>().isReached = true;
+            isFirstTimeRespawn = true;
         }
+        else
+            isFirstTimeRespawn = false;
 
         previousX = transform.position.x;
         smokesFront = new GameObject[] { smokeFront1, smokeFront2, smokeFront3 };
@@ -571,6 +576,18 @@ public class DeerUnity : MonoBehaviour
         Invoke("FreeDeer", 1f);
     }
 
+    public void StopDeer()
+    {
+        isCatched = true;
+        SwitchOnFirst();
+        isCanSwitch = false;
+        reindeerSmall.GetComponent<ReindeerSmall>().StopMoving();
+        hunter.GetComponent<Hunter>().StopMoving();
+        hunter.GetComponent<Hunter>().isCanShooting = false;
+        //message.SetActive(true);
+        Invoke("FreeDeer", 1f);
+    }
+
     public void FreeDeer()
     {
         message.SetActive(false);
@@ -836,27 +853,42 @@ public class DeerUnity : MonoBehaviour
 
     public void Respawn()
     {
-        Blackout.isDead = true;
-        GetCurrentActiveDeer().GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-        var allHunterControlPoints = GameObject.FindGameObjectsWithTag("HunterPoint");
-        foreach (var point in allHunterControlPoints)
+        if (!isRespawning)
         {
-            point.GetComponent<HunterControlPoint>().isAlreadyWorked = false;
+            //GameObject.Find("Info").GetComponent<Text>().text += "8";
+            isRespawning = true;
+
+            Blackout.isDead = true;
+            GetCurrentActiveDeer().GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            var allHunterControlPoints = GameObject.FindGameObjectsWithTag("HunterPoint");
+            foreach (var point in allHunterControlPoints)
+            {
+                point.GetComponent<HunterControlPoint>().isAlreadyWorked = false;
+            }
+            var timeToWait = 0.0f;
+            if (CurrentActive == 1 && !isFirstTimeRespawn)
+            {
+                reindeerSmall.GetComponent<ReindeerSmall>().PlayDieAnimation();
+                timeToWait = 1.1f;
+            }
+            if (CurrentActive == 2 && !isFirstTimeRespawn)
+            {
+                reindeerGhost.GetComponent<ReindeerGhost>().PlayDieAnimation();
+                timeToWait = 1.1f;
+            }
+            isFirstTimeRespawn = false;
+            Invoke("AfterDieAnimation", timeToWait);
         }
-        var timeToWait = 0.0f;
-        if (CurrentActive == 1 && !isFirstTimeRespawn)
-        {
-            reindeerSmall.GetComponent<ReindeerSmall>().PlayDieAnimation();
-            timeToWait = 1.1f;
-        }
-        isFirstTimeRespawn = false;
-        Invoke("AfterDieAnimation", timeToWait);
     }
 
     private void AfterDieAnimation()
     {
+        if (lastBush != null && lastBush.GetComponent<Bush>().isTriggered)
+        {
+            lastBush.GetComponent<Bush>().UnBushSelf();
+        }
         MoveAllDeersToSpawn();
-
+        
         if (CurrentActive == 1)
         {
             reindeerSmall.GetComponent<ReindeerSmall>().EscapedTrap();
@@ -894,6 +926,7 @@ public class DeerUnity : MonoBehaviour
         textTimer.GetComponent<Text>().text = "";
         isCanSwitchOnGhost = true;
         isGhostOn = false;
+        isRespawning = false;
     }
 
     private void ResetTraps()
@@ -1199,10 +1232,15 @@ public class DeerUnity : MonoBehaviour
 
     public void Bushed(GameObject bush)
     {
-        isBushed = true;
-        isCanSwitch = false;
-        reindeerSmall.GetComponent<ReindeerSmall>().StopMoving();
-        reindeerSmall.transform.position = new Vector3(bush.transform.position.x, reindeerSmall.transform.position.y, bush.transform.position.z + 0.5f);
+        if (!isRespawning)
+        {
+            isBushed = true;
+            isCanSwitch = false;
+            reindeerSmall.GetComponent<ReindeerSmall>().StopMoving();
+            reindeerSmall.transform.position = new Vector3(bush.transform.position.x, reindeerSmall.transform.position.y, bush.transform.position.z + 0.5f);
+            lastBush = bush;
+        }
+        
     }
 
     public void UnBushed(GameObject bush)

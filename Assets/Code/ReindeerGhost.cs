@@ -55,7 +55,7 @@ public class ReindeerGhost : MonoBehaviour
 
     //private string[] allSpecificIdleAnies = new string[] { "IdleEar", "IdleStomp", "IdleTail", "HeadTilt" };
     //private string basicIdleAni = "IdleBasic";
-    //private string dieAni = "DieTest";
+    private string dieAni = "Die";
     private string levitacia = "Levitacia";
     private string joggingAni = "Walk";
     private string runAni = "Beg";
@@ -319,14 +319,20 @@ public class ReindeerGhost : MonoBehaviour
             }
         }
     }
-    /*
+    
     public void PlayDieAnimation()
     {
         StopJumpAnimation();
         isPlayingDieAnimation = true;
+        animation.GetComponent<SkeletonAnimation>().loop = false;
         animation.GetComponent<SkeletonAnimation>().AnimationName = dieAni;
-        Invoke("PlayBasicIdleAnimation", 1.1f);
-    }*/
+        Invoke("StopPlayingDieAnimation", 1.1f);
+    }
+
+    private void StopPlayingDieAnimation()
+    {
+        isPlayingDieAnimation = false;
+    }
 
     public void setIsWindProtected(bool condition)
     {
@@ -436,7 +442,11 @@ public class ReindeerGhost : MonoBehaviour
         }
         if (isFlying && rigidbody.velocity.y <= -0.1f)
         {
-            rigidbody.gravityScale = 0.1f;
+            //rigidbody.gravityScale = 0.1f;
+            if(rigidbody.velocity.y < -2f)
+            {
+                rigidbody.velocity = new Vector2(rigidbody.velocity.x, -2f);
+            }
             if (!isPlayingLevitaciaAnimation)
             {
                 StopJumpAnimation();
