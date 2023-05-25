@@ -42,9 +42,9 @@ TagManager:
   - Fog
   - Enemy
   - Player
-  - 
-  - 
-  - 
+  - L1
+  - L2
+  - L3
   - 
   - 
   - 
@@ -66,4 +66,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: New Layer 1
+    uniqueID: 3361934733
+    locked: 0
+  - name: New Layer 2
+    uniqueID: 223002859
+    locked: 0
+  - name: New Layer 3
+    uniqueID: 2572431479
     locked: 0

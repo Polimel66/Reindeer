@@ -54,6 +54,7 @@ public class ReindeerSmall : MonoBehaviour
     private GameObject[] snowDrifts;
     private int prevWalk = 0;
     public Joystick joystick;
+    private bool isPlayingAvalanche = false;
     
     //public bool isNeedToUpdatePlatformsList = false;
     public bool isInShadow { get; private set; }
@@ -72,6 +73,7 @@ public class ReindeerSmall : MonoBehaviour
     private string dieAni = "DieTest";
     private string joggingAni = "jogging";
     private string runAni = "RunBasic";
+    private string avalanche = "avalanche";
     private Dictionary<jumpPhase, string> jumpFhaseAnies = new Dictionary<jumpPhase, string>()
     {
         { jumpPhase.Up, "JumpBasicUp" },
@@ -147,7 +149,7 @@ public class ReindeerSmall : MonoBehaviour
         UpdateJumpAnimation();
 
         UpdateFallAnimation();
-        //GameObject.Find("Info").GetComponent<Text>().text = animation.GetComponent<SkeletonAnimation>().loop.ToString();
+        //GameObject.Find("Info").GetComponent<Text>().text = animation.GetComponent<SkeletonAnimation>().AnimationName.ToString();
         if (isPlayingDieAnimation && isCanMoving)
         {
             StopMoving();
@@ -163,7 +165,7 @@ public class ReindeerSmall : MonoBehaviour
         //GameObject.Find("Info").GetComponent<Text>().text = animation.GetComponent<SkeletonAnimation>().AnimationName;
 
 
-        if (!isPlayingDieAnimation && !isPlayingJumpAnimation)
+        if (!isPlayingDieAnimation && !isPlayingJumpAnimation && !isPlayingAvalanche)
         {
             if (isStayAni && horizontalForceRatio != 0 && CurrentHorizontalVelocity != 0 && DeerUnity.IsGrounded)
             {
@@ -216,6 +218,20 @@ public class ReindeerSmall : MonoBehaviour
     {
         animation.GetComponent<SkeletonAnimation>().AnimationName = name;
         
+    }
+
+    public void PlayAvalancheAni()
+    {
+        isPlayingAvalanche = true;
+        SetAnimation(avalanche);
+        animation.transform.localEulerAngles = new Vector3(0, 0, -50);
+        animation.GetComponent<SkeletonAnimation>().loop = true;
+    }
+
+    public void StopAvalancheAni()
+    {
+        isPlayingAvalanche = false;
+        animation.transform.localEulerAngles = new Vector3(0, 0, 0);
     }
 
     private void PlayRandomIdleAnimation()

@@ -33,6 +33,7 @@ public class EmergIsland : MonoBehaviour
         isSecondPlatformShown = false;
         counterPlat = 0;
         platOn = false;
+        this.gameObject.AddComponent<Timer>();
     }
 
     // Update is called once per frame
@@ -41,7 +42,7 @@ public class EmergIsland : MonoBehaviour
         if (isEmergIslandActivated)
         {
             isPlatformShowOn = true;
-            this.gameObject.AddComponent<Timer>();
+            
             GetComponent<Timer>().SetPeriodForTick(1f);
             GetComponent<Timer>().StartTimer();
             isEmergIslandActivated = false;

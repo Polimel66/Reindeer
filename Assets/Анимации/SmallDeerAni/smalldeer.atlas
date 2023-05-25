@@ -1,0 +1,69 @@
+
+smalldeer.png
+size: 8192,8192
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+body_back
+  rotate: false
+  xy: 2, 4225
+  size: 4238, 1752
+  orig: 4238, 1786
+  offset: 0, 34
+  index: -1
+body_front
+  rotate: false
+  xy: 1443, 5979
+  size: 2868, 1433
+  orig: 2868, 1462
+  offset: 0, 29
+  index: -1
+ear
+  rotate: false
+  xy: 2, 7854
+  size: 680, 306
+  orig: 680, 306
+  offset: 0, 0
+  index: -1
+head
+  rotate: true
+  xy: 2, 6213
+  size: 1429, 1439
+  orig: 1429, 1439
+  offset: 0, 0
+  index: -1
+l_back
+  rotate: true
+  xy: 3540, 7414
+  size: 746, 2189
+  orig: 746, 2189
+  offset: 0, 0
+  index: -1
+l_front
+  rotate: true
+  xy: 1230, 7644
+  size: 516, 2308
+  orig: 516, 2308
+  offset: 0, 0
+  index: -1
+r_back
+  rotate: true
+  xy: 5731, 7283
+  size: 877, 2429
+  orig: 877, 2429
+  offset: 0, 0
+  index: -1
+r_front
+  rotate: true
+  xy: 4313, 5841
+  size: 1440, 2796
+  orig: 1440, 2796
+  offset: 0, 0
+  index: -1
+tail
+  rotate: false
+  xy: 684, 7832
+  size: 544, 328
+  orig: 544, 328
+  offset: 0, 0
+  index: -1
