@@ -114,6 +114,9 @@ SpriteAtlas:
     - {fileID: 2800000, guid: a673a7c01f400b04f9342dce11ed5f1c, type: 3}
     - {fileID: 2800000, guid: d686952e99db1fc43b3b074dc2d094dd, type: 3}
     - {fileID: 2800000, guid: 95cd462bba3ccf541a2d57a7d6947b99, type: 3}
+    - {fileID: 2800000, guid: 1da2c4f6335c1b14a8fef755af3c8e78, type: 3}
+    - {fileID: 2800000, guid: fa5b43b484ee3144ba5cfe804888fcb6, type: 3}
+    - {fileID: 2800000, guid: e72e1cb491f2e0949a7a735221b20bbd, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -140,11 +143,14 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 42f636843c9f4714fbdb9830c81dcb3e, type: 3}
   - {fileID: 21300000, guid: a6931a945db8e454693aabe44ee72a99, type: 3}
   - {fileID: 21300000, guid: e9575a9473f33b547869f80c67cd0d29, type: 3}
+  - {fileID: 21300000, guid: fa5b43b484ee3144ba5cfe804888fcb6, type: 3}
+  - {fileID: 21300000, guid: e72e1cb491f2e0949a7a735221b20bbd, type: 3}
   - {fileID: 21300000, guid: e0f81ac434661c04bb5607e1e505ccf8, type: 3}
   - {fileID: 21300000, guid: 67097c45d468cf6458868e91e8745167, type: 3}
   - {fileID: 21300000, guid: 4d54d7859d68f3346a8d72e722ef1c0e, type: 3}
   - {fileID: 21300000, guid: 2aca5b766cff7d8408c8a717b4c3dfef, type: 3}
   - {fileID: 21300000, guid: 17180a865e6d032499058ca6a953d37c, type: 3}
+  - {fileID: 21300000, guid: 1da2c4f6335c1b14a8fef755af3c8e78, type: 3}
   - {fileID: 21300000, guid: f36a1b17b7cb9c5449447453fd8d3b9b, type: 3}
   - {fileID: 21300000, guid: a16d6e270770c9641aa9c55d7bad6602, type: 3}
   - {fileID: 21300000, guid: a54961776ff56d84cbaac38a7448326b, type: 3}
@@ -211,11 +217,14 @@ SpriteAtlas:
   - "\u0420\u0435\u0441\u0443\u0440\u0441 120"
   - "\u0420\u0435\u0441\u0443\u0440\u0441 74"
   - tile2
+  - snow2
+  - snow3
   - "\u0420\u0435\u0441\u0443\u0440\u0441 119"
   - "\u0420\u0435\u0441\u0443\u0440\u0441 61"
   - "\u0420\u0435\u0441\u0443\u0440\u0441 75"
   - "\u0420\u0435\u0441\u0443\u0440\u0441 76"
   - "\u0420\u0435\u0441\u0443\u0440\u0441 72"
+  - snow1
   - "\u0420\u0435\u0441\u0443\u0440\u0441 80"
   - "\u0420\u0435\u0441\u0443\u0440\u0441 67"
   - "\u0420\u0435\u0441\u0443\u0440\u0441 63"
