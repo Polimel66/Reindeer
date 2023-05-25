@@ -10,6 +10,8 @@ public class PlatformChecker : MonoBehaviour
     private Queue<Collider2D> queueOn = new Queue<Collider2D>();
     private Queue<Collider2D> queueOff = new Queue<Collider2D>();
     private int counter = 0;
+    private bool a = true;
+    private bool b = true;
     void Start()
     {
         deerUnity = GameObject.Find("DeerUnity");
@@ -29,9 +31,22 @@ public class PlatformChecker : MonoBehaviour
         else if (collision.tag == "EmergIsland")
         {
             deerUnity.GetComponent<DeerUnity>().isOnPlatform = true;
-            collision.gameObject.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 255);
-            if (collision.gameObject.GetComponent<SpriteRenderer>().color.a == 1)
+            //if (a)
+            //{
+            //    if (!b)
+            //    {
+            //        b = false;
+            //    }collision.gameObject.GetComponent<SpriteRenderer>().color.a == 0
+            if (collision.gameObject.GetComponent<Island>().isUsed == false)
+            {
                 collision.gameObject.transform.parent.GetComponent<EmergIsland>().counterPlat += 1;
+                collision.gameObject.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 1);
+                collision.gameObject.GetComponent<Island>().isUsed = true;
+                    //b = false;
+            }
+            
+            //}
+            
         }
         else if(collision.tag == "MaterialisedPlatform")
         {

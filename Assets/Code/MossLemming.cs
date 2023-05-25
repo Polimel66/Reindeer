@@ -9,12 +9,15 @@ public class MossLemming : MonoBehaviour
     private GameObject startEmergingIsland;
     public GameObject firstEmergingPhrase;
     public GameObject secondEmergingPhrase;
+    private GameObject emptyShelter;
     // Start is called before the first frame update
     void Start()
     {
         deerUnity = GameObject.Find("DeerUnity");
         coll = GetComponent<BoxCollider2D>();
         startEmergingIsland = GameObject.Find("EmergingIslandsChecker");
+        emptyShelter = GameObject.Find("EmptyShelter");
+        emptyShelter.SetActive(false);
         startEmergingIsland.SetActive(false);
         secondEmergingPhrase.SetActive(false);
     }
@@ -32,6 +35,7 @@ public class MossLemming : MonoBehaviour
             secondEmergingPhrase.SetActive(true);
             deerUnity.GetComponent<DeerUnity>().SetTask(12);
             deerUnity.GetComponent<DeerUnity>().SetTask(10);
+            emptyShelter.SetActive(true);
         }
         DeerUnity.isPossibleTakeLemming = false;
     }

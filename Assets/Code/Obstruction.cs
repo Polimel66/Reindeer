@@ -28,6 +28,7 @@ public class Obstruction : MonoBehaviour
         {
             if (littleCounter % 2 == 0)
             {
+ 
                 var thord_clone = GameObject.Instantiate(this.gameObject.transform.Find("CircleStone (2)").gameObject, startPosition.transform.position, transform.rotation);
                 var second_clone = GameObject.Instantiate(this.gameObject.transform.Find("CircleStone (1)").gameObject, startPosition.transform.position, transform.rotation);
                 counter += 2;
