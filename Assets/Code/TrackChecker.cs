@@ -97,6 +97,7 @@ public class TrackChecker : MonoBehaviour
                 }
                 deerUnity.GetComponent<DeerUnity>().SetTask(locationNumber);
                 textDict[collision.gameObject.name] = Tuple.Create(textDict[collision.gameObject.name].Item1, true);
+                collision.gameObject.SetActive(false);
             }
             text.GetComponent<Text>().text = textDict[collision.gameObject.name].Item1;
 
