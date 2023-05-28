@@ -27,10 +27,25 @@ public class Wind : MonoBehaviour
     public bool isNeedToChangeHearingRadius = true;
     private bool isWithAudioSource;
     public bool isSimpleWind = false;
+    public GameObject windWithParticles;
+    private List<ParticleSystem> particleSystems = new List<ParticleSystem>();
     //public bool isPaused = false;
     // Start is called before the first frame update
     void Start()
     {
+        if(windWithParticles != null)
+        {
+            for (var i = 0; i < 2; i++)
+            {
+                for (var j = 0; j < 9; j++)
+                {
+                    particleSystems.Add(windWithParticles.transform.GetChild(i).GetChild(j).Find("Particle System (2)").gameObject.GetComponent<ParticleSystem>());
+                }
+            }
+        }
+        
+        
+
         BoxCollider2D a;
         isWithCollider = TryGetComponent<BoxCollider2D>(out a);
         deerUnity = GameObject.Find("DeerUnity");
@@ -75,10 +90,11 @@ public class Wind : MonoBehaviour
                 {
                     alphaRatio = 1;
                     isFullVisible = true;
+                    
                 }
                 if (isGradient)
                 {
-                    GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, alphaRatio);
+                    GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
                 }
 
                 if (isWithSound && isWorking && alphaRatio > 0.5f && !isPlayingSound && isWithAudioSource)
@@ -97,6 +113,7 @@ public class Wind : MonoBehaviour
                             audio.volume = 1;
                         }
                         audio.PlayOneShot(windSound);
+                        //PlayWindAni();
                     }
                 }
             }
@@ -108,7 +125,8 @@ public class Wind : MonoBehaviour
 
             if (!isWorking && alphaRatio != 0)
             {
-                isFullVisible = false;
+                if(alphaRatio <= 0.5f)
+                    isFullVisible = false;
                 alphaRatio -= Time.deltaTime;
                 if (alphaRatio < 0)
                 {
@@ -116,7 +134,7 @@ public class Wind : MonoBehaviour
                 }
                 if (isGradient)
                 {
-                    GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, alphaRatio);
+                    GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
                 }
             }
 
@@ -163,6 +181,8 @@ public class Wind : MonoBehaviour
                 }
             }
         }
+        if(windWithParticles != null)
+            UpdateWindAniAlpha();
     }
 
     private void CalculateForces()
@@ -230,6 +250,36 @@ public class Wind : MonoBehaviour
                 isTriggeredByDeer = false;
                 deerUnity.GetComponent<DeerUnity>().StopBlowing();
             }
+        }
+    }
+
+    private void PlayWindAni()
+    {
+        foreach(var particleSystem in particleSystems)
+        {
+            particleSystem.Play();
+        }
+    }
+
+    private void StopWindAni()
+    {
+        foreach (var particleSystem in particleSystems)
+        {
+            particleSystem.Stop();
+        }
+    }
+
+    private void UpdateWindAniAlpha()
+    {
+        foreach (var particleSystem in particleSystems)
+        {
+            //var main = particleSystem.main.startColor;
+            //main.mode = ParticleSystemGradientMode.TwoColors;
+            //main.colorMax = Color.red;
+            //main.colorMax = Color.blue;
+
+            var rrr = particleSystem.main;
+            rrr.startColor = new ParticleSystem.MinMaxGradient(new Color(1, 1, 1, alphaRatio), new Color(0.7215686f, 0.9647059f, 1, alphaRatio));
         }
     }
 }

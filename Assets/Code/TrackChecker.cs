@@ -75,6 +75,8 @@ public class TrackChecker : MonoBehaviour
     {
         if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && isInArea)
         {
+            collision.transform.parent.gameObject.GetComponent<Smell>().Collect();
+
             var locationNumber = int.Parse(collision.gameObject.name.Split(' ')[1]);
             if (!textDict[collision.gameObject.name].Item2)
             {
