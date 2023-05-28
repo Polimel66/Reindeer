@@ -18,6 +18,7 @@ public class VideoPlayerCode : MonoBehaviour
     public Sprite[] dialogWithOwlImages;
     private int currentIndex = 0;
     private bool isAlreadyPlayed = false;
+    private GameObject deerUnity;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player" && !isAlreadyPlayed)
@@ -32,6 +33,7 @@ public class VideoPlayerCode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        deerUnity = GameObject.Find("DeerUnity");
         //insertVideo = transform.GetChild(0).gameObject;
         //insertVideo.SetActive(false);
         //turnOffAbility = GameObject.Find("TurnOffAbility");
@@ -66,6 +68,7 @@ public class VideoPlayerCode : MonoBehaviour
     private void StartDialogScene()
     {
         dialogPanel.SetActive(true);
+        deerUnity.GetComponent<DeerUnity>().currentDialog = this.gameObject;
         dialogPanel.GetComponent<Image>().sprite = dialogWithOwlImages[currentIndex];
         transform.Find("Owl").gameObject.SetActive(false);
     }

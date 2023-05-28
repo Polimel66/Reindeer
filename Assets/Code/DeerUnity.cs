@@ -201,7 +201,7 @@ public class DeerUnity : MonoBehaviour
     public static bool isShakeCamera;
     public static bool isShortShakeCamera;
     private bool isFirstTimeRespawn = true;
-
+    public GameObject currentDialog;
 
     // Start is called before the first frame update
     void Start()
@@ -1338,6 +1338,11 @@ public class DeerUnity : MonoBehaviour
             isTasksShowing = true;
             tasks.transform.localScale = new Vector3(1, 1, 1);
         }
+    }
+
+    public void SetNextDialogImage()
+    {
+        currentDialog.GetComponent<VideoPlayerCode>().SetNextDialogImage();
     }
 
     public void SetIsGrounded(bool value) { IsGrounded = value; }
