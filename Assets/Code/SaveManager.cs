@@ -9,6 +9,9 @@ public static class SaveManager
     public static List<int> TaskNumbersToSet = new List<int>();
     public static List<string> CollectedSmells = new List<string>();
     public static List<string> CollectedTaskTriggers = new List<string>();
+    public static int isTalkedWithOwl = 0;
+    public static int isCollectedMoss = 0;
+    public static int isThirdLemCollected = 0;
     public static void SaveGame(bool isExit)
     {
         if (LastCheckPointName != null)
@@ -18,6 +21,18 @@ public static class SaveManager
             if (!LastCheckPointName.Equals(PreviousCheckPointName))
             {
                 PreviousCheckPointName = LastCheckPointName;
+                if(isTalkedWithOwl != 0)
+                {
+                    PlayerPrefs.SetInt("isTalkedWithOwl", isTalkedWithOwl);
+                }
+                if (isCollectedMoss != 0)
+                {
+                    PlayerPrefs.SetInt("isCollectedMoss", isCollectedMoss);
+                }
+                if (isThirdLemCollected != 0)
+                {
+                    PlayerPrefs.SetInt("isThirdLemCollected", isThirdLemCollected);
+                }
                 if (CollectedSmells.Count != 0)
                 {
                     var smells = CollectedSmells[0];
@@ -55,6 +70,14 @@ public static class SaveManager
             TaskNumbersToSet.Clear();
             LastCheckPointName = null;
             PreviousCheckPointName = "";
+            isTalkedWithOwl = 0;
+            isCollectedMoss = 0;
+            isThirdLemCollected = 0;
+
+            DeerUnity.countOfFoundLemmings = 0;
+            DeerUnity.isMossFound = false;
+            DeerUnity.isPossibleTakeLemming = false;
+            DeerUnity.isPossibleTakeMoss = false;
         }
         
         PlayerPrefs.Save();
@@ -95,6 +118,18 @@ public static class SaveManager
                 TaskNumbersToSet.Add(int.Parse(number));
             }
         }
+        if (PlayerPrefs.HasKey("isTalkedWithOwl"))
+        {
+            isTalkedWithOwl = PlayerPrefs.GetInt("isTalkedWithOwl");
+        }
+        if (PlayerPrefs.HasKey("isCollectedMoss"))
+        {
+            isCollectedMoss = PlayerPrefs.GetInt("isCollectedMoss");
+        }
+        if (PlayerPrefs.HasKey("isThirdLemCollected"))
+        {
+            isThirdLemCollected = PlayerPrefs.GetInt("isThirdLemCollected");
+        }
     }
 
     public static void DeleteSaves()
@@ -105,6 +140,9 @@ public static class SaveManager
         TaskNumbersToSet.Clear();
         LastCheckPointName = null;
         PreviousCheckPointName = "";
+        isTalkedWithOwl = 0;
+        isCollectedMoss = 0;
+        isThirdLemCollected = 0;
     }
 
     public static bool isAnySaves()
@@ -142,6 +180,38 @@ public static class SaveManager
         if (number > 0)
         {
             TaskNumbersToSet.Add(number);
+        }
+    }
+
+    public static void SetIsTalkedWithOwl(int number)
+    {
+        if(number > 2)
+        {
+            isTalkedWithOwl = 2;
+        }
+        else if(number < 0)
+        {
+            isTalkedWithOwl = 0;
+        }
+        else
+        {
+            isTalkedWithOwl = number;
+        }
+    }
+
+    public static void SetIsCollectedMoss(int number)
+    {
+        if (number > 1)
+        {
+            isCollectedMoss = 1;
+        }
+        else if (number < 0)
+        {
+            isCollectedMoss = 0;
+        }
+        else
+        {
+            isCollectedMoss = number;
         }
     }
 }

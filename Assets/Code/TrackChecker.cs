@@ -68,6 +68,22 @@ public class TrackChecker : MonoBehaviour
         timer = text.gameObject.GetComponent<Timer>();
         timer.SetPeriodForTick(5f);
 
+        if (SaveManager.CollectedSmells.Count >= 3)
+        {
+            firstHintBarier.SetActive(false);
+        }
+        if (SaveManager.CollectedSmells.Count >= 4)
+        {
+            secondHintBarier.SetActive(false);
+        }
+        if (SaveManager.CollectedSmells.Count >= 5)
+        {
+            thirdHintBarier.SetActive(false);
+        }
+        if (SaveManager.CollectedSmells.Count >= 6)
+        {
+            fourthHintBarier.SetActive(false);
+        }
     }
 
     // Update is called once per frame

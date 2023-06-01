@@ -26,6 +26,10 @@ public class VideoPlayerCode : MonoBehaviour
             //insertVideo.SetActive(true);
             //startTime = GetComponent<Timer>().GetTime();
             //nameOfSceneOn = gameObject.name;
+            if(name.Equals("FirstDialogWithOwl"))
+                SaveManager.SetIsTalkedWithOwl(1);
+            if(name.Equals("SecondDialogWithOwl"))
+                SaveManager.SetIsTalkedWithOwl(2);
             StartDialogScene();
             isAlreadyPlayed = true;
         }
@@ -33,6 +37,17 @@ public class VideoPlayerCode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (SaveManager.isTalkedWithOwl == 1 && name.Equals("FirstDialogWithOwl"))
+        {
+            isAlreadyPlayed = true;
+            this.gameObject.SetActive(false);
+        }
+        if (SaveManager.isTalkedWithOwl == 2 && name.Equals("SecondDialogWithOwl"))
+        {
+            isAlreadyPlayed = true;
+            this.gameObject.SetActive(false);
+        }
+
         deerUnity = GameObject.Find("DeerUnity");
         //insertVideo = transform.GetChild(0).gameObject;
         //insertVideo.SetActive(false);

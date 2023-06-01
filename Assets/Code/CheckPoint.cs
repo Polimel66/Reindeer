@@ -8,6 +8,7 @@ public class CheckPoint : MonoBehaviour
     public bool isReached;
     public bool isApplied = false;
     public GameObject nearestHunterPoint;
+    public GameObject ghostControlPoint;
     // Start is called before the first frame update
     void Start()
     {

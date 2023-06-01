@@ -20,6 +20,19 @@ public class MossLemming : MonoBehaviour
         emptyShelter.SetActive(false);
         startEmergingIsland.SetActive(false);
         secondEmergingPhrase.SetActive(false);
+
+        if(SaveManager.isThirdLemCollected == 1)
+        {
+            DeerUnity.countOfFoundLemmings = 3;
+            startEmergingIsland.SetActive(true);
+            gameObject.SetActive(false);
+            firstEmergingPhrase.SetActive(false);
+            secondEmergingPhrase.SetActive(true);
+            //deerUnity.GetComponent<DeerUnity>().SetTask(12);
+            //deerUnity.GetComponent<DeerUnity>().SetTask(10);
+            emptyShelter.SetActive(true);
+            //SaveManager.isThirdLemCollected = 1;
+        }
     }
 
     // Update is called once per frame
@@ -36,6 +49,7 @@ public class MossLemming : MonoBehaviour
             deerUnity.GetComponent<DeerUnity>().SetTask(12);
             deerUnity.GetComponent<DeerUnity>().SetTask(10);
             emptyShelter.SetActive(true);
+            SaveManager.isThirdLemCollected = 1;
         }
         DeerUnity.isPossibleTakeLemming = false;
     }

@@ -7,7 +7,8 @@ public class TurnOnObstruction : MonoBehaviour
     private GameObject obstruction;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        obstruction.SetActive(true);
+        if(collision.tag.Equals("Player"))
+            obstruction.SetActive(true);
     }
     // Start is called before the first frame update
     void Start()

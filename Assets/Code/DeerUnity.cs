@@ -317,30 +317,56 @@ public class DeerUnity : MonoBehaviour
 
         if (SaveManager.LastCheckPointName != null)
         {
-            GameObject.Find(SaveManager.LastCheckPointName).GetComponent<CheckPoint>().isReached = true;
+            var checkpoint = GameObject.Find(SaveManager.LastCheckPointName);
+            checkpoint.GetComponent<CheckPoint>().isReached = true;
+            if (checkpoint.GetComponent<CheckPoint>().ghostControlPoint != null)
+            {
+                checkpoint.GetComponent<CheckPoint>().ghostControlPoint.GetComponent<GhostControlPoint>().FastMove();
+            }
+            
+
             isFirstTimeRespawn = true;
             var number = int.Parse(SaveManager.LastCheckPointName.Split()[1]);
             if(number > 2)
             {
                 for (var i = 0; i < 2; i++)
                 {
-                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isReached = true;
-                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isApplied = true;
+                    var checkPoint = GameObject.Find("Map1CheckPoint " + i);
+                    checkPoint.GetComponent<CheckPoint>().isReached = true;
+                    checkPoint.GetComponent<CheckPoint>().isApplied = true;
+                    if (checkPoint.GetComponent<CheckPoint>().ghostControlPoint != null)
+                    {
+                        checkPoint.GetComponent<CheckPoint>().ghostControlPoint.GetComponent<GhostControlPoint>().isEnd = true;
+                    }
                 }
                 map1checkpoint2.GetComponent<CheckPoint>().isReached = true;
                 map1checkpoint2.GetComponent<CheckPoint>().isApplied = true;
+                if (map1checkpoint2.GetComponent<CheckPoint>().ghostControlPoint != null)
+                {
+                    map1checkpoint2.GetComponent<CheckPoint>().ghostControlPoint.GetComponent<GhostControlPoint>().isEnd = true;
+                }
                 for (var i = 3; i < number; i++)
                 {
-                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isReached = true;
-                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isApplied = true;
+                    var checkPoint = GameObject.Find("Map1CheckPoint " + i);
+                    checkPoint.GetComponent<CheckPoint>().isReached = true;
+                    checkPoint.GetComponent<CheckPoint>().isApplied = true;
+                    if (checkPoint.GetComponent<CheckPoint>().ghostControlPoint != null)
+                    {
+                        checkPoint.GetComponent<CheckPoint>().ghostControlPoint.GetComponent<GhostControlPoint>().isEnd = true;
+                    }
                 }
             }
             if(number <= 2)
             {
                 for (var i = 0; i < number; i++)
                 {
-                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isReached = true;
-                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isApplied = true;
+                    var checkPoint = GameObject.Find("Map1CheckPoint " + i);
+                    checkPoint.GetComponent<CheckPoint>().isReached = true;
+                    checkPoint.GetComponent<CheckPoint>().isApplied = true;
+                    if (checkPoint.GetComponent<CheckPoint>().ghostControlPoint != null)
+                    {
+                        checkPoint.GetComponent<CheckPoint>().ghostControlPoint.GetComponent<GhostControlPoint>().isEnd = true;
+                    }
                 }
             }
         }

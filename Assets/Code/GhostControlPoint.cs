@@ -7,10 +7,10 @@ public class GhostControlPoint : MonoBehaviour
 {
     public GameObject mainCanvas;
     private GameObject ghost;
-    private GameObject ghostPoint;
+    public GameObject ghostPoint;
     private GameObject ani;
     private bool isStartMoving = false;
-    private bool isEnd = false;
+    public bool isEnd = false;
     private Vector3 ghostStartPoint;
     private float t = 0;
     private bool isActivateCameraTiedBefore = false;
@@ -20,6 +20,7 @@ public class GhostControlPoint : MonoBehaviour
     private string polet = "Polet_gorizont";
     public int rot;
     public bool isLastControlPoint = false;
+    //private static GameObject joystickDisabler;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,9 +31,12 @@ public class GhostControlPoint : MonoBehaviour
         if (active == null)
         {
             active = GameObject.Find("ActivatedSectionMap");
-            Invoke("Disable", 3f);
+            if(SaveManager.LastCheckPointName == null || int.Parse(SaveManager.LastCheckPointName.Split()[1]) < 2)
+                Invoke("Disable", 3f);
         }
-        
+        /*if(joystickDisabler == null)
+            joystickDisabler = GameObject.Find("JoystickDisabler");
+        joystickDisabler.SetActive(false);*/
     }
 
     // Update is called once per frame
@@ -67,23 +71,39 @@ public class GhostControlPoint : MonoBehaviour
     private void TurnOffCameraTiedGhost()
     {
         DeerUnity.isCameraTiedGhost = false;
-        if(mainCanvas != null)
+        if(mainCanvas != null && !mainCanvas.activeSelf)
+        {
             mainCanvas.SetActive(true);
+            //mainCanvas.transform.Find("Floating Joystick").gameObject.transform.localPosition += new Vector3(0, 5f, 0);
+            //GameObject.Find("ReindeerSmall").GetComponent<ReindeerSmall>().EscapedTrap();
+            //mainCanvas.transform.Find("Floating Joystick").gameObject.GetComponent<FloatingJoystick>().enabled = true;
+            //joystickDisabler.SetActive(false);
+            Invoke("TurnOnJoystick", 1f);
+        }
+            
+    }
+
+    private void TurnOnJoystick()
+    {
+        mainCanvas.transform.Find("Floating Joystick").gameObject.SetActive(true);
     }
 
     private void TurnOnCameraTiedGhost()
     {
+        //joystickDisabler.SetActive(true);
         if (mainCanvas != null)
             mainCanvas.SetActive(false);
         active.SetActive(true);
         DeerUnity.isCameraTiedGhost = true;
+        
+        //GameObject.Find("ReindeerSmall").GetComponent<ReindeerSmall>().Trapped();
         //GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().isNeedToUpdatePlatformsList = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        if (!isStartMoving && collision.tag.Equals("Player"))
+        if (!isStartMoving && collision.tag.Equals("Player") && !isEnd)
         {
             isStartMoving = true;
             ghostStartPoint = ghost.transform.position;
@@ -114,5 +134,13 @@ public class GhostControlPoint : MonoBehaviour
                 GameObject.Find("MovingPlatforms").SetActive(false);  
             }
         }
+    }
+
+    public void FastMove()
+    {
+        ghost = transform.parent.parent.Find("Ghost").gameObject;
+        ghostPoint = transform.parent.Find("GhostPoint").gameObject;
+        ghost.transform.position = ghostPoint.transform.position;
+        isEnd = true;
     }
 }
