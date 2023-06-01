@@ -6,7 +6,7 @@ public class TaskTrigger : MonoBehaviour
 {
     public string whatTaskTrigger;
     private GameObject deerUnity;
-    private bool isTriggered;
+    public bool isTriggered;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +24,7 @@ public class TaskTrigger : MonoBehaviour
         if (collision.tag.Equals("Player") && !isTriggered)
         {
             isTriggered = true;
+            SaveManager.AddTask(this.gameObject.name);
             var taskIndexes = whatTaskTrigger.Split(" ");
             foreach(var taskIndex in taskIndexes)
             {

@@ -19,7 +19,7 @@ public class InGameMenu : MonoBehaviour
 
     public void OnExitGameButtonCkick()
     {
-        SaveManager.SaveGame();
+        SaveManager.SaveGame(true);
         SceneManager.LoadScene("Menu");
     }
 

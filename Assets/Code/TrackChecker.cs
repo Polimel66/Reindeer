@@ -77,9 +77,11 @@ public class TrackChecker : MonoBehaviour
         {
             collision.transform.parent.gameObject.GetComponent<Smell>().Collect();
 
-            var locationNumber = int.Parse(collision.gameObject.name.Split(' ')[1]);
+            var taskNumber = int.Parse(collision.gameObject.name.Split(' ')[1]);
             if (!textDict[collision.gameObject.name].Item2)
             {
+                SaveManager.AddSmell(collision.gameObject.name);
+
                 deerUnity.GetComponent<DeerUnity>().countOfFoundTracks += 1;
                 if (deerUnity.GetComponent<DeerUnity>().countOfFoundTracks == 3)
                 {
@@ -97,7 +99,7 @@ public class TrackChecker : MonoBehaviour
                 {
                     fourthHintBarier.SetActive(false);
                 }
-                deerUnity.GetComponent<DeerUnity>().SetTask(locationNumber);
+                deerUnity.GetComponent<DeerUnity>().SetTask(taskNumber);
                 textDict[collision.gameObject.name] = Tuple.Create(textDict[collision.gameObject.name].Item1, true);
                 collision.gameObject.SetActive(false);
             }

@@ -94,7 +94,7 @@ public class Hints : MonoBehaviour
             //}
             if (gameObject.name.Equals("Smells") && !isRead)
             {
-                GameObject.Find("DeerUnity").GetComponent<DeerUnity>().SetTask(1);
+                
                 isRead = true;
             }
             //if (gameObject.name.Equals("DeerSpirit"))

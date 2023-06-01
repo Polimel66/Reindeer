@@ -6,7 +6,7 @@ public class CheckPoint : MonoBehaviour
 {
     private GameObject deerUnity;
     public bool isReached;
-    private bool isApplied = false;
+    public bool isApplied = false;
     public GameObject nearestHunterPoint;
     // Start is called before the first frame update
     void Start()

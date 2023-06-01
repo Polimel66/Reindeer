@@ -202,6 +202,7 @@ public class DeerUnity : MonoBehaviour
     public static bool isShortShakeCamera;
     private bool isFirstTimeRespawn = true;
     public GameObject currentDialog;
+    public GameObject map1checkpoint2;
 
     // Start is called before the first frame update
     void Start()
@@ -276,13 +277,7 @@ public class DeerUnity : MonoBehaviour
         MoveAllDeersToSpawn();
         ActivateCooling();
 
-        if (SaveManager.LastCheckPointName != null)
-        {
-            GameObject.Find(SaveManager.LastCheckPointName).GetComponent<CheckPoint>().isReached = true;
-            isFirstTimeRespawn = true;
-        }
-        else
-            isFirstTimeRespawn = false;
+        
 
         previousX = transform.position.x;
         smokesFront = new GameObject[] { smokeFront1, smokeFront2, smokeFront3 };
@@ -319,6 +314,63 @@ public class DeerUnity : MonoBehaviour
         isShortShakeCamera = false;
         isFirstAbilitySmallAvailable = false;
         isSecondAbilitySmallAvailable = false;
+
+        if (SaveManager.LastCheckPointName != null)
+        {
+            GameObject.Find(SaveManager.LastCheckPointName).GetComponent<CheckPoint>().isReached = true;
+            isFirstTimeRespawn = true;
+            var number = int.Parse(SaveManager.LastCheckPointName.Split()[1]);
+            if(number > 2)
+            {
+                for (var i = 0; i < 2; i++)
+                {
+                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isReached = true;
+                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isApplied = true;
+                }
+                map1checkpoint2.GetComponent<CheckPoint>().isReached = true;
+                map1checkpoint2.GetComponent<CheckPoint>().isApplied = true;
+                for (var i = 3; i < number; i++)
+                {
+                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isReached = true;
+                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isApplied = true;
+                }
+            }
+            if(number <= 2)
+            {
+                for (var i = 0; i < number; i++)
+                {
+                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isReached = true;
+                    GameObject.Find("Map1CheckPoint " + i).GetComponent<CheckPoint>().isApplied = true;
+                }
+            }
+        }
+        else
+            isFirstTimeRespawn = false;
+
+        if (SaveManager.TaskNumbersToSet.Count != 0)
+        {
+            foreach(var number in SaveManager.TaskNumbersToSet)
+            {
+                SetTaskWhenLoad(number);
+            }
+            Invoke("SetNewSize", 0.01f);
+        }
+        if(SaveManager.CollectedSmells.Count != 0)
+        {
+            foreach(var smell in SaveManager.CollectedSmells)
+            {
+                var obj = GameObject.Find(smell);
+                obj.transform.parent.gameObject.GetComponent<Smell>().Collect();
+                obj.SetActive(false);
+            }
+        }
+        if(SaveManager.CollectedTaskTriggers.Count != 0)
+        {
+            foreach(var task in SaveManager.CollectedTaskTriggers)
+            {
+                GameObject.Find(task).GetComponent<TaskTrigger>().isTriggered = true;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -658,6 +710,7 @@ public class DeerUnity : MonoBehaviour
         }
         TaskMenuParent.GetComponent<Text>().text = s;
         TaskMenu.GetComponent<Text>().text = s;
+        SaveManager.AddTaskNumberToSet(numberOfTask);
         Invoke("SetNewSize", 0.01f);
     }
 
@@ -1322,7 +1375,7 @@ public class DeerUnity : MonoBehaviour
 
     public void OnConfirmExitGameButtonClick()
     {
-        SaveManager.SaveGame();
+        SaveManager.SaveGame(true);
         SceneManager.LoadScene("Menu");
     }
 
@@ -1343,6 +1396,70 @@ public class DeerUnity : MonoBehaviour
     public void SetNextDialogImage()
     {
         currentDialog.GetComponent<VideoPlayerCode>().SetNextDialogImage();
+    }
+
+    public void SetTaskWhenLoad(int numberOfTask)
+    {
+        isTasksShowing = true;
+        tasks.transform.localScale = new Vector3(1, 1, 1);
+        if (indexOfCurrentTasks.Count == 0)
+        {
+            TaskMenuParent.transform.Find("TextBackground").GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
+            Head.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+        }
+        if (!indexOfCurrentTasks.Contains(numberOfTask))
+        {
+            indexOfCurrentTasks.Add(numberOfTask);
+        }
+        else
+        {
+            var task = Tasks[numberOfTask].Split("/");
+            if (task.Length == 1)
+            {
+                TaskComplete(numberOfTask);
+            }
+            else
+            {
+                var cur = int.Parse(task[0].Substring(task[0].Length - 1)) + 1;
+                var need = int.Parse(task[1].Substring(0, 1));
+                if (cur == need)
+                {
+                    TaskComplete(numberOfTask);
+                }
+                else
+                {
+                    var newTask = "";
+                    newTask += task[0].Substring(0, task[0].Length - 1) + cur.ToString() + "/" + task[1];
+                    Tasks[numberOfTask] = newTask;
+                }
+            }
+        }
+        //TaskMenuParent.transform.Find("TextBackground").gameObject.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        //TaskMenu.GetComponent<Text>().color = new Color(0, 0, 0, 0);
+        var s = Tasks[0];
+        foreach (var index in indexOfCurrentTasks)
+        {
+            s += Tasks[index];
+        }
+        s = s.Remove(s.Length - 1);
+        if (s.Equals(Tasks[0].Remove(Tasks[0].Length - 1)))
+        {
+            /*
+            TaskMenuParent.transform.Find("TextBackground").gameObject.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+            Head.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+            TaskMenu.GetComponent<Text>().color = new Color(0, 0, 0, 0);*/
+            s = "";
+        }
+        else
+        {
+            TaskMenuParent.transform.Find("TextBackground").gameObject.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
+            Head.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            TaskMenu.GetComponent<Text>().color = new Color(1, 1, 1, 1);
+        }
+        TaskMenuParent.GetComponent<Text>().text = s;
+        TaskMenu.GetComponent<Text>().text = s;
+        
+        
     }
 
     public void SetIsGrounded(bool value) { IsGrounded = value; }
