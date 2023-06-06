@@ -26,11 +26,11 @@ public class Blackout : MonoBehaviour
         {
             ambientLighting.intensity = getIntensity(deer.transform.position.x);
         }
-        if (isDead)
-        {
-            ambientLighting.intensity = 1;
-            isDead = false;
-        }
+        //if (isDead)
+        //{
+        //    ambientLighting.intensity = 1;
+        //    isDead = false;
+        //}
     }
 
     public float getIntensity(float deerX)

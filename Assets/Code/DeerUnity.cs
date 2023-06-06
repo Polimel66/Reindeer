@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class DeerUnity : MonoBehaviour
 {
+    private Light ambientLighting;
     public bool isRespawning = false;
     public GameObject mainCanvas;
     private GameObject reindeerGhost;
@@ -207,6 +208,7 @@ public class DeerUnity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ambientLighting = GameObject.Find("DirectionalLight").GetComponent<Light>();
         Application.targetFrameRate = 60;
 
         //isFirstLocationComplete = false;
@@ -936,7 +938,6 @@ public class DeerUnity : MonoBehaviour
         {
             //GameObject.Find("Info").GetComponent<Text>().text += "8";
             isRespawning = true;
-
             Blackout.isDead = true;
             GetCurrentActiveDeer().GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             var allHunterControlPoints = GameObject.FindGameObjectsWithTag("HunterPoint");
@@ -998,7 +999,7 @@ public class DeerUnity : MonoBehaviour
         isCatched = false;
 
         Invoke("ResetTraps", 0.1f);
-
+        Invoke("ResetLight", 0.04f);
         lastTime = -1;
         backgroundOfTimer.GetComponent<Image>().fillAmount = 0;
         lastTime = ghostActiveTime;
@@ -1008,6 +1009,10 @@ public class DeerUnity : MonoBehaviour
         isRespawning = false;
     }
 
+    private void ResetLight()
+    {
+        ambientLighting.intensity = 1;
+    }
     private void ResetTraps()
     {
         var traps = GameObject.FindGameObjectsWithTag("Trap");
