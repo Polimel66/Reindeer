@@ -32,9 +32,11 @@ public class InputManager : MonoBehaviour
     public GameObject jumpButtonObject;
     private Direction currentDirection = Direction.No;
     private Direction previousDirection = Direction.No;
+    private GameObject canvas;
     // Start is called before the first frame update
     void Start()
     {
+        canvas = GameObject.Find("Canvas");
         if(MainMenu.TypeOfInputSystem == 0)
         {
             joystickObject.SetActive(true);
@@ -120,7 +122,7 @@ public class InputManager : MonoBehaviour
                 }
                 previousDirection = currentDirection;
             }
-            if (joystick.Vertical > 0.5f)
+            if (joystick.Vertical > 0.5f && canvas.activeSelf)
             {
                 if (DeerUnity.CurrentActive == 2)
                 {

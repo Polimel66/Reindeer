@@ -332,7 +332,7 @@ public class Dog : MonoBehaviour
             var vector = transform.position - obj.transform.position;
             if (vector.x < 10 && vector.x > -10 && vector.y > -10 && vector.y < 10)
             {
-                if (GetComponent<BoxCollider2D>().IsTouching(obj.GetComponent<BoxCollider2D>()))
+                if (GetComponent<Collider2D>().IsTouching(obj.GetComponent<Collider2D>()))
                     return true;
             }
         }

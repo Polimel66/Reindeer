@@ -348,7 +348,9 @@ public class Hunter : MonoBehaviour
             var vector = transform.position - obj.transform.position;
             if (vector.x < 10 && vector.x > -10 && vector.y > -10 && vector.y < 10)
             {
-                if (GetComponent<BoxCollider2D>().IsTouching(obj.GetComponent<BoxCollider2D>()))
+                //BoxCollider2D colider;
+                //obj.TryGetComponent<BoxCollider2D>(out colider);
+                if (GetComponent<Collider2D>().IsTouching(obj.GetComponent<Collider2D>()))
                     return true;
             }
         }
