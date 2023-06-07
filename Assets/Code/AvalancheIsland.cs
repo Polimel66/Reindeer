@@ -70,8 +70,7 @@ public class AvalancheIsland : MonoBehaviour
                 canvas.SetActive(false);
                 InputManager.isLavinaPlaying = true;
                 isLavinaStartInvoked = true;
-                SnowSystem.GetComponent<ParticleSystem>().Play();
-                FogSystem.GetComponent<ParticleSystem>().Play();
+                
                 var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
                 reindeer.transform.parent = transform;
                 deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = true;
@@ -82,15 +81,15 @@ public class AvalancheIsland : MonoBehaviour
                 reindeer.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
                 reindeer.GetComponent<Rigidbody2D>().gravityScale = 0f;
                 reindeer.transform.localPosition = new Vector3(-0.869287f, 0.93f, 4);
-                Invoke("StartLavina", 1f);
+                StartLavina();
             }
         }
     }
 
-    private void StartLavina()
+    public void StartLavina()
     {
         isLavinaStart = true;
-        Invoke("PlayAni", 1f);
+        Invoke("PlayAni", 0.5f);
         
         
         /*var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
@@ -104,4 +103,11 @@ public class AvalancheIsland : MonoBehaviour
     {
         deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().PlayAvalancheAni();
     }
+
+    public void PlayLavinaAni()
+    {
+        SnowSystem.GetComponent<ParticleSystem>().Play();
+        FogSystem.GetComponent<ParticleSystem>().Play();
+    }
+
 }
