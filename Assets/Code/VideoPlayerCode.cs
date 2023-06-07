@@ -19,6 +19,10 @@ public class VideoPlayerCode : MonoBehaviour
     private int currentIndex = 0;
     private bool isAlreadyPlayed = false;
     private GameObject deerUnity;
+    private float t = 0;
+    private float alpha = 0;
+    private bool isPlaying = false;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player" && !isAlreadyPlayed)
@@ -64,24 +68,34 @@ public class VideoPlayerCode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (isTurnOff)
+        if(isPlaying && alpha < 1)
         {
-            isTurnOff = false;
-            duration = videoDict[gameObject.name];
-            //turnOffAbility.SetActive(true);
-        }
-        if (GetComponent<Timer>().GetTime() - startTime >= duration && !isTurnOff)
-        {
-            insertVideo.SetActive(false);
-            if (nameOfSceneOn == "FirstDialogWithOwl" || nameOfSceneOn == "LastDialogWithOwl")
+            alpha += Time.deltaTime * 2;
+            if(alpha >= 1)
             {
-                gameObject.SetActive(false);
+                alpha = 1;
             }
-        }*/
+            dialogPanel.GetComponent<Image>().color = new Color(1, 1, 1, alpha);
+        }
+        if (!isPlaying && alpha > 0)
+        {
+            alpha -= Time.deltaTime * 2;
+            if (alpha <= 0)
+            {
+                alpha = 0;
+                
+            }
+            dialogPanel.GetComponent<Image>().color = new Color(1, 1, 1, alpha);
+            if(alpha == 0)
+            {
+                dialogPanel.SetActive(false);
+            }
+        }
     }
 
     private void StartDialogScene()
     {
+        isPlaying = true;
         dialogPanel.SetActive(true);
         deerUnity.GetComponent<DeerUnity>().currentDialog = this.gameObject;
         dialogPanel.GetComponent<Image>().sprite = dialogWithOwlImages[currentIndex];
@@ -97,8 +111,9 @@ public class VideoPlayerCode : MonoBehaviour
         }
         else
         {
-            dialogPanel.SetActive(false);
+            //dialogPanel.SetActive(false);
             currentIndex = 0;
+            isPlaying = false;
         }
     }
 }
