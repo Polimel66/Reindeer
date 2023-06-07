@@ -204,6 +204,7 @@ public class DeerUnity : MonoBehaviour
     private bool isFirstTimeRespawn = true;
     public GameObject currentDialog;
     public GameObject map1checkpoint2;
+    private bool isSectionDisabled = false;
 
     // Start is called before the first frame update
     void Start()
@@ -404,7 +405,26 @@ public class DeerUnity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Mathf.Abs(currentActiveDeer.GetComponent<Rigidbody2D>().velocity.y) > 50)
+        if (!isSectionDisabled)
+        {
+            GameObject.Find("Info").GetComponent<Text>().text = "NOFF";
+            if (SaveManager.LastCheckPointName == null)
+            {
+                GameObject.Find("Info").GetComponent<Text>().text = "OFF1";
+                DisableSectionMap();
+            }
+            else if (SaveManager.LastCheckPointName != null && int.Parse(SaveManager.LastCheckPointName.Split()[1]) < 2)
+            {
+                GameObject.Find("Info").GetComponent<Text>().text = "OFF2";
+                DisableSectionMap();
+            }
+            else
+            {
+                GameObject.Find("Info").GetComponent<Text>().text = "ON";
+            }
+            isSectionDisabled = true;
+        }
+        if (Mathf.Abs(currentActiveDeer.GetComponent<Rigidbody2D>().velocity.y) > 50)
         {
             TakeDamage(10000);
         }
@@ -1491,6 +1511,11 @@ public class DeerUnity : MonoBehaviour
         TaskMenu.GetComponent<Text>().text = s;
         
         
+    }
+
+    private void DisableSectionMap()
+    {
+        GhostControlPoint.active.SetActive(false);
     }
 
     public void SetIsGrounded(bool value) { IsGrounded = value; }

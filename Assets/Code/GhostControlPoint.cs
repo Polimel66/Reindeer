@@ -9,12 +9,12 @@ public class GhostControlPoint : MonoBehaviour
     private GameObject ghost;
     public GameObject ghostPoint;
     private GameObject ani;
-    private bool isStartMoving = false;
+    public bool isStartMoving = false;
     public bool isEnd = false;
     private Vector3 ghostStartPoint;
     private float t = 0;
     private bool isActivateCameraTiedBefore = false;
-    private static GameObject active;
+    public static GameObject active;
     public bool isFirstControlPoint = false;
     private string levit = "Levitacia";
     private string polet = "Polet_gorizont";
@@ -85,7 +85,7 @@ public class GhostControlPoint : MonoBehaviour
 
     private void TurnOnJoystick()
     {
-        mainCanvas.transform.Find("Floating Joystick").gameObject.SetActive(true);
+        //mainCanvas.transform.Find("Floating Joystick").gameObject.SetActive(true);
     }
 
     private void TurnOnCameraTiedGhost()
