@@ -254,7 +254,10 @@ public class InputManager : MonoBehaviour
 
     public void UpdateInputButtonsOrJoystick()
     {
-        if(MainMenu.TypeOfInputSystem == 0)
+        OnGoLeftButtonStopPressing();
+        OnGoRightButtonStopPressing();
+        OnBoostStopPress();
+        if (MainMenu.TypeOfInputSystem == 0)
         {
             var newJoystickObject = Instantiate(joystickObject, joystickObject.transform.parent);
             var oldJoystickObject = joystickObject;
@@ -288,6 +291,7 @@ public class InputManager : MonoBehaviour
 
             DestroyObjects(new List<GameObject> { oldGoLeftButton, oldGoRightButton, oldJumpButton });
         }
+        
     }
 
     private void DestroyObjects(List<GameObject> objects)
