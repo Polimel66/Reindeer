@@ -70,7 +70,9 @@ public class AvalancheIsland : MonoBehaviour
                 canvas.SetActive(false);
                 InputManager.isLavinaPlaying = true;
                 isLavinaStartInvoked = true;
-                
+
+                GameObject.Find("InputManager").GetComponent<InputManager>().UpdateInputButtonsOrJoystick();
+
                 var reindeer = deerUnity.GetComponent<DeerUnity>().GetCurrentActiveDeer();
                 reindeer.transform.parent = transform;
                 deerUnity.GetComponent<DeerUnity>().isOnMovePlatform = true;

@@ -249,5 +249,32 @@ public class InputManager : MonoBehaviour
         isSecondAbilityButtonStopPress = true;
     }
 
+    public void UpdateInputButtonsOrJoystick()
+    {
+        if(MainMenu.TypeOfInputSystem == 0)
+        {
+            var newJoystickObject = Instantiate(joystickObject, joystickObject.transform.parent);
+            var oldJoystickObject = joystickObject;
+            joystickObject = newJoystickObject;
+            joystick = joystickObject.GetComponent<Joystick>();
+            joystickObject.transform.SetAsFirstSibling();
+            DestroyObjects(new List<GameObject> { oldJoystickObject });
+            //Destroy(joystickObject);
+            //Destroy(newJoystickObject);
+        }
+        else
+        {
+
+        }
+    }
+
+    private void DestroyObjects(List<GameObject> objects)
+    {
+        for(var i = 0; i < objects.Count; i++)
+        {
+            Destroy(objects[i]);
+        }
+    }
+
     public static bool isLavinaPlaying = false;
 }

@@ -407,26 +407,31 @@ public class DeerUnity : MonoBehaviour
     {
         if (!isSectionDisabled)
         {
-            GameObject.Find("Info").GetComponent<Text>().text = "NOFF";
+            //GameObject.Find("Info").GetComponent<Text>().text = "NOFF";
             if (SaveManager.LastCheckPointName == null)
             {
-                GameObject.Find("Info").GetComponent<Text>().text = "OFF1";
+                //GameObject.Find("Info").GetComponent<Text>().text = "OFF1";
                 DisableSectionMap();
             }
             else if (SaveManager.LastCheckPointName != null && int.Parse(SaveManager.LastCheckPointName.Split()[1]) < 2)
             {
-                GameObject.Find("Info").GetComponent<Text>().text = "OFF2";
+                //GameObject.Find("Info").GetComponent<Text>().text = "OFF2";
                 DisableSectionMap();
             }
             else
             {
-                GameObject.Find("Info").GetComponent<Text>().text = "ON";
+                //GameObject.Find("Info").GetComponent<Text>().text = "ON";
             }
             isSectionDisabled = true;
         }
         if (Mathf.Abs(currentActiveDeer.GetComponent<Rigidbody2D>().velocity.y) > 50)
         {
             TakeDamage(10000);
+        }
+        //GameObject.Find("Info").GetComponent<Text>().text = currentActiveDeer.GetComponent<Rigidbody2D>().velocity.ToString();
+        if (currentActiveDeer.GetComponent<Rigidbody2D>().velocity.y < -21)
+        {
+            currentActiveDeer.GetComponent<Rigidbody2D>().velocity = new Vector2(currentActiveDeer.GetComponent<Rigidbody2D>().velocity.x, -21);
         }
         HealthChecked();
         StaminaChecked();

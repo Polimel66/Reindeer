@@ -95,7 +95,8 @@ public class GhostControlPoint : MonoBehaviour
             mainCanvas.SetActive(false);
         active.SetActive(true);
         DeerUnity.isCameraTiedGhost = true;
-        
+
+        GameObject.Find("InputManager").GetComponent<InputManager>().UpdateInputButtonsOrJoystick();
         //GameObject.Find("ReindeerSmall").GetComponent<ReindeerSmall>().Trapped();
         //GameObject.Find("DeerUnity").GetComponent<DeerUnity>().GetCurrentActiveDeer().GetComponent<ReindeerSmall>().isNeedToUpdatePlatformsList = true;
     }
