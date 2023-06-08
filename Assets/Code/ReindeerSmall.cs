@@ -68,7 +68,7 @@ public class ReindeerSmall : MonoBehaviour
 
     public GameObject InputManager;
     private string currentAniName = "";
-    private string[] allSpecificIdleAnies = new string[] { "IdleStomp", "IdleStomp", "IdleStomp", "IdleStomp" };
+    private string[] allSpecificIdleAnies = new string[] { "IdleTail", "IdleEar", "IdleStomp", "HeadTilt" };
     private string basicIdleAni = "IdleBasic";
     private string dieAni = "DieTest";
     private string joggingAni = "jogging";
