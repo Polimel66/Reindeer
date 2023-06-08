@@ -33,6 +33,9 @@ public class InputManager : MonoBehaviour
     private Direction currentDirection = Direction.No;
     private Direction previousDirection = Direction.No;
     private GameObject canvas;
+    public GameObject goLeftButton;
+    public GameObject goRightButton;
+    public GameObject jumpButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -264,7 +267,26 @@ public class InputManager : MonoBehaviour
         }
         else
         {
+            var newGoLeftButton = Instantiate(goLeftButton, goLeftButton.transform.parent);
+            var oldGoLeftButton = goLeftButton;
+            goLeftButton = newGoLeftButton;
+            //joystick = joystickObject.GetComponent<Joystick>();
+            goLeftButton.transform.SetAsFirstSibling();
 
+            var newGoRightButton = Instantiate(goRightButton, goRightButton.transform.parent);
+            var oldGoRightButton = goRightButton;
+            goRightButton = newGoRightButton;
+            //joystick = joystickObject.GetComponent<Joystick>();
+            goRightButton.transform.SetAsFirstSibling();
+
+            var newJumpButton = Instantiate(jumpButton, jumpButton.transform.parent);
+            var oldJumpButton = jumpButton;
+            jumpButton = newJumpButton;
+            //joystick = joystickObject.GetComponent<Joystick>();
+            jumpButton.transform.SetAsFirstSibling();
+
+
+            DestroyObjects(new List<GameObject> { oldGoLeftButton, oldGoRightButton, oldJumpButton });
         }
     }
 
