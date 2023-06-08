@@ -112,7 +112,7 @@ public class MainMenu : MonoBehaviour
 
     private void PlaySettingsOnAnimation()
     {
-        settingsButton.GetComponent<Image>().color = settingsButtonActive;
+        //settingsButton.GetComponent<Image>().color = settingsButtonActive;
         isPlayingSettingsOnAni = true;
         isPlayingSettingsOffAni = false;
         localEulerAngleBeforeAni = settingsButton.transform.localEulerAngles.z;
@@ -120,7 +120,7 @@ public class MainMenu : MonoBehaviour
 
     private void PlaySettingsOffAnimation()
     {
-        settingsButton.GetComponent<Image>().color = settingsButtonDisactive;
+        //settingsButton.GetComponent<Image>().color = settingsButtonDisactive;
         isPlayingSettingsOnAni = false;
         isPlayingSettingsOffAni = true;
         localEulerAngleBeforeAni = settingsButton.transform.localEulerAngles.z;
