@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: "\u0420\u0435\u0441\u0443\u0440\u0441 47"
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 2910b69faa7b5c6449825ef4871cfc0b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 0533e0931d61923439e71b70c0b4fdb0, type: 3}
+  m_Color: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
   m_Transform:
     e00: 1
     e01: 0

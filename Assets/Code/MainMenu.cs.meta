@@ -3,7 +3,22 @@ guid: 1ec9b4c2d5bb3204a837ab105994aad7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - continueButton: {instanceID: 0}
+  - loadingScreen: {instanceID: 0}
+  - loadingProgressBar: {instanceID: 0}
+  - audioMixer: {instanceID: 0}
+  - settingsMovingPanel: {instanceID: 0}
+  - audiOn: {instanceID: 0}
+  - audiOff: {instanceID: 0}
+  - audioButton: {instanceID: 0}
+  - settingsButton: {instanceID: 0}
+  - exitWarningPanel: {instanceID: 0}
+  - deleteSavesWarningPanel: {instanceID: 0}
+  - whatLocationStartDebugButton: {instanceID: 0}
+  - charactersDescriptionPanel: {instanceID: 0}
+  - joystickInputIcon: {instanceID: 0}
+  - buttonsInputIcon: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
