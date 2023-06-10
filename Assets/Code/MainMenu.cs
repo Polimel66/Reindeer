@@ -15,8 +15,8 @@ public class MainMenu : MonoBehaviour
     public GameObject settingsMovingPanel;
     private float settingsPanelHeight = 0;
     private float t = 0;
-    public Sprite audiOn;
-    public Sprite audiOff;
+    public GameObject audioOn;
+    public GameObject audioOff;
     private Color settingsButtonActive = new Color(1, 0, 1, 1);
     private Color settingsButtonDisactive = new Color(1, 1, 1, 1);
     public static bool isAudiOn = true;
@@ -37,7 +37,9 @@ public class MainMenu : MonoBehaviour
     public GameObject exitWarningPanel;
     public GameObject deleteSavesWarningPanel;
 
-    public GameObject whatLocationStartDebugButton;
+    public GameObject controllerType;
+    public Sprite Joystick;
+    public Sprite Buttons;
     public static int TypeOfInputSystem = 0;
     public GameObject charactersDescriptionPanel;
     public Image joystickInputIcon;
@@ -65,23 +67,27 @@ public class MainMenu : MonoBehaviour
 
         if (TypeOfInputSystem == 0)
         {
-            whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = "джой\nстик";
-            
+            //TypeOfInputSystem = 1;
+            controllerType.GetComponent<Image>().sprite = Joystick;
         }
         else
         {
-            whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = "кноп\nки";
-
+            //TypeOfInputSystem = 0;
+            controllerType.GetComponent<Image>().sprite = Buttons;
         }
 
         if (isAudiOn)
         {
-            audioButton.GetComponent<Image>().sprite = audiOn;
+            //audioButton.GetComponent<Image>().sprite = audiOn;
+            audioOn.SetActive(true);
+            audioOff.SetActive(false);
             audioMixer.SetFloat("MasterVolume", 0);
         }
         else
         {
-            audioButton.GetComponent<Image>().sprite = audiOff;
+            //audioButton.GetComponent<Image>().sprite = audiOff;
+            audioOn.SetActive(false);
+            audioOff.SetActive(true);
             audioMixer.SetFloat("MasterVolume", -80);
         }
         //whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = LocationStartNumber.ToString();
@@ -164,13 +170,17 @@ public class MainMenu : MonoBehaviour
         if (isAudiOn)
         {
             isAudiOn = false;
-            audioButton.GetComponent<Image>().sprite = audiOff;
+            //audioButton.GetComponent<Image>().sprite = audiOff;
+            audioOff.SetActive(true);
+            audioOn.SetActive(false);
             audioMixer.SetFloat("MasterVolume", -80);
         }
         else
         {
             isAudiOn = true;
-            audioButton.GetComponent<Image>().sprite = audiOn;
+            //audioButton.GetComponent<Image>().sprite = audiOn;
+            audioOn.SetActive(true);
+            audioOff.SetActive(false);
             audioMixer.SetFloat("MasterVolume", 0);
         }
     }
@@ -250,15 +260,15 @@ public class MainMenu : MonoBehaviour
 
     public void OnSwitchInputSystem()
     {
-        if(TypeOfInputSystem == 0)
+        if (TypeOfInputSystem == 0)
         {
             TypeOfInputSystem = 1;
-            whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = "кноп\nки";
+            controllerType.GetComponent<Image>().sprite = Buttons;
         }
         else
         {
             TypeOfInputSystem = 0;
-            whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = "джой\nстик";
+            controllerType.GetComponent<Image>().sprite = Joystick;
         }
         //whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = LocationStartNumber.ToString();
     }
