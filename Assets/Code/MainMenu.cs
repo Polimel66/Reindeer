@@ -44,7 +44,16 @@ public class MainMenu : MonoBehaviour
     public GameObject charactersDescriptionPanel;
     public Image joystickInputIcon;
     public Image buttonsInputIcon;
-
+    public GameObject textHint;
+    private Timer timer;
+    private string[] allHints = { "Подсказка: чтобы собрать след, нужно включить режим нюха и нажать на кнопку взаимодействия.",
+        "Подсказка: используя способность нюха, оленёнок может видить запахи оставленные его стадом.",
+        "Подсказка: призрак может сделать только одну платформу реальной за 1 вызов.",
+        "Подсказка: у оленей есть выносливость, поэтому используй ускорение с умом.",
+        "Подсказка: собирай все следы, чтобы увидеть воспоминания оленёнка.",
+        "Подсказка: остерегайся капканов и шипов, которые расставляют охотники.",
+        "Подсказка: чтобы спуститься с большой высоты используй левитацию призрака."};
+    private int hintCounter;
 
     void Start()
     {
@@ -93,6 +102,9 @@ public class MainMenu : MonoBehaviour
         //whatLocationStartDebugButton.transform.Find("LocationNumber").GetComponent<Text>().text = LocationStartNumber.ToString();
 
         //settingsButton.transform.localEulerAngles = new Vector3(0, 0, 0);
+        timer = gameObject.AddComponent<Timer>();
+        timer.SetPeriodForTick(3f);
+        hintCounter = 0;
     }
 
     // Update is called once per frame
@@ -233,6 +245,11 @@ public class MainMenu : MonoBehaviour
     {
         //SceneManager.LoadScene("Game");
         loadingScreen.SetActive(true);
+        timer.StopTimer();
+        timer.ClearTimer();
+        timer.StartTimer();
+        textHint.GetComponent<Text>().text = allHints[(int)Random.Range(0, 6.33f)];
+        hintCounter = (int)Random.Range(0, 6.33f);
         StartCoroutine(LoadAsync());
     }
 
@@ -252,6 +269,15 @@ public class MainMenu : MonoBehaviour
                 }
                 asyncLoad.allowSceneActivation = true;
             }*/
+            if (timer.IsTicked())
+            {
+                textHint.GetComponent<Text>().text = allHints[hintCounter];
+                hintCounter = (int)Random.Range(0, 6.33f);
+                if (hintCounter >= allHints.Length)
+                {
+                    hintCounter = 0;
+                }
+            }
             yield return null;
         }
 
