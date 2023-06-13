@@ -74,6 +74,9 @@ public class DeerUnity : MonoBehaviour
     [SerializeField] public float currentCooling;
     [SerializeField] public float maxCooling;
     [SerializeField] private float minCooling;
+    [SerializeField] private GameObject sad;
+    [SerializeField] private GameObject neutral;
+    [SerializeField] private GameObject happy;
 
     public bool isActivateCooling;
 
@@ -937,6 +940,28 @@ public class DeerUnity : MonoBehaviour
                 currentHealth -= 1f * Time.deltaTime;
             }
             sliderCooling.value = currentCooling;
+            //Debug.Log(currentCooling);
+            if (currentCooling >= 100f)
+            {
+                sliderCooling.transform.Find("Fill Area").transform.Find("Fill").GetComponent<Image>().color = new Color(0.1843137f, 0.6196079f, 0.3607843f);
+                happy.SetActive(true);
+                neutral.SetActive(false);
+                sad.SetActive(false);
+            }
+            else if (currentCooling < 100f && currentCooling > 50f)
+            {
+                sliderCooling.transform.Find("Fill Area").transform.Find("Fill").GetComponent<Image>().color = new Color(1f, 0.6588235f, 0.2196078f);
+                happy.SetActive(false);
+                neutral.SetActive(true);
+                sad.SetActive(false);
+            }
+            else
+            {
+                sliderCooling.transform.Find("Fill Area").transform.Find("Fill").GetComponent<Image>().color = new Color(0.8196079f, 0.1294118f, 0.1294118f);
+                happy.SetActive(false);
+                neutral.SetActive(false);
+                sad.SetActive(true);
+            }
         }
     }
 
