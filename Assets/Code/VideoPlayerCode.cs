@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,8 @@ public class VideoPlayerCode : MonoBehaviour
     private float t = 0;
     private float alpha = 0;
     private bool isPlaying = false;
+    private GameObject tapAni;
+    private bool isPlayingTapAni = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -53,6 +56,7 @@ public class VideoPlayerCode : MonoBehaviour
         }
 
         deerUnity = GameObject.Find("DeerUnity");
+        tapAni = deerUnity.GetComponent<DeerUnity>().TapAni;
         //insertVideo = transform.GetChild(0).gameObject;
         //insertVideo.SetActive(false);
         //turnOffAbility = GameObject.Find("TurnOffAbility");
@@ -68,6 +72,13 @@ public class VideoPlayerCode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        t += Time.deltaTime;
+        if(isPlaying && !isPlayingTapAni && t > 5)
+        {
+            isPlayingTapAni = true;
+            tapAni.SetActive(true);
+            tapAni.GetComponent<SkeletonAnimation>().AnimationName = "animation";
+        }
         if(isPlaying && alpha < 1)
         {
             alpha += Time.deltaTime * 2;
@@ -95,6 +106,9 @@ public class VideoPlayerCode : MonoBehaviour
 
     private void StartDialogScene()
     {
+        t = 0;
+        isPlayingTapAni = false;
+        tapAni.SetActive(false);
         isPlaying = true;
         dialogPanel.SetActive(true);
         deerUnity.GetComponent<DeerUnity>().currentDialog = this.gameObject;
@@ -104,6 +118,9 @@ public class VideoPlayerCode : MonoBehaviour
 
     public void SetNextDialogImage()
     {
+        t = 0;
+        isPlayingTapAni = false;
+        tapAni.SetActive(false);
         currentIndex++;
         if (currentIndex < dialogWithOwlImages.Length)
         {

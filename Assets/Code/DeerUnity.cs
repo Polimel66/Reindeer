@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class DeerUnity : MonoBehaviour
 {
+    public GameObject TapAni;
     private Light ambientLighting;
     public bool isRespawning = false;
     public GameObject mainCanvas;
