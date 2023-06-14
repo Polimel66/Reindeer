@@ -54,6 +54,8 @@ public class MainMenu : MonoBehaviour
         "ѕодсказка: остерегайс€ капканов и шипов, которые расставл€ют охотники.",
         "ѕодсказка: чтобы спуститьс€ с большой высоты используй левитацию призрака."};
     private int hintCounter;
+    public GameObject SettingsDown;
+    private float downDeltaY;
 
     void Start()
     {
@@ -69,7 +71,9 @@ public class MainMenu : MonoBehaviour
             continueButton.SetActive(false);
         }*/
         //settingsMovingPlatform.transform.parent.GetComponent<RectTransform>().rect.height
-        settingsPanelHeight = settingsMovingPanel.GetComponent<RectTransform>().rect.height;
+        //settingsPanelHeight = settingsMovingPanel.GetComponent<RectTransform>().rect.height;
+        downDeltaY = SettingsDown.GetComponent<RectTransform>().localPosition.y - settingsMovingPanel.GetComponent<RectTransform>().localPosition.y;
+        settingsPanelHeight = 419 - settingsMovingPanel.GetComponent<RectTransform>().localPosition.y;
         settingsPanelOnPosition = settingsMovingPanel.transform.localPosition;
         settingsMovingPanel.transform.localPosition += new Vector3(0, settingsPanelHeight, 0);
         settingsPanelOffPosition = settingsMovingPanel.transform.localPosition;
@@ -105,12 +109,15 @@ public class MainMenu : MonoBehaviour
         timer = gameObject.AddComponent<Timer>();
         timer.SetPeriodForTick(3f);
         hintCounter = 0;
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         RotateAndMove();
+        SettingsDown.GetComponent<RectTransform>().localPosition = new Vector3(settingsMovingPanel.GetComponent<RectTransform>().localPosition.x, settingsMovingPanel.GetComponent<RectTransform>().localPosition.y + downDeltaY, 0);
     }
 
     public void OnSettingsButtonClick()
