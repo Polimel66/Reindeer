@@ -89,7 +89,7 @@ public class TrackChecker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && isInArea)
+        if (InputManager.GetComponent<InputManager>().isFirstAbilityButtonPressed && isInArea && ReindeerSmall.isSmell)
         {
             collision.transform.parent.gameObject.GetComponent<Smell>().Collect();
 

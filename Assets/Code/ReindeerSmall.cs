@@ -90,6 +90,7 @@ public class ReindeerSmall : MonoBehaviour
     private bool isPlayingFallAnimation = false;
 
     private int movingButtonsNotPressingFramesCounter = 0;
+    private float smellTime = 0;
 
 
     void Start()
@@ -154,7 +155,7 @@ public class ReindeerSmall : MonoBehaviour
         {
             StopMoving();
         }
-        if(!isPlayingDieAnimation && !isCanMoving && !isTrapped && !deerUnity.GetComponent<DeerUnity>().isBushed)
+        if(!isPlayingDieAnimation && !isCanMoving && !isTrapped && !deerUnity.GetComponent<DeerUnity>().isBushed && !StartTutorialTrigger.isPlayingTutorial)
         {
             StartMoving();
         }
@@ -206,7 +207,7 @@ public class ReindeerSmall : MonoBehaviour
                 }
             }
 
-            if(CurrentVerticalVelocity < -1f && !isPlayingFallAnimation && !isTrapped)
+            if(rigidbody.velocity.y < -1f && !isPlayingFallAnimation && !isTrapped)
             {
                 PlayFallAnimation();
                 
@@ -276,7 +277,7 @@ public class ReindeerSmall : MonoBehaviour
     {
         if (isPlayingJumpAnimation)
         {
-            if(currentJumpPhase == jumpPhase.Up && CurrentVerticalVelocity < -0.05f)
+            if(currentJumpPhase == jumpPhase.Up && rigidbody.velocity.y < -0.5f)
             {
                 
                 //jumpLandTrigger.GetComponent<JumpLandTrigger>().isNearToGround = false;
@@ -574,19 +575,28 @@ public class ReindeerSmall : MonoBehaviour
             //horizontalForceRatio = 0;
         }*/
 
-        
 
+        smellTime += Time.deltaTime;
         if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed)
         {
-            isSmell = true;
+            if (!isSmell)
+            {
+                isSmell = true;
+                TurnOnScent(); // функция для нюха, пока тут только затемнение экрана на некоторое время
+                smellTime = 0;
+            }
             InputManager.GetComponent<InputManager>().isSecondAbilityButtonPressed = false;
-            TurnOnScent(); // функция для нюха, пока тут только затемнение экрана на некоторое время
-            
+
             //Invoke("TurnOffScent", 3f); // функция вызывающая другую функцию, через заданный промежуток времени
         }
         if (InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress)
         {
             InputManager.GetComponent<InputManager>().isSecondAbilityButtonStopPress = false;
+            //TurnOffScent();
+        }
+        if(isSmell && smellTime > 5)
+        {
+            smellTime = 0;
             TurnOffScent();
         }
         if ((InputManager.GetComponent<InputManager>().isRunMode || isRunning) && deerUnity.GetComponent<DeerUnity>().currentStamina > 0.25 && DeerUnity.IsGrounded)

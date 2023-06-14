@@ -38,6 +38,14 @@ public class Smell : MonoBehaviour
             //    lamp.SetActive(false);
             trace.SetActive(false);
         }
+        if(ReindeerSmall.isSmell && !isCollected && star != null)
+        {
+            star.SetActive(true);
+        }
+        if(!ReindeerSmall.isSmell && !isCollected && star != null)
+        {
+            star.SetActive(false);
+        }
     }
 
     public void Collect()

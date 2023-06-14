@@ -25,6 +25,8 @@ public class VideoPlayerCode : MonoBehaviour
     private bool isPlaying = false;
     private GameObject tapAni;
     private bool isPlayingTapAni = false;
+    public SkeletonDataAsset lightTapAni;
+    public SkeletonDataAsset darkTapAni;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -106,6 +108,7 @@ public class VideoPlayerCode : MonoBehaviour
 
     private void StartDialogScene()
     {
+        tapAni.GetComponent<SkeletonAnimation>().skeletonDataAsset = lightTapAni;
         t = 0;
         isPlayingTapAni = false;
         tapAni.SetActive(false);
@@ -131,6 +134,10 @@ public class VideoPlayerCode : MonoBehaviour
             //dialogPanel.SetActive(false);
             currentIndex = 0;
             isPlaying = false;
+        }
+        if(currentIndex == dialogWithOwlImages.Length - 1)
+        {
+            tapAni.GetComponent<SkeletonAnimation>().skeletonDataAsset = darkTapAni;
         }
     }
 }

@@ -313,9 +313,9 @@ public class DeerUnity : MonoBehaviour
 
         isTasksShowing = true;
         tasks.transform.localScale = new Vector3(1, 1, 1);
-        firstAbilLock = firstAbility.transform.Find("lockFirstAbility").gameObject;
+        firstAbilLock = GameObject.Find("lockFirstAbility").gameObject;
         firstAbilLock.SetActive(false);
-        secondAbilLock = secondAbility.transform.Find("lockSecondAbility").gameObject;
+        secondAbilLock = GameObject.Find("lockSecondAbility").gameObject;
         secondAbilLock.SetActive(false);
         isShakeCamera = false;
         isShortShakeCamera = false;

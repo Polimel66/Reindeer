@@ -234,6 +234,7 @@ public class InputManager : MonoBehaviour
     public void OnFirstAbilityButtonPressed()
     {
         isFirstAbilityButtonPressed = true;
+        StartTutorialTrigger.isCollectPressed = true;
         Invoke("TurnOffFirstAbility", 0.1f);
     }
 
@@ -245,6 +246,7 @@ public class InputManager : MonoBehaviour
     public void OnSecondAbilityButtonPressed()
     {
         isSecondAbilityButtonPressed = true;
+        StartTutorialTrigger.isSmellPressed = true;
     }
 
     public void OnSecondAbilityButtonStopPress()
