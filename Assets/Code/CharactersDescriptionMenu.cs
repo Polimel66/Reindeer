@@ -59,7 +59,7 @@ public class CharactersDescriptionMenu : MonoBehaviour
     {
         firstDeerButton.GetComponent<Image>().color = chosenColor;
         secondDeerButton.GetComponent<Image>().color = defaultColor;
-        thirdDeerButton.GetComponent<Image>().color = defaultColor;
+        //thirdDeerButton.GetComponent<Image>().color = defaultColor;
         firstAbilityButton.GetComponent<Image>().sprite = smallDeerFirstAbility;
         secondAbilityButton.GetComponent<Image>().sprite = smallDeerSecondAbility;
         deerImage.GetComponent<Image>().sprite = smallDeer;
@@ -74,7 +74,7 @@ public class CharactersDescriptionMenu : MonoBehaviour
     {
         firstDeerButton.GetComponent<Image>().color = defaultColor;
         secondDeerButton.GetComponent<Image>().color = chosenColor;
-        thirdDeerButton.GetComponent<Image>().color = defaultColor;
+        //thirdDeerButton.GetComponent<Image>().color = defaultColor;
         firstAbilityButton.GetComponent<Image>().sprite = ghostDeerFirstAbility;
         secondAbilityButton.GetComponent<Image>().sprite = ghostDeerSecondAbility;
         deerImage.GetComponent<Image>().sprite = ghostDeer;

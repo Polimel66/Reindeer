@@ -56,6 +56,7 @@ public class MainMenu : MonoBehaviour
     private int hintCounter;
     public GameObject SettingsDown;
     private float downDeltaY;
+    public GameObject completedGameWarning;
 
     void Start()
     {
@@ -208,7 +209,15 @@ public class MainMenu : MonoBehaviour
     {
         
         SaveManager.LoadGame();
-        Load();
+        if(SaveManager.LastCheckPointName != null && int.Parse(SaveManager.LastCheckPointName.Split()[1]) == 34)
+        {
+            completedGameWarning.SetActive(true);
+        }
+        else
+        {
+            Load();
+        }
+        
     }
 
     /*public void OnStartNewGameButtonCkick()
@@ -309,6 +318,17 @@ public class MainMenu : MonoBehaviour
     public void OnCharactersDiscriptionOpenButtonClick()
     {
         charactersDescriptionPanel.SetActive(true);
+    }
+
+    public void OnPlayGameAgainButtonClick()
+    {
+        OnDeleteSavesAcceptButtonClick();
+        OnContinueGameButtonClick();
+    }
+
+    public void OnCancelPlayGameAgainButtonClick()
+    {
+        completedGameWarning.SetActive(false);
     }
 
 }

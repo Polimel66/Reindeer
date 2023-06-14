@@ -22,7 +22,7 @@ public class StartTutorialTrigger : MonoBehaviour
     void Start()
     {
         deerUnity = GameObject.Find("DeerUnity");
-        if (int.Parse(SaveManager.LastCheckPointName.Split()[1]) > 0)
+        if (SaveManager.LastCheckPointName != null && int.Parse(SaveManager.LastCheckPointName.Split()[1]) > 0)
         {
             isPlayed = true;
         }

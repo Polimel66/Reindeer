@@ -713,7 +713,7 @@ public class DeerUnity : MonoBehaviour
         tasks.transform.localScale = new Vector3(1, 1, 1);
         if (indexOfCurrentTasks.Count == 0)
         {
-            TaskMenuParent.transform.Find("TextBackground").GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
+            TaskMenuParent.transform.Find("TextBackground").GetComponent<Image>().color = new Color(1, 1, 1, 0.8f);
             Head.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         }
         if (!indexOfCurrentTasks.Contains(numberOfTask))
@@ -761,7 +761,7 @@ public class DeerUnity : MonoBehaviour
         }
         else
         {
-            TaskMenuParent.transform.Find("TextBackground").gameObject.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
+            TaskMenuParent.transform.Find("TextBackground").gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.8f);
             Head.GetComponent<Image>().color = new Color(1, 1, 1, 1);
             TaskMenu.GetComponent<Text>().color = new Color(1, 1, 1, 1);
         }
@@ -1486,7 +1486,7 @@ public class DeerUnity : MonoBehaviour
         tasks.transform.localScale = new Vector3(1, 1, 1);
         if (indexOfCurrentTasks.Count == 0)
         {
-            TaskMenuParent.transform.Find("TextBackground").GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
+            TaskMenuParent.transform.Find("TextBackground").GetComponent<Image>().color = new Color(1, 1, 1, 0.8f);
             Head.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         }
         if (!indexOfCurrentTasks.Contains(numberOfTask))
@@ -1534,7 +1534,7 @@ public class DeerUnity : MonoBehaviour
         }
         else
         {
-            TaskMenuParent.transform.Find("TextBackground").gameObject.GetComponent<Image>().color = new Color(0, 0, 0, 0.8f);
+            TaskMenuParent.transform.Find("TextBackground").gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.8f);
             Head.GetComponent<Image>().color = new Color(1, 1, 1, 1);
             TaskMenu.GetComponent<Text>().color = new Color(1, 1, 1, 1);
         }

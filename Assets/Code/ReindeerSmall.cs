@@ -155,7 +155,8 @@ public class ReindeerSmall : MonoBehaviour
         {
             StopMoving();
         }
-        if(!isPlayingDieAnimation && !isCanMoving && !isTrapped && !deerUnity.GetComponent<DeerUnity>().isBushed && !StartTutorialTrigger.isPlayingTutorial)
+        if(!isPlayingDieAnimation && !isCanMoving && !isTrapped && !deerUnity.GetComponent<DeerUnity>().isBushed 
+            && !StartTutorialTrigger.isPlayingTutorial && !deerUnity.GetComponent<DeerUnity>().isCatched)
         {
             StartMoving();
         }

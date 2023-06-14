@@ -134,6 +134,10 @@ public class VideoPlayerCode : MonoBehaviour
             //dialogPanel.SetActive(false);
             currentIndex = 0;
             isPlaying = false;
+            if (name.Equals("SecondMemory"))
+            {
+                deerUnity.GetComponent<DeerUnity>().OnConfirmExitGameButtonClick();
+            }
         }
         if(currentIndex == dialogWithOwlImages.Length - 1)
         {
