@@ -13,13 +13,19 @@ public class StartTutorialTrigger : MonoBehaviour
     private bool isSmellUsedOnFirstVar = false;
     private GameObject deerUnity;
     public static bool isPlayingTutorial = false;
-    private float t = 0;
-    private bool isResetTimeToZero = false;
+    private float tCollect = 0;
+    private float tSmell = 0;
+    private bool isCollectResetTimeToZero = false;
+    private bool isSmellResetTimeToZero = false;
     private bool isPlayed = false;
     // Start is called before the first frame update
     void Start()
     {
         deerUnity = GameObject.Find("DeerUnity");
+        if (int.Parse(SaveManager.LastCheckPointName.Split()[1]) > 0)
+        {
+            isPlayed = true;
+        }
     }
 
     // Update is called once per frame
@@ -27,11 +33,11 @@ public class StartTutorialTrigger : MonoBehaviour
     {
         if (isStarted)
         {
-            if(index == 0 && !smellTapAni.activeSelf)
+            if (index == 0 && !smellTapAni.activeSelf)
             {
                 smellTapAni.SetActive(true);
             }
-            if(index == 0 && smellTapAni.activeSelf && isSmellPressed)
+            if (index == 0 && smellTapAni.activeSelf && isSmellPressed)
             {
                 smellTapAni.SetActive(false);
                 isStarted = false;
@@ -79,26 +85,27 @@ public class StartTutorialTrigger : MonoBehaviour
                 isPlayed = true;
             }
         }
-        t += Time.deltaTime;
-        if (isCollectPressed && !isResetTimeToZero)
+        tCollect += Time.deltaTime;
+        tSmell += Time.deltaTime;
+        if (isCollectPressed && !isCollectResetTimeToZero)
         {
-            t = 0;
-            isResetTimeToZero = true;
+            tCollect = 0;
+            isCollectResetTimeToZero = true;
         }
-        if (isCollectPressed && isResetTimeToZero && t > 0.1f)
+        if (isCollectPressed && isCollectResetTimeToZero && tCollect > 0.5f)
         {
-            isResetTimeToZero = false;
+            isCollectResetTimeToZero = false;
             isCollectPressed = false;
         }
-            
-        if (isSmellPressed && !isResetTimeToZero)
+
+        if (isSmellPressed && !isSmellResetTimeToZero)
         {
-            t = 0;
-            isResetTimeToZero = true;
+            tSmell = 0;
+            isSmellResetTimeToZero = true;
         }
-        if (isSmellPressed && isResetTimeToZero && t > 0.1f)
+        if (isSmellPressed && isSmellResetTimeToZero && tSmell > 0.5f)
         {
-            isResetTimeToZero = false;
+            isSmellResetTimeToZero = false;
             isSmellPressed = false;
         }
     }
