@@ -37,9 +37,19 @@ public class Wind : MonoBehaviour
         {
             for (var i = 0; i < 2; i++)
             {
-                for (var j = 0; j < 9; j++)
+                if (!windWithParticles.name.Equals("windSmell"))
                 {
-                    particleSystems.Add(windWithParticles.transform.GetChild(i).GetChild(j).Find("Particle System (2)").gameObject.GetComponent<ParticleSystem>());
+                    for (var j = 0; j < 9; j++)
+                    {
+                        particleSystems.Add(windWithParticles.transform.GetChild(i).GetChild(j).Find("Particle System (2)").gameObject.GetComponent<ParticleSystem>());
+                    }
+                }
+                else
+                {
+                    for (var j = 0; j < 4; j++)
+                    {
+                        particleSystems.Add(windWithParticles.transform.GetChild(i).GetChild(j).Find("Particle System (2)").gameObject.GetComponent<ParticleSystem>());
+                    }
                 }
             }
         }
